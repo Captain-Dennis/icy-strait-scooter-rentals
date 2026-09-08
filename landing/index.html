@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Icy Strait Scooter Rentals</title>
+  <style>
+    :root {
+      --orange: #ff5a00;
+      --ink: #121212;
+      --card: #1c1c1e;
+      --silver: #c7c7cc;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--ink);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+    }
+    main {
+      width: min(440px, 100%);
+      padding: 28px 20px 48px;
+    }
+    h1 { font-size: 1.6rem; margin: 0 0 8px; }
+    p { color: var(--silver); line-height: 1.45; }
+    .id {
+      color: var(--orange);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .note {
+      font-size: 0.85rem;
+      background: #2a160c;
+      border: 1px solid #ff5a0066;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    a.button {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      background: var(--orange);
+      color: #111;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 14px 16px;
+      margin: 14px 0 10px;
+    }
+    a.secondary {
+      background: #2c2c2e;
+      color: #fff;
+    }
+    code { color: #fff; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="id" id="unit">4-wheel offroad e-scooter</p>
+    <h1>Get Icy Strait Scooter Rentals</h1>
+    <p>Scan this QR on your iPhone. If the app is installed, it opens checkout for this unit. If it is not installed, use the App Store button after you publish the listing.</p>
+    <p class="note">
+      <strong>Placeholder — not a live App Store page.</strong>
+      Replace <code>APP_STORE_APPLE_ID_TBD</code> after App Store Connect (or use a TestFlight public link for beta).
+    </p>
+    <a class="button" id="store" href="https://apps.apple.com/app/idAPP_STORE_APPLE_ID_TBD">Download on the App Store (placeholder)</a>
+    <a class="button secondary" id="custom" href="escooter://scooter/IS-101">Open in app (custom scheme demo)</a>
+    <p>Preferred QR: <code id="https">https://icystraitscooters.example/s/IS-101</code></p>
+  </main>
+  <script>
+    function scooterId() {
+      const params = new URLSearchParams(location.search);
+      if (params.get("id")) return params.get("id").toUpperCase();
+      const parts = location.pathname.split("/").filter(Boolean);
+      const sIndex = parts.map((p) => p.toLowerCase()).indexOf("s");
+      if (sIndex >= 0 && parts[sIndex + 1]) return parts[sIndex + 1].toUpperCase();
+      const last = parts[parts.length - 1] || "";
+      if (/^IS-\d{3}$/i.test(last)) return last.toUpperCase();
+      return "IS-101";
+    }
+    const id = scooterId();
+    document.getElementById("unit").textContent = "Unit " + id;
+    document.getElementById("https").textContent = "https://icystraitscooters.example/s/" + id;
+    document.getElementById("custom").href = "escooter://scooter/" + id;
+    // If a published store URL is later injected, keep the placeholder obvious until then.
+    document.getElementById("store").href = "https://apps.apple.com/app/idAPP_STORE_APPLE_ID_TBD";
+  </script>
+</body>
+</html>

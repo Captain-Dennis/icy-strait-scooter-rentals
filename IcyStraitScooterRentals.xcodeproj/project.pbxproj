@@ -1,0 +1,785 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7F192DAAD0ABB4C239BB5799 /* IcyStraitScooterRentalsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265CDC44215FF1BB36E83A5 /* IcyStraitScooterRentalsApp.swift */; };
+		BCD96479758E9B120CB3EB73 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF890ACDA0C1D897B0C4D21A /* RootView.swift */; };
+		68EA36DB770B31CD57D23E41 /* AgreementSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6249CD65E96C09370AECDE38 /* AgreementSection.swift */; };
+		D4B14045ECDBF096040C224C /* BillingCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7A48D7CADF654086914FCE /* BillingCalculator.swift */; };
+		C5165AC808D412184357660D /* CapacityCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A33EEF4669FC7112993137 /* CapacityCalculator.swift */; };
+		478086FA1C5374DAFF8837E7 /* QRImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D72DB394AAF41C5F9C0D25 /* QRImageRenderer.swift */; };
+		1C9878ABABAFA6166503CA78 /* QRPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609432BE832A40BAB1387F41 /* QRPayload.swift */; };
+		8F3A1C2E4B5D67890A1B2C3E /* AppLinkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3A1C2E4B5D67890A1B2C3D /* AppLinkConfig.swift */; };
+		8F3A1C2E4B5D67890A1B2C42 /* FleetCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3A1C2E4B5D67890A1B2C41 /* FleetCatalog.swift */; };
+		3FE8295090ED40B06AB60A68 /* ReturnPhotoSide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE062C3C344110C8496E8B6 /* ReturnPhotoSide.swift */; };
+		6F4668B61C43B051FDEAAF4D /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3A84C72319A402F8E9BD55 /* Season.swift */; };
+		78E68EF390163B87F1E7D80D /* Rental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB00304E2BD2BA2CCDF55C1 /* Rental.swift */; };
+		EDC320F8284AC27842245FAF /* ReturnPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71C24FE6C1B759491F7CD9E /* ReturnPhoto.swift */; };
+		85B7339AD0C8A9A3216A7E8C /* Scooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E78DA695488BBC03D18FF2F /* Scooter.swift */; };
+		2F07E4CEE21191F22A120F2B /* StaffMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA5D687A4B753F62B8AE41F /* StaffMember.swift */; };
+		04E817497FDD8401B4351E2E /* StaffSMSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2B94BCF27D1A3617AB0A86 /* StaffSMSLog.swift */; };
+		1E94C380D7CCB87862E5FA25 /* MockPOSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B4C15ECC87683FE24145EA /* MockPOSProvider.swift */; };
+		C098FE7136E65CB524F8E267 /* POSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02789EE956C55D0ECF33CFD4 /* POSProvider.swift */; };
+		22E12ECDEA35511CD68B4E77 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EB231E36A084F6537CD9E2 /* AppPreferences.swift */; };
+		025B9BE3C4EA9304420C7D74 /* FleetSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2251A0885A4AF6094971AAF0 /* FleetSeeder.swift */; };
+		2093C9BCBE7B9B85E693D4C4 /* RentalOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AAAEC7EBC7D7847DEF44FD /* RentalOperations.swift */; };
+		508783D7FB5309228BB063E2 /* StaffConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5696570565AC810398868B6A /* StaffConfig.swift */; };
+		3988763E4E2F279B24961ADE /* StaffNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6090D6191E01E4399AB2FE40 /* StaffNotifier.swift */; };
+		09C068A9B4926FE4E899F08D /* StaffServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520DB5C7948A34B13AAFF379 /* StaffServices.swift */; };
+		C542AACC84F86C31AF3A2412 /* BrandTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B048162F5E37787421C524F3 /* BrandTheme.swift */; };
+		67FBF37B57EC7AD9217FCA21 /* FourWheelScooterMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A02604967722EB55DC8529 /* FourWheelScooterMark.swift */; };
+		278FF97D23357D36C070A3CC /* AgreementWizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29CE20A5F6196F131106FED /* AgreementWizardView.swift */; };
+		97F0087D3A6BE8E3DB9162A3 /* CalendarTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F8FF857E1DB82C471E4954 /* CalendarTabView.swift */; };
+		1EF179F33E835141AD41E59C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DB59F1115528D9B6FB1A43 /* OnboardingView.swift */; };
+		CC782E948C14EBAA03F14CBC /* MockReturnEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F424265DAD0FDFE6739E6FC2 /* MockReturnEmailView.swift */; };
+		0AAF0C537172C2D7DD9D70B2 /* RentalDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125F5B7E0FB780F97ABFB78D /* RentalDetailView.swift */; };
+		6F95598FDC544E44A189B684 /* RentalsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9937E6D118764CECC2D25F75 /* RentalsTabView.swift */; };
+		D2B8460B63ABDE3E912EB646 /* CameraImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27530542B047DE2CE1751097 /* CameraImagePicker.swift */; };
+		8386C6B302795BB9AD66D4FE /* ReturnPhotoWizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEC6D0E24FE82FCADD169F9 /* ReturnPhotoWizardView.swift */; };
+		96A6726668D8DFE088DBA0CE /* CheckInFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56312F60C8BEB40F23335B1 /* CheckInFlowView.swift */; };
+		5D86792998515BBE0F015E90 /* CheckoutFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F007E2DB28CB2AEE74E98F /* CheckoutFlowView.swift */; };
+		5164EC4CD1BDCA6985EF34D4 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00E77F58E7E3EC880EFEA56 /* QRScannerView.swift */; };
+		7393B4071F5F43AD958BA2F7 /* ScanTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3A82AF85C9E6BBA6CBB583 /* ScanTabView.swift */; };
+		C77CB6FAF455055C30DF8690 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C621D2DDDBDFAED1671E405A /* SettingsView.swift */; };
+		7FA2946C81760A41404D482A /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCBCCC26C320574B7142D35 /* QRCodeView.swift */; };
+		DBCC73F3324DCDEBAB28B08D /* SharedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C790F4533B24D54622EB9BA7 /* SharedComponents.swift */; };
+		541DFA80D782ED4B5F712400 /* StaffRosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1826D20AB2EE3CDAF7F7B0 /* StaffRosterView.swift */; };
+		0B5B4F597AD3ACD2F70EAF10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2BAA48C14157B374334CB7C /* Assets.xcassets */; };
+		EBD5610536D32274BA069C01 /* AgreementAndReturnTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E9F449A5A51A015654438C /* AgreementAndReturnTests.swift */; };
+		B0319BB8878C3CFDC1BF62FF /* BillingCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4228808A96F6F1FD41F32122 /* BillingCalculatorTests.swift */; };
+		037D2F7138EB7FF55630A231 /* CapacityCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DACE63C78294F090B5412C2 /* CapacityCalculatorTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		92239E5086B866DAAC015699 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B902F7C2327297FC583709E1;
+			remoteInfo = IcyStraitScooterRentals;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		845F65209D19F1E91A3C573D /* IcyStraitScooterRentals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IcyStraitScooterRentals.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		05B4B09660ED39C148591D26 /* IcyStraitScooterRentalsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IcyStraitScooterRentalsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B265CDC44215FF1BB36E83A5 /* IcyStraitScooterRentalsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IcyStraitScooterRentalsApp.swift; sourceTree = "<group>"; };
+		AF890ACDA0C1D897B0C4D21A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		6249CD65E96C09370AECDE38 /* AgreementSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementSection.swift; sourceTree = "<group>"; };
+		EF7A48D7CADF654086914FCE /* BillingCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillingCalculator.swift; sourceTree = "<group>"; };
+		38A33EEF4669FC7112993137 /* CapacityCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapacityCalculator.swift; sourceTree = "<group>"; };
+		93D72DB394AAF41C5F9C0D25 /* QRImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRImageRenderer.swift; sourceTree = "<group>"; };
+		609432BE832A40BAB1387F41 /* QRPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRPayload.swift; sourceTree = "<group>"; };
+		8F3A1C2E4B5D67890A1B2C3D /* AppLinkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLinkConfig.swift; sourceTree = "<group>"; };
+		8F3A1C2E4B5D67890A1B2C41 /* FleetCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCatalog.swift; sourceTree = "<group>"; };
+		8F3A1C2E4B5D67890A1B2C40 /* IcyStraitScooterRentals.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IcyStraitScooterRentals.entitlements; sourceTree = "<group>"; };
+		1CE062C3C344110C8496E8B6 /* ReturnPhotoSide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReturnPhotoSide.swift; sourceTree = "<group>"; };
+		BA3A84C72319A402F8E9BD55 /* Season.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
+		7FB00304E2BD2BA2CCDF55C1 /* Rental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rental.swift; sourceTree = "<group>"; };
+		F71C24FE6C1B759491F7CD9E /* ReturnPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReturnPhoto.swift; sourceTree = "<group>"; };
+		8E78DA695488BBC03D18FF2F /* Scooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scooter.swift; sourceTree = "<group>"; };
+		7AA5D687A4B753F62B8AE41F /* StaffMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffMember.swift; sourceTree = "<group>"; };
+		7C2B94BCF27D1A3617AB0A86 /* StaffSMSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffSMSLog.swift; sourceTree = "<group>"; };
+		37B4C15ECC87683FE24145EA /* MockPOSProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPOSProvider.swift; sourceTree = "<group>"; };
+		02789EE956C55D0ECF33CFD4 /* POSProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POSProvider.swift; sourceTree = "<group>"; };
+		C8EB231E36A084F6537CD9E2 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		2251A0885A4AF6094971AAF0 /* FleetSeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetSeeder.swift; sourceTree = "<group>"; };
+		92AAAEC7EBC7D7847DEF44FD /* RentalOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentalOperations.swift; sourceTree = "<group>"; };
+		5696570565AC810398868B6A /* StaffConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffConfig.swift; sourceTree = "<group>"; };
+		6090D6191E01E4399AB2FE40 /* StaffNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffNotifier.swift; sourceTree = "<group>"; };
+		520DB5C7948A34B13AAFF379 /* StaffServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffServices.swift; sourceTree = "<group>"; };
+		B048162F5E37787421C524F3 /* BrandTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandTheme.swift; sourceTree = "<group>"; };
+		47A02604967722EB55DC8529 /* FourWheelScooterMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourWheelScooterMark.swift; sourceTree = "<group>"; };
+		D29CE20A5F6196F131106FED /* AgreementWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementWizardView.swift; sourceTree = "<group>"; };
+		87F8FF857E1DB82C471E4954 /* CalendarTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTabView.swift; sourceTree = "<group>"; };
+		49DB59F1115528D9B6FB1A43 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		F424265DAD0FDFE6739E6FC2 /* MockReturnEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReturnEmailView.swift; sourceTree = "<group>"; };
+		125F5B7E0FB780F97ABFB78D /* RentalDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentalDetailView.swift; sourceTree = "<group>"; };
+		9937E6D118764CECC2D25F75 /* RentalsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentalsTabView.swift; sourceTree = "<group>"; };
+		27530542B047DE2CE1751097 /* CameraImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraImagePicker.swift; sourceTree = "<group>"; };
+		4BEC6D0E24FE82FCADD169F9 /* ReturnPhotoWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReturnPhotoWizardView.swift; sourceTree = "<group>"; };
+		C56312F60C8BEB40F23335B1 /* CheckInFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInFlowView.swift; sourceTree = "<group>"; };
+		31F007E2DB28CB2AEE74E98F /* CheckoutFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowView.swift; sourceTree = "<group>"; };
+		A00E77F58E7E3EC880EFEA56 /* QRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
+		4A3A82AF85C9E6BBA6CBB583 /* ScanTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTabView.swift; sourceTree = "<group>"; };
+		C621D2DDDBDFAED1671E405A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7DCBCCC26C320574B7142D35 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
+		C790F4533B24D54622EB9BA7 /* SharedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedComponents.swift; sourceTree = "<group>"; };
+		FE1826D20AB2EE3CDAF7F7B0 /* StaffRosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffRosterView.swift; sourceTree = "<group>"; };
+		89D3F3E762AB8808875B49AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2BAA48C14157B374334CB7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		35E9F449A5A51A015654438C /* AgreementAndReturnTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementAndReturnTests.swift; sourceTree = "<group>"; };
+		4228808A96F6F1FD41F32122 /* BillingCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillingCalculatorTests.swift; sourceTree = "<group>"; };
+		6DACE63C78294F090B5412C2 /* CapacityCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapacityCalculatorTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8E77ECB697B0FD0B2F831F53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB3266CA9513C17DC1A08FCC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AB48CFA305015276AB5620D4 = {
+			isa = PBXGroup;
+			children = (
+				C8A1E76B6CA46DDC89E29CCD /* IcyStraitScooterRentals */,
+				8C35799A97AD3FA99FA2EDFE /* IcyStraitScooterRentalsTests */,
+				692092DE1C1C8624E142B71D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		692092DE1C1C8624E142B71D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				845F65209D19F1E91A3C573D /* IcyStraitScooterRentals.app */,
+				05B4B09660ED39C148591D26 /* IcyStraitScooterRentalsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C8A1E76B6CA46DDC89E29CCD /* IcyStraitScooterRentals */ = {
+			isa = PBXGroup;
+			children = (
+				D2BAA48C14157B374334CB7C /* Assets.xcassets */,
+				89D3F3E762AB8808875B49AF /* Info.plist */,
+				8F3A1C2E4B5D67890A1B2C40 /* IcyStraitScooterRentals.entitlements */,
+				4C9813858348C1319B38A928 /* App */,
+				9D408A50A60726DFC02DAD7C /* Domain */,
+				C4F3EE54EF08609995EF3DFE /* Models */,
+				8F9DA1AB5A4B74B33780F51A /* POS */,
+				1B23352A1EBD3BAA3F65E3ED /* Services */,
+				189B158C305BDFC93E2D85CE /* Staff */,
+				D8EBD65AE6E891490DB400DA /* Theme */,
+				D72F5369182493E424F08E39 /* Views */,
+			);
+			path = IcyStraitScooterRentals;
+			sourceTree = "<group>";
+		};
+		4C9813858348C1319B38A928 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B265CDC44215FF1BB36E83A5 /* IcyStraitScooterRentalsApp.swift */,
+				AF890ACDA0C1D897B0C4D21A /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		9D408A50A60726DFC02DAD7C /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				6249CD65E96C09370AECDE38 /* AgreementSection.swift */,
+				EF7A48D7CADF654086914FCE /* BillingCalculator.swift */,
+				38A33EEF4669FC7112993137 /* CapacityCalculator.swift */,
+				93D72DB394AAF41C5F9C0D25 /* QRImageRenderer.swift */,
+				8F3A1C2E4B5D67890A1B2C3D /* AppLinkConfig.swift */,
+				8F3A1C2E4B5D67890A1B2C41 /* FleetCatalog.swift */,
+				609432BE832A40BAB1387F41 /* QRPayload.swift */,
+				1CE062C3C344110C8496E8B6 /* ReturnPhotoSide.swift */,
+				BA3A84C72319A402F8E9BD55 /* Season.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		C4F3EE54EF08609995EF3DFE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7FB00304E2BD2BA2CCDF55C1 /* Rental.swift */,
+				F71C24FE6C1B759491F7CD9E /* ReturnPhoto.swift */,
+				8E78DA695488BBC03D18FF2F /* Scooter.swift */,
+				7AA5D687A4B753F62B8AE41F /* StaffMember.swift */,
+				7C2B94BCF27D1A3617AB0A86 /* StaffSMSLog.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8F9DA1AB5A4B74B33780F51A /* POS */ = {
+			isa = PBXGroup;
+			children = (
+				37B4C15ECC87683FE24145EA /* MockPOSProvider.swift */,
+				02789EE956C55D0ECF33CFD4 /* POSProvider.swift */,
+			);
+			path = POS;
+			sourceTree = "<group>";
+		};
+		1B23352A1EBD3BAA3F65E3ED /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C8EB231E36A084F6537CD9E2 /* AppPreferences.swift */,
+				2251A0885A4AF6094971AAF0 /* FleetSeeder.swift */,
+				92AAAEC7EBC7D7847DEF44FD /* RentalOperations.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		189B158C305BDFC93E2D85CE /* Staff */ = {
+			isa = PBXGroup;
+			children = (
+				5696570565AC810398868B6A /* StaffConfig.swift */,
+				6090D6191E01E4399AB2FE40 /* StaffNotifier.swift */,
+				520DB5C7948A34B13AAFF379 /* StaffServices.swift */,
+			);
+			path = Staff;
+			sourceTree = "<group>";
+		};
+		D8EBD65AE6E891490DB400DA /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				B048162F5E37787421C524F3 /* BrandTheme.swift */,
+				47A02604967722EB55DC8529 /* FourWheelScooterMark.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		D72F5369182493E424F08E39 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A0D55159E16C6BDB1015E475 /* Agreements */,
+				50C7D16C61B256DDB9866A15 /* Calendar */,
+				D1CF2C46C91A10781F7FB996 /* Onboarding */,
+				AD449D46421AFA57EE48A5A0 /* Rentals */,
+				B23CFACF3508D98F3B736118 /* Return */,
+				2815EC7B26E05C99D8FB6C5B /* Scan */,
+				FE26E6C7D072DB3CBA6B98E3 /* Settings */,
+				7C19930DF67C6C7DCC24C099 /* Shared */,
+				5833C73F5CA6AEA2740DF0D0 /* Staff */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A0D55159E16C6BDB1015E475 /* Agreements */ = {
+			isa = PBXGroup;
+			children = (
+				D29CE20A5F6196F131106FED /* AgreementWizardView.swift */,
+			);
+			path = Agreements;
+			sourceTree = "<group>";
+		};
+		50C7D16C61B256DDB9866A15 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				87F8FF857E1DB82C471E4954 /* CalendarTabView.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		D1CF2C46C91A10781F7FB996 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				49DB59F1115528D9B6FB1A43 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		AD449D46421AFA57EE48A5A0 /* Rentals */ = {
+			isa = PBXGroup;
+			children = (
+				F424265DAD0FDFE6739E6FC2 /* MockReturnEmailView.swift */,
+				125F5B7E0FB780F97ABFB78D /* RentalDetailView.swift */,
+				9937E6D118764CECC2D25F75 /* RentalsTabView.swift */,
+			);
+			path = Rentals;
+			sourceTree = "<group>";
+		};
+		B23CFACF3508D98F3B736118 /* Return */ = {
+			isa = PBXGroup;
+			children = (
+				27530542B047DE2CE1751097 /* CameraImagePicker.swift */,
+				4BEC6D0E24FE82FCADD169F9 /* ReturnPhotoWizardView.swift */,
+			);
+			path = Return;
+			sourceTree = "<group>";
+		};
+		2815EC7B26E05C99D8FB6C5B /* Scan */ = {
+			isa = PBXGroup;
+			children = (
+				C56312F60C8BEB40F23335B1 /* CheckInFlowView.swift */,
+				31F007E2DB28CB2AEE74E98F /* CheckoutFlowView.swift */,
+				A00E77F58E7E3EC880EFEA56 /* QRScannerView.swift */,
+				4A3A82AF85C9E6BBA6CBB583 /* ScanTabView.swift */,
+			);
+			path = Scan;
+			sourceTree = "<group>";
+		};
+		FE26E6C7D072DB3CBA6B98E3 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				C621D2DDDBDFAED1671E405A /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		7C19930DF67C6C7DCC24C099 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				7DCBCCC26C320574B7142D35 /* QRCodeView.swift */,
+				C790F4533B24D54622EB9BA7 /* SharedComponents.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		5833C73F5CA6AEA2740DF0D0 /* Staff */ = {
+			isa = PBXGroup;
+			children = (
+				FE1826D20AB2EE3CDAF7F7B0 /* StaffRosterView.swift */,
+			);
+			path = Staff;
+			sourceTree = "<group>";
+		};
+		8C35799A97AD3FA99FA2EDFE /* IcyStraitScooterRentalsTests */ = {
+			isa = PBXGroup;
+			children = (
+				35E9F449A5A51A015654438C /* AgreementAndReturnTests.swift */,
+				4228808A96F6F1FD41F32122 /* BillingCalculatorTests.swift */,
+				6DACE63C78294F090B5412C2 /* CapacityCalculatorTests.swift */,
+			);
+			path = IcyStraitScooterRentalsTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B902F7C2327297FC583709E1 /* IcyStraitScooterRentals */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6C586A3C381D91987D215FF7 /* Build configuration list for PBXNativeTarget "IcyStraitScooterRentals" */;
+			buildPhases = (
+				68794D95D50DF8ED5158D413 /* Sources */,
+				8E77ECB697B0FD0B2F831F53 /* Frameworks */,
+				253694B87BCB5FB6ECA0DC84 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IcyStraitScooterRentals;
+			productName = IcyStraitScooterRentals;
+			productReference = 845F65209D19F1E91A3C573D /* IcyStraitScooterRentals.app */;
+			productType = "com.apple.product-type.application";
+		};
+		904EC43069525F78E67530F2 /* IcyStraitScooterRentalsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 579060B1FA59BE1286A45EDF /* Build configuration list for PBXNativeTarget "IcyStraitScooterRentalsTests" */;
+			buildPhases = (
+				DBA958A7378A46E5249DC865 /* Sources */,
+				DB3266CA9513C17DC1A08FCC /* Frameworks */,
+				29527BA9BC9C4A2D8521E2A3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E7552833EF7AA667E4820BCE /* PBXTargetDependency */,
+			);
+			name = IcyStraitScooterRentalsTests;
+			productName = IcyStraitScooterRentalsTests;
+			productReference = 05B4B09660ED39C148591D26 /* IcyStraitScooterRentalsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					B902F7C2327297FC583709E1 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					904EC43069525F78E67530F2 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = B902F7C2327297FC583709E1;
+					};
+				};
+			};
+			buildConfigurationList = 202EC9EECA20B7009F2B0B5A /* Build configuration list for PBXProject "IcyStraitScooterRentals" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AB48CFA305015276AB5620D4;
+			productRefGroup = 692092DE1C1C8624E142B71D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B902F7C2327297FC583709E1 /* IcyStraitScooterRentals */,
+				904EC43069525F78E67530F2 /* IcyStraitScooterRentalsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		253694B87BCB5FB6ECA0DC84 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B5B4F597AD3ACD2F70EAF10 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29527BA9BC9C4A2D8521E2A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		68794D95D50DF8ED5158D413 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F192DAAD0ABB4C239BB5799 /* IcyStraitScooterRentalsApp.swift in Sources */,
+				BCD96479758E9B120CB3EB73 /* RootView.swift in Sources */,
+				68EA36DB770B31CD57D23E41 /* AgreementSection.swift in Sources */,
+				D4B14045ECDBF096040C224C /* BillingCalculator.swift in Sources */,
+				C5165AC808D412184357660D /* CapacityCalculator.swift in Sources */,
+				478086FA1C5374DAFF8837E7 /* QRImageRenderer.swift in Sources */,
+				1C9878ABABAFA6166503CA78 /* QRPayload.swift in Sources */,
+				8F3A1C2E4B5D67890A1B2C3E /* AppLinkConfig.swift in Sources */,
+				8F3A1C2E4B5D67890A1B2C42 /* FleetCatalog.swift in Sources */,
+				3FE8295090ED40B06AB60A68 /* ReturnPhotoSide.swift in Sources */,
+				6F4668B61C43B051FDEAAF4D /* Season.swift in Sources */,
+				78E68EF390163B87F1E7D80D /* Rental.swift in Sources */,
+				EDC320F8284AC27842245FAF /* ReturnPhoto.swift in Sources */,
+				85B7339AD0C8A9A3216A7E8C /* Scooter.swift in Sources */,
+				2F07E4CEE21191F22A120F2B /* StaffMember.swift in Sources */,
+				04E817497FDD8401B4351E2E /* StaffSMSLog.swift in Sources */,
+				1E94C380D7CCB87862E5FA25 /* MockPOSProvider.swift in Sources */,
+				C098FE7136E65CB524F8E267 /* POSProvider.swift in Sources */,
+				22E12ECDEA35511CD68B4E77 /* AppPreferences.swift in Sources */,
+				025B9BE3C4EA9304420C7D74 /* FleetSeeder.swift in Sources */,
+				2093C9BCBE7B9B85E693D4C4 /* RentalOperations.swift in Sources */,
+				508783D7FB5309228BB063E2 /* StaffConfig.swift in Sources */,
+				3988763E4E2F279B24961ADE /* StaffNotifier.swift in Sources */,
+				09C068A9B4926FE4E899F08D /* StaffServices.swift in Sources */,
+				C542AACC84F86C31AF3A2412 /* BrandTheme.swift in Sources */,
+				67FBF37B57EC7AD9217FCA21 /* FourWheelScooterMark.swift in Sources */,
+				278FF97D23357D36C070A3CC /* AgreementWizardView.swift in Sources */,
+				97F0087D3A6BE8E3DB9162A3 /* CalendarTabView.swift in Sources */,
+				1EF179F33E835141AD41E59C /* OnboardingView.swift in Sources */,
+				CC782E948C14EBAA03F14CBC /* MockReturnEmailView.swift in Sources */,
+				0AAF0C537172C2D7DD9D70B2 /* RentalDetailView.swift in Sources */,
+				6F95598FDC544E44A189B684 /* RentalsTabView.swift in Sources */,
+				D2B8460B63ABDE3E912EB646 /* CameraImagePicker.swift in Sources */,
+				8386C6B302795BB9AD66D4FE /* ReturnPhotoWizardView.swift in Sources */,
+				96A6726668D8DFE088DBA0CE /* CheckInFlowView.swift in Sources */,
+				5D86792998515BBE0F015E90 /* CheckoutFlowView.swift in Sources */,
+				5164EC4CD1BDCA6985EF34D4 /* QRScannerView.swift in Sources */,
+				7393B4071F5F43AD958BA2F7 /* ScanTabView.swift in Sources */,
+				C77CB6FAF455055C30DF8690 /* SettingsView.swift in Sources */,
+				7FA2946C81760A41404D482A /* QRCodeView.swift in Sources */,
+				DBCC73F3324DCDEBAB28B08D /* SharedComponents.swift in Sources */,
+				541DFA80D782ED4B5F712400 /* StaffRosterView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBA958A7378A46E5249DC865 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBD5610536D32274BA069C01 /* AgreementAndReturnTests.swift in Sources */,
+				B0319BB8878C3CFDC1BF62FF /* BillingCalculatorTests.swift in Sources */,
+				037D2F7138EB7FF55630A231 /* CapacityCalculatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E7552833EF7AA667E4820BCE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B902F7C2327297FC583709E1 /* IcyStraitScooterRentals */;
+			targetProxy = 92239E5086B866DAAC015699 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		8B9E93E00F6A46CBC1A26C4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		088365CD806B61EFAE691729 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1D5C2FB762F375771A3A3372 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = IcyStraitScooterRentals/IcyStraitScooterRentals.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"IcyStraitScooterRentals/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IcyStraitScooterRentals/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Icy Strait Scooter Rentals";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.icystrait.scooterrentals;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		88F166B571FDB93AFB5831EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = IcyStraitScooterRentals/IcyStraitScooterRentals.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"IcyStraitScooterRentals/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IcyStraitScooterRentals/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Icy Strait Scooter Rentals";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.icystrait.scooterrentals;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C5774292F3CDDF3735D83028 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.icystrait.scooterrentals.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IcyStraitScooterRentals.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IcyStraitScooterRentals";
+			};
+			name = Debug;
+		};
+		D7D1268773A416FE5DFB750C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.icystrait.scooterrentals.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IcyStraitScooterRentals.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IcyStraitScooterRentals";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		202EC9EECA20B7009F2B0B5A /* Build configuration list for PBXProject "IcyStraitScooterRentals" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B9E93E00F6A46CBC1A26C4B /* Debug */,
+				088365CD806B61EFAE691729 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6C586A3C381D91987D215FF7 /* Build configuration list for PBXNativeTarget "IcyStraitScooterRentals" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D5C2FB762F375771A3A3372 /* Debug */,
+				88F166B571FDB93AFB5831EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		579060B1FA59BE1286A45EDF /* Build configuration list for PBXNativeTarget "IcyStraitScooterRentalsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5774292F3CDDF3735D83028 /* Debug */,
+				D7D1268773A416FE5DFB750C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}

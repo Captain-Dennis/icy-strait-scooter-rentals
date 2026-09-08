@@ -1,0 +1,162 @@
+import SwiftData
+import SwiftUI
+
+struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
+    @AppStorage(AppPreferences.enforceSeasonHoursKey) private var enforceSeasonHours = false
+    @Query(sort: \StaffSMSLog.sentAt, order: .reverse) private var smsLog: [StaffSMSLog]
+    @Query(sort: \StaffMember.displayName) private var staff: [StaffMember]
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section {
+                    NavigationLink {
+                        StaffRosterView()
+                    } label: {
+                        HStack {
+                            Label("Staff roster", systemImage: "person.2.fill")
+                            Spacer()
+                            Text("\(staff.filter { $0.isActive }.count) active")
+                                .foregroundStyle(Brand.silver)
+                        }
+                    }
+                    .listRowBackground(Brand.card)
+                } footer: {
+                    Text("Starter: Front desk · \(StaffConfig.defaultDisplay). Add lot employees; only active members get SMS.")
+                        .foregroundStyle(Brand.silver)
+                }
+
+                Section("Demo") {
+                    Toggle("Enforce 2027 season hours", isOn: $enforceSeasonHours)
+                    Button("Replay onboarding") {
+                        AppPreferences.onboardingCompleted = false
+                        dismiss()
+                    }
+                }
+                .listRowBackground(Brand.card)
+
+                Section("Providers") {
+                    labeled("POS", "MockPOSProvider")
+                    labeled("Staff SMS", "MockStaffNotifier")
+                    labeled("Twilio stub", "TwilioSMSNotifier (no keys)")
+                }
+
+                Section {
+                    NavigationLink {
+                        FleetQRStickersView()
+                    } label: {
+                        Label("Fleet QR stickers", systemImage: "qrcode")
+                    }
+                    .listRowBackground(Brand.card)
+                } footer: {
+                    Text("Hard rule: one unique QR per unit (IS-101–IS-106). Never print a shared “any scooter” sticker.")
+                        .foregroundStyle(Brand.silver)
+                }
+
+                Section("App install link (placeholders)") {
+                    labeled("Smart host", AppLinkConfig.smartLinkHost)
+                    labeled("Apple ID", AppLinkConfig.appStoreAppleIDPlaceholder)
+                    labeled("Store URL", AppLinkConfig.appStoreURLPlaceholder)
+                    labeled("Associated domain", AppLinkConfig.associatedDomain)
+                }
+                .listRowBackground(Brand.card)
+
+                Section("Recent mock SMS") {
+                    if smsLog.isEmpty {
+                        Text("None yet. Complete a checkout or check-in.")
+                            .foregroundStyle(Brand.silver)
+                    }
+                    ForEach(smsLog.prefix(12), id: \.logID) { row in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("\(row.staffName) · \(row.displayPhone)")
+                                .font(BrandFont.headline(14))
+                                .foregroundStyle(.white)
+                            Text(row.body)
+                                .font(.caption)
+                                .foregroundStyle(Brand.silver)
+                            Text(row.sentAt.formatted(date: .abbreviated, time: .shortened))
+                                .font(.caption2)
+                                .foregroundStyle(Brand.orange)
+                        }
+                    }
+                }
+                .listRowBackground(Brand.card)
+            }
+            .scrollContentBackground(.hidden)
+            .background(Brand.background)
+            .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                        .foregroundStyle(Brand.orange)
+                }
+            }
+        }
+        .preferredColorScheme(.dark)
+        .tint(Brand.orange)
+    }
+
+    private func labeled(_ title: String, _ value: String) -> some View {
+        HStack {
+            Text(title).foregroundStyle(.white)
+            Spacer()
+            Text(value).foregroundStyle(Brand.silver).font(.caption)
+        }
+    }
+}
+
+struct FleetQRStickersView: View {
+    var body: some View {
+        List {
+            Section {
+                Text("Print six stickers. Affix one to each stem. Scan-test every code before the lot opens. A shared fleet QR is not allowed — the rental record and staff SMS must name that exact unit.")
+                    .font(.subheadline)
+                    .foregroundStyle(Brand.silver)
+                    .listRowBackground(Brand.card)
+            }
+
+            ForEach(FleetCatalog.stickerPayloads) { sticker in
+                Section(sticker.id) {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack(alignment: .top, spacing: 16) {
+                            QRCodeView(payload: sticker.httpsPayload, dimension: 140)
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(sticker.name)
+                                    .font(BrandFont.title(22))
+                                    .foregroundStyle(.white)
+                                Text(sticker.dock)
+                                    .font(.caption)
+                                    .foregroundStyle(Brand.silver)
+                                Text("Sticker belongs only to \(sticker.id)")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(Brand.orange)
+                            }
+                        }
+                        payloadRow("https (print this)", sticker.httpsPayload)
+                        payloadRow("Demo scheme", sticker.customSchemePayload)
+                        payloadRow("Bare ID", sticker.barePayload)
+                    }
+                    .padding(.vertical, 6)
+                    .listRowBackground(Brand.card)
+                }
+            }
+        }
+        .scrollContentBackground(.hidden)
+        .background(Brand.background)
+        .navigationTitle("Fleet QR stickers")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func payloadRow(_ title: String, _ value: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(Brand.orange)
+            Text(value)
+                .font(.caption.monospaced())
+                .foregroundStyle(.white)
+                .textSelection(.enabled)
+        }
+    }
+}

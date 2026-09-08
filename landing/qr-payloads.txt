@@ -1,0 +1,32 @@
+Icy Strait Scooter Rentals — unique checkout QR payloads
+Hard rule: one sticker per scooter. Never a shared “any scooter” QR.
+
+IS-101 Glacier
+  https://icystraitscooters.example/s/IS-101
+  escooter://scooter/IS-101
+  IS-101
+
+IS-102 Humpback
+  https://icystraitscooters.example/s/IS-102
+  escooter://scooter/IS-102
+  IS-102
+
+IS-103 Spruce
+  https://icystraitscooters.example/s/IS-103
+  escooter://scooter/IS-103
+  IS-103
+
+IS-104 Otter
+  https://icystraitscooters.example/s/IS-104
+  escooter://scooter/IS-104
+  IS-104
+
+IS-105 Raven
+  https://icystraitscooters.example/s/IS-105
+  escooter://scooter/IS-105
+  IS-105
+
+IS-106 Tidepool
+  https://icystraitscooters.example/s/IS-106
+  escooter://scooter/IS-106
+  IS-106
