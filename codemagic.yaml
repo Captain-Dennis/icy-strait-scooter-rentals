@@ -8,7 +8,7 @@
 # 3. Upload or generate an Apple Distribution certificate + App Store
 #    provisioning profile for com.icystrait.scooterrentals
 #    (Team settings → codemagic.yaml settings → Code signing identities).
-# 4. Replace APP_STORE_APPLE_ID_TBD with the numeric Apple ID from
+# 4. Replace 6810469934 with the numeric Apple ID from
 #    App Store Connect → App Information (not the bundle ID).
 
 workflows:
@@ -28,7 +28,7 @@ workflows:
         XCODE_PROJECT: IcyStraitScooterRentals.xcodeproj
         XCODE_SCHEME: IcyStraitScooterRentals
         # Numeric App Store Connect Apple ID (App Information). Placeholder until assigned.
-        APP_STORE_APPLE_ID: APP_STORE_APPLE_ID_TBD
+        APP_STORE_APPLE_ID: 6810469934
       xcode: latest
     scripts:
       - name: Set up code signing settings on Xcode project
@@ -39,7 +39,7 @@ workflows:
           #!/bin/sh
           set -euo pipefail
           cd "$CM_BUILD_DIR"
-          if [ "$APP_STORE_APPLE_ID" = "APP_STORE_APPLE_ID_TBD" ]; then
+          if [ "$APP_STORE_APPLE_ID" = "6810469934" ]; then
             echo "APP_STORE_APPLE_ID is still a placeholder; bumping from CURRENT_PROJECT_VERSION."
             CURRENT=$(xcodebuild -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME" -showBuildSettings 2>/dev/null | awk '/CURRENT_PROJECT_VERSION = / { print $3; exit }')
             CURRENT=${CURRENT:-1}
