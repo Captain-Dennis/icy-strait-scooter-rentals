@@ -21,8 +21,11 @@ workflows:
       app_store_connect: Escooter rental
     environment:
       ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.icystrait.scooterrentals
+        # Explicit refs (Codemagic Settings → Code signing identities)
+        provisioning_profiles:
+          - app_store
+        certificates:
+          - ios-distribution
       vars:
         BUNDLE_ID: com.icystrait.scooterrentals
         XCODE_PROJECT: IcyStraitScooterRentals.xcodeproj
