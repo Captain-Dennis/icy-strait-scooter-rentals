@@ -4,7 +4,7 @@
 # Before the first green TestFlight upload:
 # 1. In Codemagic → Team settings → Integrations → Developer Portal,
 #    add an App Store Connect API key. Copy the exact integration name.
-# 2. Replace APP_STORE_CONNECT_INTEGRATION_NAME_TBD below with that name.
+# 2. Replace Escooter rental below with that name.
 # 3. Upload or generate an Apple Distribution certificate + App Store
 #    provisioning profile for com.icystrait.scooterrentals
 #    (Team settings → codemagic.yaml settings → Code signing identities).
@@ -18,7 +18,7 @@ workflows:
     instance_type: mac_mini_m2
     integrations:
       # Placeholder: must match the Codemagic Apple Developer Portal integration name.
-      app_store_connect: APP_STORE_CONNECT_INTEGRATION_NAME_TBD
+      app_store_connect: Escooter rental
     environment:
       ios_signing:
         distribution_type: app_store
