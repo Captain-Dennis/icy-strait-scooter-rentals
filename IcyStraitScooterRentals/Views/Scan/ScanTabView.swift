@@ -30,7 +30,7 @@ struct ScanTabView: View {
 
     private var checkoutSheetItem: Binding<IdentifiedText?> {
         Binding(
-            get: { checkoutID.map(IdentifiedText.init) },
+            get: { checkoutID.map { IdentifiedText(id: $0) } },
             set: { checkoutID = $0?.id }
         )
     }
@@ -107,19 +107,8 @@ struct ScanTabView: View {
             Text("Camera")
                 .font(BrandFont.headline())
                 .foregroundStyle(.white)
-            if CameraAvailability.canScanQR {
-                QRScannerView { raw in
-                    handleRaw(raw)
-                }
-                .frame(height: 240)
-                .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-            } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    FleetHeroImage(height: 150)
-                    Text("The Simulator has no QR camera. Enter a unit ID, tap a fleet chip, or use a sample payload below.")
-                        .font(.footnote)
-                        .foregroundStyle(Brand.silver)
-                }
+            QRScannerPane { raw in
+                handleRaw(raw)
             }
         }
     }
@@ -211,14 +200,6 @@ struct ScanTabView: View {
 
 struct IdentifiedText: Identifiable, Hashable {
     var id: String
-
-    init(id: String) {
-        self.id = id
-    }
-
-    init(_ id: String) {
-        self.id = id
-    }
 }
 
 extension QRPayload: Identifiable {

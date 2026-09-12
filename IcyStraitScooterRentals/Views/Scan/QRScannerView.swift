@@ -63,8 +63,28 @@ struct QRScannerView: UIViewControllerRepresentable {
     }
 }
 
+@MainActor
 enum CameraAvailability {
     static var canScanQR: Bool {
         DataScannerViewController.isSupported && DataScannerViewController.isAvailable
+    }
+}
+
+struct QRScannerPane: View {
+    var onPayload: (String) -> Void
+
+    var body: some View {
+        if CameraAvailability.canScanQR {
+            QRScannerView(onPayload: onPayload)
+                .frame(height: 240)
+                .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        } else {
+            VStack(alignment: .leading, spacing: 10) {
+                FleetHeroImage(height: 150)
+                Text("The Simulator has no QR camera. Enter a unit ID, tap a fleet chip, or use a sample payload below.")
+                    .font(.footnote)
+                    .foregroundStyle(Brand.silver)
+            }
+        }
     }
 }
