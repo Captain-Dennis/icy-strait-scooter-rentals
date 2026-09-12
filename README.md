@@ -114,7 +114,7 @@ Preferred stem QR is an https smart link:
 - Apple ID: `APP_STORE_APPLE_ID_TBD`
 - Store URL: `https://apps.apple.com/app/idAPP_STORE_APPLE_ID_TBD`
 - Team ID in `apple-app-site-association`: `APPLE_TEAM_ID_TBD`
-- Associated domain entitlement: `applinks:icystraitscooters.example`
+- Associated domain entitlement: not included in the signed app yet (placeholder host would fail App Store / TestFlight signing). Re-add a real `applinks:` host later.
 
 Host `landing/` (plus `.well-known/apple-app-site-association`) on that host after you have a Team ID. Until then, Simulator demos still accept `escooter://scooter/IS-101` and bare `IS-101`.
 
