@@ -9,7 +9,7 @@ final class StaffMember {
     var emailsCSV: String = ""
     var isActive: Bool
     var createdAt: Date
-    var updatedAt: Date = .now
+    var updatedAt: Date = Date(timeIntervalSince1970: 0)
 
     init(
         staffID: UUID = UUID(),
