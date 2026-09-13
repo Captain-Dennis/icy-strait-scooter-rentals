@@ -14,8 +14,11 @@ struct UnitHistoryView: View {
                 Text("History")
                     .font(BrandFont.title(22))
                     .foregroundStyle(.white)
-                if events.isEmpty {
-                    Text("No live events for this stem sticker yet. A customer checkout on \(row.scooterID) will land here.")
+                if row.isNextSeason {
+                    Text("\(row.unitLabel) is cataloged for the 2027 season. It is not on the lot and is not rentable — not inbound this month.")
+                        .foregroundStyle(Brand.silver)
+                } else if events.isEmpty {
+                    Text("No live events for Glacier yet. A customer checkout on \(row.scooterID) will land here.")
                         .foregroundStyle(Brand.silver)
                 } else {
                     ForEach(events) { event in

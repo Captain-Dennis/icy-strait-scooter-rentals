@@ -14,16 +14,16 @@ Crew bundle ID: `com.icystrait.crew`
 
 The official product photo lives in `Assets.xcassets/FleetHero`. The UI uses that photo on onboarding, scooter cards, empty states, and return-photo coaching. Brand colors are sampled from the vehicle: **safety orange** frame (`#FF5A00`) and **gloss black** fenders/seat/bars.
 
-The fleet is six identical 4-wheel offroad units, distinguished by dock and name:
+The catalog is six identical 4-wheel offroad units, distinguished by dock and name. **Only IS-101 Glacier is on the lot and rentable today.** IS-102–106 stay in the catalog for the **2027 season** — not on the lot, not rentable, and not inbound this month.
 
-| ID | Name | Dock |
-| --- | --- | --- |
-| IS-101 | Glacier | Dock A · North lot |
-| IS-102 | Humpback | Dock B · North lot |
-| IS-103 | Spruce | Dock C · Lodge loop |
-| IS-104 | Otter | Dock D · Waterfront |
-| IS-105 | Raven | Dock E · Cannery row |
-| IS-106 | Tidepool | Dock F · Point trail |
+| ID | Name | Dock | Now |
+| --- | --- | --- | --- |
+| IS-101 | Glacier | Dock A · North lot | Live / rentable |
+| IS-102 | Humpback | Dock B · North lot | 2027 season |
+| IS-103 | Spruce | Dock C · Lodge loop | 2027 season |
+| IS-104 | Otter | Dock D · Waterfront | 2027 season |
+| IS-105 | Raven | Dock E · Cannery row | 2027 season |
+| IS-106 | Tidepool | Dock F · Point trail | 2027 season |
 
 SF Symbol `scooter` is never used (that glyph is a 2-wheel kick scooter). Tabs use `qrcode.viewfinder`, `calendar`, and `list.bullet.rectangle`, plus a custom four-wheel mark.
 
@@ -31,7 +31,8 @@ SF Symbol `scooter` is never used (that glyph is a 2-wheel kick scooter). Tabs u
 
 - Season: **1 May 2027 – 30 September 2027** (inclusive), Alaska time (`America/Juneau`).
 - Hours: **8:00 AM – 7:00 PM**. Hourly slots are 8–9am through 6–7pm.
-- Capacity: **exactly 6 rentals per hour** (one per unit). The calendar shows remaining capacity as `4/6 open`.
+- Live walk-up capacity today: **1 rental per hour** (Glacier only).
+- 2027 season capacity (calendar / next-season plan): **exactly 6 rentals per hour** (one per unit). The calendar shows remaining capacity as `4/6 open`.
 - Occupancy is any rental whose time range overlaps the hour. Active rentals occupy from start through “now”; completed rentals occupy start through check-in. Future hours are not reserved for an unknown remaining duration.
 
 **Demo decision:** checkout does **not** enforce season hours by default so you can run a live meter on today’s Simulator clock. Turn on **Settings → Enforce 2027 season hours** to apply the May–September / 8am–7pm rules. The Calendar tab is always the 2027 season and is seeded with representative busy/quiet days (including 3–4 July at 6/6).
@@ -40,8 +41,8 @@ SF Symbol `scooter` is never used (that glyph is a 2-wheel kick scooter). Tabs u
 
 Do not open Calendar. Rent this hour.
 
-1. **Scan** that scooter’s unique stem QR (`https://icystraitscooters.example/s/IS-103` for Spruce — never a shared fleet code).
-2. **You’re renting IS-103** — confirm the ID, name, and photo. Wrong unit? Cancel and scan that scooter’s sticker. Tap **Continue**.
+1. **Scan** Glacier’s unique stem QR (`https://icystraitscooters.example/s/IS-101` — never a shared fleet code). IS-102–106 QRs parse but will not start a rental.
+2. **You’re renting IS-101 Glacier** — confirm the ID, name, and photo. Wrong unit? Cancel and scan Glacier’s sticker. Tap **Continue**.
 3. **Five I agree taps** (1/5 → 5/5). Each accept auto-advances. Damage & Liability and Area of Operation stay required.
 4. Tap **Start rental · $75.00**. Meter starts. Staff get a mock SMS.
 
@@ -81,7 +82,7 @@ Examples: 60:00 → $75.00; 60:01 → $112.50; 90:00 → $112.50; 90:01 → $150
 
 ## Crew app (Icy Strait Crew)
 
-Staff-only second target in the same project. Home is a 6-unit Hoonah lot board (Out / Back, renter, times). Unit detail is that scooter’s history. Roster adds/edits name, phone, email, active. Alert inbox shows the SMS / email / push copy that was queued, per unit.
+Staff-only second target in the same project. Home is a 6-unit Hoonah board: Glacier shows Out / Back; IS-102–106 show 2027 / not on the lot. Unit detail is that scooter’s history. Roster adds/edits name, phone, email, active. Alert inbox shows the SMS / email / push copy that was queued, per unit.
 
 Sign-in is a beta PIN (`5152`, last four of the front-desk cell) plus the staff list. Not a full auth product.
 
@@ -106,7 +107,7 @@ Point both apps at that host (Settings in the customer app, Roster → Pipe in C
 
 On real checkout and check-in the customer app publishes a per-unit event (`scooterID`, `scooterName`, `rentalID`, renter display name if known, `startedAt`, `endedAt`) and queues mock SMS + email + a push payload. Notification text names the exact unit (e.g. `IS-104 Otter`), the renter if known, and Alaska time. Live APNs and live SMS are **not** claimed: Twilio stays a stub; push copy is stored and shown in Crew; local notifications fire when Crew is running or gets a refresh.
 
-Mock POS, season, hours, pricing, and per-unit QR stickers are unchanged.
+Mock POS, 2027 season hours/pricing, and per-unit QR stickers stay. Live rentals are Glacier only.
 
 ## Staff SMS
 
@@ -183,10 +184,10 @@ Camera scanning needs a physical device. On Simulator:
 
 | Action | Payload |
 | --- | --- |
-| Checkout Glacier (preferred) | `https://icystraitscooters.example/s/IS-101` |
+| Checkout Glacier (only live unit) | `https://icystraitscooters.example/s/IS-101` |
 | Checkout Glacier (demo scheme) | `escooter://scooter/IS-101` |
-| Checkout Spruce | `https://icystraitscooters.example/s/IS-103` |
-| Checkout Tidepool | `IS-106` |
+| Next-season sticker (rejected for rent) | `https://icystraitscooters.example/s/IS-103` |
+| Next-season bare ID (rejected for rent) | `IS-106` |
 | Return | `escooter://return/{uuid}/{token}` from **My rentals** or the mock email |
 
 ## Persistence

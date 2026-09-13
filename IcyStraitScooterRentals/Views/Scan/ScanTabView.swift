@@ -21,10 +21,11 @@ struct ScanTabView: View {
 
     private var remainingThisHour: Int {
         CapacityCalculator.remaining(
-            rentals: RentalOperations.snapshots(from: rentals),
+            rentals: RentalOperations.snapshots(from: liveRentals),
             slotStart: currentSlotStart,
             slotEnd: currentSlotStart.addingTimeInterval(3600),
-            now: .now
+            now: .now,
+            capacity: FleetCatalog.liveCapacityPerHour
         )
     }
 
@@ -94,10 +95,13 @@ struct ScanTabView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
             StatusPill(text: "Walk-up · rent this hour")
-            Text("Scan that scooter’s own QR — each unit has a unique sticker (IS-101–IS-106). This hour: \(remainingThisHour)/6 open.")
+            Text("Scan that scooter’s own QR. Live today: IS-101 Glacier only. IS-102–106 are 2027 season units — not on the lot, not rentable.")
                 .font(.subheadline)
                 .foregroundStyle(Brand.silver)
-            CapacityMeter(remaining: remainingThisHour)
+            Text("This hour: \(remainingThisHour)/\(FleetCatalog.liveCapacityPerHour) open · Glacier")
+                .font(BrandFont.headline(16))
+                .foregroundStyle(remainingThisHour == 0 ? Brand.danger : Brand.ok)
+            CapacityMeter(remaining: remainingThisHour, capacity: FleetCatalog.liveCapacityPerHour)
         }
     }
 
@@ -132,10 +136,10 @@ struct ScanTabView: View {
                     .padding(.vertical, 12)
                     .background(Brand.orange, in: Capsule())
             }
-            Text("Each scooter has its own QR. Preferred: https://icystraitscooters.example/s/IS-103")
+            Text("Preferred live sticker: https://icystraitscooters.example/s/IS-101")
                 .font(.caption)
                 .foregroundStyle(Brand.silver)
-            Text("Demo scheme: escooter://scooter/IS-103 · or type the unit ID.")
+            Text("Demo scheme: escooter://scooter/IS-101 · or type IS-101.")
                 .font(.caption.monospaced())
                 .foregroundStyle(Brand.silver)
         }
@@ -143,19 +147,24 @@ struct ScanTabView: View {
 
     private var fleetChips: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Sample fleet · unique QR per unit")
+            Text("Fleet · unique QR per unit")
                 .font(BrandFont.headline())
                 .foregroundStyle(.white)
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                 ForEach(scooters, id: \.scooterID) { scooter in
+                    let rentable = FleetCatalog.isRentableNow(scooter.scooterID)
                     Button {
-                        checkoutID = scooter.scooterID
+                        if rentable {
+                            checkoutID = scooter.scooterID
+                        } else {
+                            errorMessage = CheckoutError.nextSeasonNotOnLot.localizedDescription
+                        }
                     } label: {
                         VStack(alignment: .leading, spacing: 6) {
                             HStack {
                                 Text(scooter.scooterID)
                                     .font(.caption.weight(.bold))
-                                    .foregroundStyle(Brand.orange)
+                                    .foregroundStyle(rentable ? Brand.orange : Brand.silver)
                                 Spacer()
                                 FourWheelScooterMark()
                                     .frame(width: 40, height: 24)
@@ -163,9 +172,9 @@ struct ScanTabView: View {
                             Text(scooter.name)
                                 .font(BrandFont.headline(16))
                                 .foregroundStyle(.white)
-                            Text("4-wheel offroad")
+                            Text(rentable ? "On the lot · rent now" : "2027 season · not on the lot")
                                 .font(.caption2)
-                                .foregroundStyle(Brand.silver)
+                                .foregroundStyle(rentable ? Brand.ok : Brand.silver)
                         }
                         .padding(12)
                         .background(Brand.card, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -187,10 +196,14 @@ struct ScanTabView: View {
     private func handle(_ payload: QRPayload) {
         switch payload {
         case .scooter(let id):
-            if scooters.contains(where: { $0.scooterID == id }) {
+            guard scooters.contains(where: { $0.scooterID == id }) else {
+                errorMessage = CheckoutError.unknownScooter.localizedDescription
+                return
+            }
+            if FleetCatalog.isRentableNow(id) {
                 checkoutID = id
             } else {
-                errorMessage = CheckoutError.unknownScooter.localizedDescription
+                errorMessage = CheckoutError.nextSeasonNotOnLot.localizedDescription
             }
         case .returnRental:
             checkInPayload = payload

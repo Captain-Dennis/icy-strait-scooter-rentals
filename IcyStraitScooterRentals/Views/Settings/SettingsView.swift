@@ -75,7 +75,7 @@ struct SettingsView: View {
                     }
                     .listRowBackground(Brand.card)
                 } footer: {
-                    Text("Hard rule: one unique QR per unit (IS-101–IS-106). Never print a shared “any scooter” sticker.")
+                    Text("Hard rule: one unique QR per unit (IS-101–IS-106). Only Glacier is rentable today. Never print a shared “any scooter” sticker.")
                         .foregroundStyle(Brand.silver)
                 }
 
@@ -135,7 +135,7 @@ struct FleetQRStickersView: View {
     var body: some View {
         List {
             Section {
-                Text("Print six stickers. Affix one to each stem. Scan-test every code before the lot opens. A shared fleet QR is not allowed — the rental record and staff SMS must name that exact unit.")
+                Text("Print six unique stickers — never a shared fleet QR. Only affix and rent IS-101 Glacier today. IS-102–106 stay in the catalog for the 2027 season; they are not on the lot and are not inbound this month.")
                     .font(.subheadline)
                     .foregroundStyle(Brand.silver)
                     .listRowBackground(Brand.card)

@@ -48,13 +48,16 @@ struct CrewBoardView: View {
                 Text("\(lot.outCount) out")
                     .font(BrandFont.title(34))
                     .foregroundStyle(lot.outCount == 0 ? Brand.ok : Brand.orange)
-                Text("/ 6 units")
+                Text("/ \(lot.onLotCount) on the lot")
                     .font(BrandFont.headline(18))
                     .foregroundStyle(Brand.silver)
                 Spacer()
                 FourWheelScooterMark()
                     .frame(width: 72, height: 44)
             }
+            Text("Live unit is IS-101 Glacier. IS-102–106 are 2027 season — not on the lot, not rentable.")
+                .font(.footnote)
+                .foregroundStyle(Brand.silver)
             Text("Each row is one stem sticker. Never a shared fleet QR.")
                 .font(.footnote)
                 .foregroundStyle(Brand.silver)
@@ -97,7 +100,7 @@ struct UnitBoardCard: View {
     var body: some View {
         HStack(alignment: .center, spacing: 14) {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(row.isOut ? Brand.orange : Brand.ok)
+                .fill(row.isNextSeason ? Brand.slate : (row.isOut ? Brand.orange : Brand.ok))
                 .frame(width: 8)
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
@@ -105,7 +108,10 @@ struct UnitBoardCard: View {
                         .font(BrandFont.title(26))
                         .foregroundStyle(.white)
                     Spacer()
-                    StatusPill(text: row.statusTitle, tint: row.isOut ? Brand.orange : Brand.ok)
+                    StatusPill(
+                        text: row.statusTitle,
+                        tint: row.isNextSeason ? Brand.silver : (row.isOut ? Brand.orange : Brand.ok)
+                    )
                 }
                 Text(row.scooterName)
                     .font(BrandFont.headline(20))
@@ -113,7 +119,11 @@ struct UnitBoardCard: View {
                 Text(row.dock)
                     .font(.caption)
                     .foregroundStyle(Brand.silver)
-                if row.isOut {
+                if row.isNextSeason {
+                    Text("Next season 2027 · not on the lot · not rentable")
+                        .font(.subheadline)
+                        .foregroundStyle(Brand.silver)
+                } else if row.isOut {
                     Text("Renter  \(row.renterLabel)")
                         .font(BrandFont.headline(16))
                         .foregroundStyle(.white)
@@ -145,6 +155,7 @@ struct UnitBoardCard: View {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .strokeBorder(row.isOut ? Brand.orange.opacity(0.45) : Brand.cardStroke)
         )
+        .opacity(row.isNextSeason ? 0.72 : 1)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(row.unitLabel), \(row.statusTitle)")
     }

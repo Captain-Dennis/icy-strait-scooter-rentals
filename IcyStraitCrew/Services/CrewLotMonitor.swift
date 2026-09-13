@@ -21,6 +21,8 @@ final class CrewLotMonitor {
 
     var outCount: Int { CrewBoard.outCount(in: rows) }
 
+    var onLotCount: Int { CrewBoard.onLotCount(in: rows) }
+
     func setPipeURL(_ raw: String) async {
         SharedPipeConfig.setHTTPBaseURL(raw)
         pipeURL = SharedPipeConfig.httpBaseURL.absoluteString

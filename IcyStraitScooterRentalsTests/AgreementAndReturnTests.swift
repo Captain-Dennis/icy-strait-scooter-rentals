@@ -113,6 +113,34 @@ final class AgreementAndReturnTests: XCTestCase {
         XCTAssertNil(QRPayload.parse("https://icystraitscooters.example/"))
     }
 
+    func testOnlyGlacierIsRentableNow() {
+        XCTAssertEqual(FleetCatalog.rentableNow.map(\.id), ["IS-101"])
+        XCTAssertTrue(FleetCatalog.isRentableNow("IS-101"))
+        XCTAssertFalse(FleetCatalog.isRentableNow("IS-104"))
+        XCTAssertEqual(FleetCatalog.liveCapacityPerHour, 1)
+        XCTAssertEqual(FleetCatalog.nextSeason.map(\.id), ["IS-102", "IS-103", "IS-104", "IS-105", "IS-106"])
+        let spruce = Scooter(
+            scooterID: "IS-103",
+            name: "Spruce",
+            dockLabel: "Dock C · Lodge loop",
+            batteryPercent: 91,
+            estimatedRangeMiles: 27,
+            isInService: true,
+            sortIndex: 2
+        )
+        XCTAssertThrowsError(
+            try RentalOperations.validateCheckout(
+                scooter: spruce,
+                rentals: [],
+                now: Date(),
+                accepted: Set(AgreementSectionID.allCases),
+                enforceSeasonHours: false
+            )
+        ) { error in
+            XCTAssertEqual(error as? CheckoutError, .nextSeasonNotOnLot)
+        }
+    }
+
     func testUnknownScooterCannotStartRental() {
         let scooter = Scooter(
             scooterID: "IS-999",
@@ -150,12 +178,12 @@ final class AgreementAndReturnTests: XCTestCase {
         let container = try ModelContainer(for: schema, configurations: [configuration])
         let context = ModelContext(container)
         let scooter = Scooter(
-            scooterID: "IS-103",
-            name: "Spruce",
-            dockLabel: "Dock C · Lodge loop",
-            batteryPercent: 91,
-            estimatedRangeMiles: 27,
-            sortIndex: 2
+            scooterID: "IS-101",
+            name: "Glacier",
+            dockLabel: "Dock A · North lot",
+            batteryPercent: 94,
+            estimatedRangeMiles: 28,
+            sortIndex: 0
         )
         let accepted = AgreementSectionID.allCases.map {
             AgreementAcceptanceRecord(sectionID: $0, acceptedAt: Date())
@@ -170,8 +198,8 @@ final class AgreementAndReturnTests: XCTestCase {
             context: context,
             enforceSeasonHours: false
         )
-        XCTAssertEqual(rental.scooterID, "IS-103")
-        XCTAssertEqual(rental.scooterName, "Spruce")
+        XCTAssertEqual(rental.scooterID, "IS-101")
+        XCTAssertEqual(rental.scooterName, "Glacier")
     }
 
     func testStaffCheckoutSMSIncludesExactScooterID() {

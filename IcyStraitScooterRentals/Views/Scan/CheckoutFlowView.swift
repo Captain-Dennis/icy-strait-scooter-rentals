@@ -91,7 +91,7 @@ struct CheckoutFlowView: View {
                     Text("This QR belongs only to \(scooter.scooterID). Wrong unit? Cancel and scan the sticker on that scooter.")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.white)
-                    Text("This hour · \(remainingThisHour)/6 open · rent now")
+                    Text("This hour · \(remainingThisHour)/\(FleetCatalog.liveCapacityPerHour) open · Glacier only")
                         .font(BrandFont.headline(16))
                         .foregroundStyle(remainingThisHour == 0 ? Brand.danger : Brand.ok)
                     Text("First hour \(MoneyFormat.string(BillingCalculator.firstHour)). Then \(MoneyFormat.string(BillingCalculator.additionalHalfHour)) each extra 30 minutes.")

@@ -12,7 +12,10 @@ enum FleetSeeder {
 
         if UserDefaults.standard.integer(forKey: AppPreferences.seedVersionKey) == AppPreferences.currentSeedVersion {
             let existing = try context.fetch(FetchDescriptor<Scooter>())
-            if existing.count == 6 { return }
+            if existing.count == 6 {
+                try applyLotAvailability(context: context)
+                return
+            }
         }
 
         try deleteAll(StaffSMSLog.self, context: context)
@@ -22,14 +25,15 @@ enum FleetSeeder {
         try deleteAll(Rental.self, context: context)
         try deleteAll(Scooter.self, context: context)
 
-        for (index, unit) in fleet.enumerated() {
+        for (index, unit) in FleetCatalog.units.enumerated() {
             context.insert(
                 Scooter(
                     scooterID: unit.id,
                     name: unit.name,
                     dockLabel: unit.dock,
-                    batteryPercent: unit.battery,
-                    estimatedRangeMiles: unit.range,
+                    batteryPercent: unit.batteryPercent,
+                    estimatedRangeMiles: unit.estimatedRangeMiles,
+                    isInService: unit.availability == .onLotNow,
                     sortIndex: index
                 )
             )
@@ -62,6 +66,23 @@ enum FleetSeeder {
 
         try context.save()
         UserDefaults.standard.set(AppPreferences.currentSeedVersion, forKey: AppPreferences.seedVersionKey)
+    }
+
+    /// Keep SwiftData in sync with the catalog: Glacier on the lot, IS-102–106 next season.
+    @MainActor
+    static func applyLotAvailability(context: ModelContext) throws {
+        let scooters = try context.fetch(FetchDescriptor<Scooter>())
+        var changed = false
+        for scooter in scooters {
+            let rentable = FleetCatalog.isRentableNow(scooter.scooterID)
+            if scooter.isInService != rentable {
+                scooter.isInService = rentable
+                changed = true
+            }
+        }
+        if changed {
+            try context.save()
+        }
     }
 
     /// Representative 2027 days so the calendar shows remaining capacity (e.g. 4/6) without thousands of rows.

@@ -3,33 +3,44 @@ import XCTest
 
 final class CrewEventPipeTests: XCTestCase {
     func testBoardShowsExactUnitOutThenBack() {
-        let rentalID = UUID()
-        let checkout = RentalLifecycleEvent.checkout(
+        let otterCheckout = RentalLifecycleEvent.checkout(
             scooterID: "IS-104",
             scooterName: "Otter",
-            rentalID: rentalID,
+            rentalID: UUID(),
             renterDisplayName: "Walk-up guest",
             startedAt: Date(timeIntervalSince1970: 1_814_000_000)
         )
-        var rows = CrewBoard.rows(events: [checkout], units: FleetCatalog.boardUnits)
+        var rows = CrewBoard.rows(events: [otterCheckout], units: FleetCatalog.boardUnits)
         XCTAssertEqual(rows.count, 6)
         XCTAssertEqual(rows.map(\.scooterID), FleetCatalog.ids)
-        let otter = rows.first { $0.scooterID == "IS-104" }
-        XCTAssertEqual(otter?.status, .out)
-        XCTAssertEqual(otter?.renterDisplayName, "Walk-up guest")
-        XCTAssertEqual(otter?.scooterName, "Otter")
-        XCTAssertEqual(CrewBoard.outCount(in: rows), 1)
+        XCTAssertEqual(rows.first { $0.scooterID == "IS-104" }?.status, .nextSeason)
+        XCTAssertEqual(CrewBoard.outCount(in: rows), 0)
+        XCTAssertEqual(CrewBoard.onLotCount(in: rows), 1)
 
-        let returned = RentalLifecycleEvent.returned(
-            scooterID: "IS-104",
-            scooterName: "Otter",
-            rentalID: rentalID,
+        let glacierOut = RentalLifecycleEvent.checkout(
+            scooterID: "IS-101",
+            scooterName: "Glacier",
+            rentalID: UUID(),
             renterDisplayName: "Walk-up guest",
-            startedAt: checkout.startedAt,
+            startedAt: Date(timeIntervalSince1970: 1_814_000_000)
+        )
+        rows = CrewBoard.rows(events: [glacierOut], units: FleetCatalog.boardUnits)
+        let glacier = rows.first { $0.scooterID == "IS-101" }
+        XCTAssertEqual(glacier?.status, .out)
+        XCTAssertEqual(glacier?.renterDisplayName, "Walk-up guest")
+        XCTAssertEqual(CrewBoard.outCount(in: rows), 1)
+        XCTAssertTrue(rows.filter { $0.scooterID != "IS-101" }.allSatisfy(\.isNextSeason))
+
+        let glacierBack = RentalLifecycleEvent.returned(
+            scooterID: "IS-101",
+            scooterName: "Glacier",
+            rentalID: glacierOut.rentalID,
+            renterDisplayName: "Walk-up guest",
+            startedAt: glacierOut.startedAt,
             endedAt: Date(timeIntervalSince1970: 1_814_003_600)
         )
-        rows = CrewBoard.rows(events: [checkout, returned], units: FleetCatalog.boardUnits)
-        XCTAssertEqual(rows.first { $0.scooterID == "IS-104" }?.status, .back)
+        rows = CrewBoard.rows(events: [glacierOut, glacierBack], units: FleetCatalog.boardUnits)
+        XCTAssertEqual(rows.first { $0.scooterID == "IS-101" }?.status, .back)
         XCTAssertEqual(CrewBoard.outCount(in: rows), 0)
     }
 
@@ -84,15 +95,15 @@ final class CrewEventPipeTests: XCTestCase {
 
         let checkout = await publisher.publishCheckout(
             rentalID: rentalID,
-            scooterID: "IS-103",
-            scooterName: "Spruce",
+            scooterID: "IS-101",
+            scooterName: "Glacier",
             renterDisplayName: "Guest",
             startedAt: Date(timeIntervalSince1970: 1_814_000_000),
             recipients: recipients
         )
         XCTAssertTrue(checkout.eventPublished)
-        XCTAssertTrue(checkout.push.title.contains("IS-103"))
-        XCTAssertTrue(checkout.push.title.contains("Spruce"))
+        XCTAssertTrue(checkout.push.title.contains("IS-101"))
+        XCTAssertTrue(checkout.push.title.contains("Glacier"))
         XCTAssertGreaterThanOrEqual(checkout.dispatches.count, 3, "SMS plus two emails")
         XCTAssertTrue(checkout.dispatches.contains { $0.channel == .sms && $0.phoneE164 == StaffConfig.defaultE164 })
         XCTAssertTrue(checkout.dispatches.contains { $0.channel == .email && $0.email == "maddasstoner@yahoo.com" })
@@ -100,23 +111,24 @@ final class CrewEventPipeTests: XCTestCase {
 
         let returned = await publisher.publishReturn(
             rentalID: rentalID,
-            scooterID: "IS-103",
-            scooterName: "Spruce",
+            scooterID: "IS-101",
+            scooterName: "Glacier",
             renterDisplayName: "Guest",
             startedAt: Date(timeIntervalSince1970: 1_814_000_000),
             endedAt: Date(timeIntervalSince1970: 1_814_003_600),
             recipients: recipients
         )
         XCTAssertTrue(returned.eventPublished)
-        XCTAssertTrue(returned.push.title.contains("IS-103"))
+        XCTAssertTrue(returned.push.title.contains("IS-101"))
 
         let snap = try await store.snapshot()
         XCTAssertEqual(snap.events.count, 2)
         XCTAssertEqual(snap.events.map(\.kind), [.checkout, .returned])
-        XCTAssertTrue(snap.events.allSatisfy { $0.scooterID == "IS-103" })
-        XCTAssertTrue(snap.alerts.contains { $0.channel == .push && $0.title.contains("IS-103 Spruce") })
+        XCTAssertTrue(snap.events.allSatisfy { $0.scooterID == "IS-101" })
+        XCTAssertTrue(snap.alerts.contains { $0.channel == .push && $0.title.contains("IS-101 Glacier") })
         let rows = CrewBoard.rows(events: snap.events, units: FleetCatalog.boardUnits)
-        XCTAssertEqual(rows.first { $0.scooterID == "IS-103" }?.status, .back)
+        XCTAssertEqual(rows.first { $0.scooterID == "IS-101" }?.status, .back)
+        XCTAssertEqual(rows.first { $0.scooterID == "IS-103" }?.status, .nextSeason)
     }
 
     func testDennisRosterDefaults() {
