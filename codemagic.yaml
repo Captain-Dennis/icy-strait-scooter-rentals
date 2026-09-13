@@ -76,10 +76,77 @@ workflows:
         submit_to_testflight: true
         submit_to_app_store: false
 
-  # Second workflow later — do not enable until App Store Connect has
-  # an Icy Strait Crew app record, a bundle ID com.icystrait.crew, and
-  # a distinct App Store profile. Copy ios-testflight and set:
-  #   XCODE_SCHEME: IcyStraitCrew
-  #   BUNDLE_ID: com.icystrait.crew
-  #   APP_STORE_APPLE_ID: <Crew numeric Apple ID>
-  # Keep the customer workflow on IcyStraitScooterRentals / com.icystrait.scooterrentals.
+  # Icy Strait Crew TestFlight. Ready except the numeric Apple ID and
+  # the actual `crew_app_store` provisioning profile. Captain Bot creates
+  # the App Store Connect app, then fills APP_STORE_APPLE_ID and generates
+  # the profile in Codemagic. Do not invent an Apple ID. Do not reuse the
+  # customer `app_store` profile. No triggering here — do not start a live
+  # Codemagic build until those two items exist.
+  ios-crew-testflight:
+    name: iOS Crew TestFlight
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: Escooter rental
+    environment:
+      ios_signing:
+        # Distinct profile for com.icystrait.crew. Same team Distribution
+        # cert is valid for both bundle IDs. Generate `crew_app_store` in
+        # Codemagic after the Crew App Store Connect app exists.
+        provisioning_profiles:
+          - crew_app_store
+        certificates:
+          - ios-distribution
+      vars:
+        BUNDLE_ID: com.icystrait.crew
+        XCODE_PROJECT: IcyStraitScooterRentals.xcodeproj
+        XCODE_SCHEME: IcyStraitCrew
+        # TODO: Captain Bot will replace CREW_APP_STORE_APPLE_ID_PENDING
+        # with the numeric App Store Connect Apple ID (App Information)
+        # after creating the Icy Strait Crew app. Not a bundle ID. Do
+        # not invent a number. The Crew ASC app is not claimed to exist.
+        APP_STORE_APPLE_ID: CREW_APP_STORE_APPLE_ID_PENDING
+      xcode: latest
+    scripts:
+      - name: Set up code signing settings on Xcode project
+        script: |
+          # Crew Release is still Automatic in the pbxproj. Codemagic
+          # use-profiles + archive-xcargs force Manual + team 3RJHN4N474
+          # and write PROVISIONING_PROFILE_SPECIFIER from `crew_app_store`.
+          xcode-project use-profiles --project "$CM_BUILD_DIR/$XCODE_PROJECT"
+      - name: Increment build number
+        script: |
+          #!/bin/sh
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          # Same increment-build pattern as ios-testflight. Query fails
+          # until APP_STORE_APPLE_ID is a real numeric Apple ID.
+          MIN_BUILD_NUMBER=3
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APPLE_ID" || true)
+          if [ -n "${LATEST_BUILD_NUMBER:-}" ] && [ "$LATEST_BUILD_NUMBER" -eq "$LATEST_BUILD_NUMBER" ] 2>/dev/null; then
+            NEXT_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
+            echo "Latest TestFlight build for $APP_STORE_APPLE_ID is $LATEST_BUILD_NUMBER; next is $NEXT_BUILD_NUMBER."
+          else
+            echo "App Store Connect build-number query failed for $APP_STORE_APPLE_ID; falling back to at least $MIN_BUILD_NUMBER."
+            NEXT_BUILD_NUMBER=$MIN_BUILD_NUMBER
+          fi
+          if [ "$NEXT_BUILD_NUMBER" -lt "$MIN_BUILD_NUMBER" ]; then
+            echo "Next build $NEXT_BUILD_NUMBER is below $MIN_BUILD_NUMBER; raising to $MIN_BUILD_NUMBER."
+            NEXT_BUILD_NUMBER=$MIN_BUILD_NUMBER
+          fi
+          agvtool new-version -all "$NEXT_BUILD_NUMBER"
+      - name: Build ipa for distribution
+        script: |
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --archive-xcargs "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=3RJHN4N474"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false
