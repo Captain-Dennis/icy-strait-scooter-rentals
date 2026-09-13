@@ -17,6 +17,11 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Icy Strait Scooter Rentals uses the camera to scan checkout and return QR codes, and to photograph each side of the 4-wheel offroad e-scooter at check-in.</string>
 	<key>UILaunchScreen</key>

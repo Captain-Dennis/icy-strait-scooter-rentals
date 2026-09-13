@@ -21,6 +21,10 @@ enum FleetCatalog {
 
     static var ids: [String] { units.map(\.id) }
 
+    static var boardUnits: [(id: String, name: String, dock: String)] {
+        units.map { ($0.id, $0.name, $0.dock) }
+    }
+
     static func unit(id: String) -> Unit? {
         let normalized = QRPayload.normalizeScooterID(id)
         return units.first { $0.id == normalized }

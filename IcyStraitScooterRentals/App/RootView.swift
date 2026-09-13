@@ -35,6 +35,7 @@ struct RootView: View {
         }
         .task {
             try? FleetSeeder.seedIfNeeded(context: modelContext)
+            await staff.pushLocalRoster(modelContext)
         }
         .fullScreenCover(isPresented: onboardingBinding) {
             OnboardingView {

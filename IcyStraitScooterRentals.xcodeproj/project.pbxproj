@@ -53,6 +53,55 @@
 		EBD5610536D32274BA069C01 /* AgreementAndReturnTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E9F449A5A51A015654438C /* AgreementAndReturnTests.swift */; };
 		B0319BB8878C3CFDC1BF62FF /* BillingCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4228808A96F6F1FD41F32122 /* BillingCalculatorTests.swift */; };
 		037D2F7138EB7FF55630A231 /* CapacityCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DACE63C78294F090B5412C2 /* CapacityCalculatorTests.swift */; };
+		C0DE01000000000000000002 /* RentalLifecycleEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000001 /* RentalLifecycleEvent.swift */; };
+		C0DE01000000000000000003 /* RentalLifecycleEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000001 /* RentalLifecycleEvent.swift */; };
+		C0DE01000000000000000005 /* CrewBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000004 /* CrewBoard.swift */; };
+		C0DE01000000000000000006 /* CrewBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000004 /* CrewBoard.swift */; };
+		C0DE01000000000000000008 /* CrewAlertCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000007 /* CrewAlertCopy.swift */; };
+		C0DE01000000000000000009 /* CrewAlertCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000007 /* CrewAlertCopy.swift */; };
+		C0DE0100000000000000000B /* SharedLotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0100000000000000000A /* SharedLotStore.swift */; };
+		C0DE0100000000000000000C /* SharedLotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0100000000000000000A /* SharedLotStore.swift */; };
+		C0DE0100000000000000000E /* HTTPLotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0100000000000000000D /* HTTPLotStore.swift */; };
+		C0DE0100000000000000000F /* HTTPLotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0100000000000000000D /* HTTPLotStore.swift */; };
+		C0DE01000000000000000011 /* SharedPipeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000010 /* SharedPipeConfig.swift */; };
+		C0DE01000000000000000012 /* SharedPipeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000010 /* SharedPipeConfig.swift */; };
+		C0DE01000000000000000014 /* LotEventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000013 /* LotEventPublisher.swift */; };
+		C0DE01000000000000000015 /* LotEventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000013 /* LotEventPublisher.swift */; };
+		C0DE01000000000000000017 /* CloudKitLotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000016 /* CloudKitLotStore.swift */; };
+		C0DE01000000000000000018 /* CloudKitLotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000016 /* CloudKitLotStore.swift */; };
+		C0DE0100000000000000001A /* StaffSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000019 /* StaffSeeder.swift */; };
+		C0DE0100000000000000001B /* StaffSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000019 /* StaffSeeder.swift */; };
+		C0DE0100000000000000001D /* CrewEventPipeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0100000000000000001C /* CrewEventPipeTests.swift */; };
+		C0DE02000000000000000002 /* IcyStraitCrewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE02000000000000000001 /* IcyStraitCrewApp.swift */; };
+		C0DE02000000000000000004 /* CrewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE02000000000000000003 /* CrewRootView.swift */; };
+		C0DE02000000000000000006 /* CrewSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE02000000000000000005 /* CrewSession.swift */; };
+		C0DE02000000000000000008 /* CrewLotMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE02000000000000000007 /* CrewLotMonitor.swift */; };
+		C0DE0200000000000000000A /* CrewSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE02000000000000000009 /* CrewSignInView.swift */; };
+		C0DE0200000000000000000C /* CrewBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0200000000000000000B /* CrewBoardView.swift */; };
+		C0DE0200000000000000000E /* UnitHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0200000000000000000D /* UnitHistoryView.swift */; };
+		C0DE02000000000000000010 /* AlertInboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0200000000000000000F /* AlertInboxView.swift */; };
+		C0DE02000000000000000012 /* CrewRosterHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE02000000000000000011 /* CrewRosterHome.swift */; };
+		C0DE02000000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0DE02000000000000000015 /* Assets.xcassets */; };
+		C0DE05000000000000000014 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2BAA48C14157B374334CB7C /* Assets.xcassets */; };
+		C0DE05000000000000000001 /* BrandTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B048162F5E37787421C524F3 /* BrandTheme.swift */; };
+		C0DE05000000000000000002 /* FourWheelScooterMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A02604967722EB55DC8529 /* FourWheelScooterMark.swift */; };
+		C0DE05000000000000000003 /* SharedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C790F4533B24D54622EB9BA7 /* SharedComponents.swift */; };
+		C0DE05000000000000000004 /* FleetCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3A1C2E4B5D67890A1B2C41 /* FleetCatalog.swift */; };
+		C0DE05000000000000000005 /* AppLinkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3A1C2E4B5D67890A1B2C3D /* AppLinkConfig.swift */; };
+		C0DE05000000000000000006 /* QRPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609432BE832A40BAB1387F41 /* QRPayload.swift */; };
+		C0DE05000000000000000007 /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3A84C72319A402F8E9BD55 /* Season.swift */; };
+		C0DE05000000000000000008 /* BillingCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7A48D7CADF654086914FCE /* BillingCalculator.swift */; };
+		C0DE05000000000000000009 /* AgreementSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6249CD65E96C09370AECDE38 /* AgreementSection.swift */; };
+		C0DE0500000000000000000A /* ReturnPhotoSide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE062C3C344110C8496E8B6 /* ReturnPhotoSide.swift */; };
+		C0DE0500000000000000000B /* Rental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB00304E2BD2BA2CCDF55C1 /* Rental.swift */; };
+		C0DE0500000000000000000C /* ReturnPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71C24FE6C1B759491F7CD9E /* ReturnPhoto.swift */; };
+		C0DE0500000000000000000D /* StaffMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA5D687A4B753F62B8AE41F /* StaffMember.swift */; };
+		C0DE0500000000000000000E /* StaffSMSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2B94BCF27D1A3617AB0A86 /* StaffSMSLog.swift */; };
+		C0DE0500000000000000000F /* StaffConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5696570565AC810398868B6A /* StaffConfig.swift */; };
+		C0DE05000000000000000010 /* StaffNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6090D6191E01E4399AB2FE40 /* StaffNotifier.swift */; };
+		C0DE05000000000000000011 /* StaffServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520DB5C7948A34B13AAFF379 /* StaffServices.swift */; };
+		C0DE05000000000000000012 /* StaffRosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1826D20AB2EE3CDAF7F7B0 /* StaffRosterView.swift */; };
+		C0DE05000000000000000013 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EB231E36A084F6537CD9E2 /* AppPreferences.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +165,31 @@
 		35E9F449A5A51A015654438C /* AgreementAndReturnTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementAndReturnTests.swift; sourceTree = "<group>"; };
 		4228808A96F6F1FD41F32122 /* BillingCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillingCalculatorTests.swift; sourceTree = "<group>"; };
 		6DACE63C78294F090B5412C2 /* CapacityCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapacityCalculatorTests.swift; sourceTree = "<group>"; };
+		C0DE01000000000000000001 /* RentalLifecycleEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentalLifecycleEvent.swift; sourceTree = "<group>"; };
+		C0DE01000000000000000004 /* CrewBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewBoard.swift; sourceTree = "<group>"; };
+		C0DE01000000000000000007 /* CrewAlertCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewAlertCopy.swift; sourceTree = "<group>"; };
+		C0DE0100000000000000000A /* SharedLotStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedLotStore.swift; sourceTree = "<group>"; };
+		C0DE0100000000000000000D /* HTTPLotStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPLotStore.swift; sourceTree = "<group>"; };
+		C0DE01000000000000000010 /* SharedPipeConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPipeConfig.swift; sourceTree = "<group>"; };
+		C0DE01000000000000000013 /* LotEventPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LotEventPublisher.swift; sourceTree = "<group>"; };
+		C0DE01000000000000000016 /* CloudKitLotStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitLotStore.swift; sourceTree = "<group>"; };
+		C0DE01000000000000000019 /* StaffSeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffSeeder.swift; sourceTree = "<group>"; };
+		C0DE0100000000000000001C /* CrewEventPipeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewEventPipeTests.swift; sourceTree = "<group>"; };
+		C0DE0100000000000000001E /* IcyStraitScooterRentals-CloudKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IcyStraitScooterRentals-CloudKit.entitlements; sourceTree = "<group>"; };
+		C0DE02000000000000000001 /* IcyStraitCrewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IcyStraitCrewApp.swift; sourceTree = "<group>"; };
+		C0DE02000000000000000003 /* CrewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewRootView.swift; sourceTree = "<group>"; };
+		C0DE02000000000000000005 /* CrewSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewSession.swift; sourceTree = "<group>"; };
+		C0DE02000000000000000007 /* CrewLotMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewLotMonitor.swift; sourceTree = "<group>"; };
+		C0DE02000000000000000009 /* CrewSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewSignInView.swift; sourceTree = "<group>"; };
+		C0DE0200000000000000000B /* CrewBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewBoardView.swift; sourceTree = "<group>"; };
+		C0DE0200000000000000000D /* UnitHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitHistoryView.swift; sourceTree = "<group>"; };
+		C0DE0200000000000000000F /* AlertInboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertInboxView.swift; sourceTree = "<group>"; };
+		C0DE02000000000000000011 /* CrewRosterHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewRosterHome.swift; sourceTree = "<group>"; };
+		C0DE02000000000000000013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0DE02000000000000000014 /* IcyStraitCrew.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IcyStraitCrew.entitlements; sourceTree = "<group>"; };
+		C0DE02000000000000000017 /* IcyStraitCrew-CloudKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "IcyStraitCrew-CloudKit.entitlements"; sourceTree = "<group>"; };
+		C0DE02000000000000000015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C0DE03000000000000000002 /* IcyStraitCrew.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IcyStraitCrew.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +207,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+
+		C0DE03000000000000000004 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -141,6 +223,9 @@
 			children = (
 				C8A1E76B6CA46DDC89E29CCD /* IcyStraitScooterRentals */,
 				8C35799A97AD3FA99FA2EDFE /* IcyStraitScooterRentalsTests */,
+				C0DE04000000000000000001 /* Shared */,
+				C0DE04000000000000000002 /* SharedKit */,
+				C0DE04000000000000000003 /* IcyStraitCrew */,
 				692092DE1C1C8624E142B71D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -150,6 +235,7 @@
 			children = (
 				845F65209D19F1E91A3C573D /* IcyStraitScooterRentals.app */,
 				05B4B09660ED39C148591D26 /* IcyStraitScooterRentalsTests.xctest */,
+				C0DE03000000000000000002 /* IcyStraitCrew.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,6 +246,7 @@
 				D2BAA48C14157B374334CB7C /* Assets.xcassets */,
 				89D3F3E762AB8808875B49AF /* Info.plist */,
 				8F3A1C2E4B5D67890A1B2C40 /* IcyStraitScooterRentals.entitlements */,
+				C0DE0100000000000000001E /* IcyStraitScooterRentals-CloudKit.entitlements */,
 				4C9813858348C1319B38A928 /* App */,
 				9D408A50A60726DFC02DAD7C /* Domain */,
 				C4F3EE54EF08609995EF3DFE /* Models */,
@@ -234,6 +321,8 @@
 				5696570565AC810398868B6A /* StaffConfig.swift */,
 				6090D6191E01E4399AB2FE40 /* StaffNotifier.swift */,
 				520DB5C7948A34B13AAFF379 /* StaffServices.swift */,
+				C0DE01000000000000000019 /* StaffSeeder.swift */,
+				C0DE01000000000000000013 /* LotEventPublisher.swift */,
 			);
 			path = Staff;
 			sourceTree = "<group>";
@@ -348,8 +437,75 @@
 				35E9F449A5A51A015654438C /* AgreementAndReturnTests.swift */,
 				4228808A96F6F1FD41F32122 /* BillingCalculatorTests.swift */,
 				6DACE63C78294F090B5412C2 /* CapacityCalculatorTests.swift */,
+				C0DE0100000000000000001C /* CrewEventPipeTests.swift */,
 			);
 			path = IcyStraitScooterRentalsTests;
+			sourceTree = "<group>";
+		};
+
+		C0DE04000000000000000001 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				C0DE01000000000000000001 /* RentalLifecycleEvent.swift */,
+				C0DE01000000000000000004 /* CrewBoard.swift */,
+				C0DE01000000000000000007 /* CrewAlertCopy.swift */,
+				C0DE0100000000000000000A /* SharedLotStore.swift */,
+				C0DE0100000000000000000D /* HTTPLotStore.swift */,
+				C0DE01000000000000000010 /* SharedPipeConfig.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		C0DE04000000000000000002 /* SharedKit */ = {
+			isa = PBXGroup;
+			children = (
+				C0DE01000000000000000016 /* CloudKitLotStore.swift */,
+			);
+			path = SharedKit;
+			sourceTree = "<group>";
+		};
+		C0DE04000000000000000003 /* IcyStraitCrew */ = {
+			isa = PBXGroup;
+			children = (
+				C0DE02000000000000000015 /* Assets.xcassets */,
+				C0DE02000000000000000013 /* Info.plist */,
+				C0DE02000000000000000014 /* IcyStraitCrew.entitlements */,
+				C0DE02000000000000000017 /* IcyStraitCrew-CloudKit.entitlements */,
+				C0DE04000000000000000004 /* App */,
+				C0DE04000000000000000005 /* Services */,
+				C0DE04000000000000000006 /* Views */,
+			);
+			path = IcyStraitCrew;
+			sourceTree = "<group>";
+		};
+		C0DE04000000000000000004 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				C0DE02000000000000000001 /* IcyStraitCrewApp.swift */,
+				C0DE02000000000000000003 /* CrewRootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		C0DE04000000000000000005 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C0DE02000000000000000005 /* CrewSession.swift */,
+				C0DE02000000000000000007 /* CrewLotMonitor.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C0DE04000000000000000006 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C0DE02000000000000000009 /* CrewSignInView.swift */,
+				C0DE0200000000000000000B /* CrewBoardView.swift */,
+				C0DE0200000000000000000D /* UnitHistoryView.swift */,
+				C0DE0200000000000000000F /* AlertInboxView.swift */,
+				C0DE02000000000000000011 /* CrewRosterHome.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -390,6 +546,24 @@
 			productReference = 05B4B09660ED39C148591D26 /* IcyStraitScooterRentalsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+
+		C0DE03000000000000000001 /* IcyStraitCrew */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0DE03000000000000000006 /* Build configuration list for PBXNativeTarget "IcyStraitCrew" */;
+			buildPhases = (
+				C0DE03000000000000000003 /* Sources */,
+				C0DE03000000000000000004 /* Frameworks */,
+				C0DE03000000000000000005 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IcyStraitCrew;
+			productName = IcyStraitCrew;
+			productReference = C0DE03000000000000000002 /* IcyStraitCrew.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -406,6 +580,9 @@
 					904EC43069525F78E67530F2 = {
 						CreatedOnToolsVersion = 15.4;
 						TestTargetID = B902F7C2327297FC583709E1;
+					};
+					C0DE03000000000000000001 = {
+						CreatedOnToolsVersion = 15.4;
 					};
 				};
 			};
@@ -424,6 +601,7 @@
 			targets = (
 				B902F7C2327297FC583709E1 /* IcyStraitScooterRentals */,
 				904EC43069525F78E67530F2 /* IcyStraitScooterRentalsTests */,
+				C0DE03000000000000000001 /* IcyStraitCrew */,
 			);
 		};
 /* End PBXProject section */
@@ -441,6 +619,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+
+		C0DE03000000000000000005 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0DE02000000000000000016 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +680,15 @@
 				7FA2946C81760A41404D482A /* QRCodeView.swift in Sources */,
 				DBCC73F3324DCDEBAB28B08D /* SharedComponents.swift in Sources */,
 				541DFA80D782ED4B5F712400 /* StaffRosterView.swift in Sources */,
+				C0DE01000000000000000002 /* RentalLifecycleEvent.swift in Sources */,
+				C0DE01000000000000000005 /* CrewBoard.swift in Sources */,
+				C0DE01000000000000000008 /* CrewAlertCopy.swift in Sources */,
+				C0DE0100000000000000000B /* SharedLotStore.swift in Sources */,
+				C0DE0100000000000000000E /* HTTPLotStore.swift in Sources */,
+				C0DE01000000000000000011 /* SharedPipeConfig.swift in Sources */,
+				C0DE01000000000000000014 /* LotEventPublisher.swift in Sources */,
+				C0DE01000000000000000017 /* CloudKitLotStore.swift in Sources */,
+				C0DE0100000000000000001A /* StaffSeeder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,6 +699,52 @@
 				EBD5610536D32274BA069C01 /* AgreementAndReturnTests.swift in Sources */,
 				B0319BB8878C3CFDC1BF62FF /* BillingCalculatorTests.swift in Sources */,
 				037D2F7138EB7FF55630A231 /* CapacityCalculatorTests.swift in Sources */,
+				C0DE0100000000000000001D /* CrewEventPipeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+
+		C0DE03000000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0DE01000000000000000003 /* RentalLifecycleEvent.swift in Sources */,
+				C0DE01000000000000000006 /* CrewBoard.swift in Sources */,
+				C0DE01000000000000000009 /* CrewAlertCopy.swift in Sources */,
+				C0DE0100000000000000000C /* SharedLotStore.swift in Sources */,
+				C0DE0100000000000000000F /* HTTPLotStore.swift in Sources */,
+				C0DE01000000000000000012 /* SharedPipeConfig.swift in Sources */,
+				C0DE01000000000000000015 /* LotEventPublisher.swift in Sources */,
+				C0DE01000000000000000018 /* CloudKitLotStore.swift in Sources */,
+				C0DE0100000000000000001B /* StaffSeeder.swift in Sources */,
+				C0DE02000000000000000002 /* IcyStraitCrewApp.swift in Sources */,
+				C0DE02000000000000000004 /* CrewRootView.swift in Sources */,
+				C0DE02000000000000000006 /* CrewSession.swift in Sources */,
+				C0DE02000000000000000008 /* CrewLotMonitor.swift in Sources */,
+				C0DE0200000000000000000A /* CrewSignInView.swift in Sources */,
+				C0DE0200000000000000000C /* CrewBoardView.swift in Sources */,
+				C0DE0200000000000000000E /* UnitHistoryView.swift in Sources */,
+				C0DE02000000000000000010 /* AlertInboxView.swift in Sources */,
+				C0DE02000000000000000012 /* CrewRosterHome.swift in Sources */,
+				C0DE05000000000000000001 /* BrandTheme.swift in Sources */,
+				C0DE05000000000000000002 /* FourWheelScooterMark.swift in Sources */,
+				C0DE05000000000000000003 /* SharedComponents.swift in Sources */,
+				C0DE05000000000000000004 /* FleetCatalog.swift in Sources */,
+				C0DE05000000000000000005 /* AppLinkConfig.swift in Sources */,
+				C0DE05000000000000000006 /* QRPayload.swift in Sources */,
+				C0DE05000000000000000007 /* Season.swift in Sources */,
+				C0DE05000000000000000008 /* BillingCalculator.swift in Sources */,
+				C0DE05000000000000000009 /* AgreementSection.swift in Sources */,
+				C0DE0500000000000000000A /* ReturnPhotoSide.swift in Sources */,
+				C0DE0500000000000000000B /* Rental.swift in Sources */,
+				C0DE0500000000000000000C /* ReturnPhoto.swift in Sources */,
+				C0DE0500000000000000000D /* StaffMember.swift in Sources */,
+				C0DE0500000000000000000E /* StaffSMSLog.swift in Sources */,
+				C0DE0500000000000000000F /* StaffConfig.swift in Sources */,
+				C0DE05000000000000000010 /* StaffNotifier.swift in Sources */,
+				C0DE05000000000000000011 /* StaffServices.swift in Sources */,
+				C0DE05000000000000000012 /* StaffRosterView.swift in Sources */,
+				C0DE05000000000000000013 /* AppPreferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,6 +995,77 @@
 			};
 			name = Release;
 		};
+
+		C0DE03000000000000000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = IcyStraitCrew/IcyStraitCrew.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"IcyStraitCrew/Preview Content\"";
+				DEVELOPMENT_TEAM = 3RJHN4N474;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IcyStraitCrew/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Icy Strait Crew";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.icystrait.crew;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C0DE03000000000000000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = IcyStraitCrew/IcyStraitCrew.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"IcyStraitCrew/Preview Content\"";
+				DEVELOPMENT_TEAM = 3RJHN4N474;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IcyStraitCrew/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Icy Strait Crew";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.icystrait.crew;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -779,6 +1092,16 @@
 			buildConfigurations = (
 				C5774292F3CDDF3735D83028 /* Debug */,
 				D7D1268773A416FE5DFB750C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+
+		C0DE03000000000000000006 /* Build configuration list for PBXNativeTarget "IcyStraitCrew" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0DE03000000000000000007 /* Debug */,
+				C0DE03000000000000000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

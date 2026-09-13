@@ -187,6 +187,7 @@ final class AgreementAndReturnTests: XCTestCase {
             XCTAssertTrue(message.body().contains(unit.id), "Staff SMS must name \(unit.id)")
             XCTAssertTrue(message.body().contains(unit.name))
             XCTAssertTrue(message.body().contains("exact unit"))
+            XCTAssertTrue(message.body().contains(unit.id + " " + unit.name) || message.body().contains("\(unit.id) \(unit.name)"))
         }
     }
 
@@ -213,8 +214,8 @@ final class StaffNotifierTests: XCTestCase {
             extraNote: ""
         )
         let recipients = [
-            StaffRecipient(id: UUID(), displayName: "Front desk", phoneE164: "+19075005152"),
-            StaffRecipient(id: UUID(), displayName: "Lot lead", phoneE164: "+19075550101")
+            StaffRecipient(id: UUID(), displayName: "Front desk", phoneE164: "+19075005152", emails: []),
+            StaffRecipient(id: UUID(), displayName: "Lot lead", phoneE164: "+19075550101", emails: [])
         ]
         let sent = try await notifier.notify(message, recipients: recipients)
         XCTAssertEqual(sent.count, 2)
@@ -237,7 +238,7 @@ final class StaffNotifierTests: XCTestCase {
         )
         let sent = try await notifier.notify(
             message,
-            recipients: [StaffRecipient(id: UUID(), displayName: "Front desk", phoneE164: StaffConfig.defaultE164)]
+            recipients: [StaffRecipient(id: UUID(), displayName: "Front desk", phoneE164: StaffConfig.defaultE164, emails: [])]
         )
         XCTAssertTrue(sent[0].body.contains("Left and right condition photos"))
         XCTAssertTrue(sent[0].body.contains("IS-102"))

@@ -8,7 +8,7 @@ enum FleetSeeder {
 
     @MainActor
     static func seedIfNeeded(context: ModelContext) throws {
-        try seedStaffIfNeeded(context: context)
+        try StaffSeeder.seedIfNeeded(context: context)
 
         if UserDefaults.standard.integer(forKey: AppPreferences.seedVersionKey) == AppPreferences.currentSeedVersion {
             let existing = try context.fetch(FetchDescriptor<Scooter>())
@@ -114,24 +114,6 @@ enum FleetSeeder {
             }
         }
         return rentals
-    }
-
-    static func seedStaffIfNeeded(context: ModelContext) throws {
-        if UserDefaults.standard.bool(forKey: AppPreferences.staffSeededKey) {
-            return
-        }
-        let existing = try context.fetch(FetchDescriptor<StaffMember>())
-        if existing.isEmpty {
-            context.insert(
-                StaffMember(
-                    displayName: StaffConfig.starterName,
-                    phoneE164: StaffConfig.defaultE164,
-                    isActive: true
-                )
-            )
-            try context.save()
-        }
-        UserDefaults.standard.set(true, forKey: AppPreferences.staffSeededKey)
     }
 
     private static func deleteAll<T: PersistentModel>(_ type: T.Type, context: ModelContext) throws {

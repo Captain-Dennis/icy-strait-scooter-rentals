@@ -75,3 +75,11 @@ workflows:
         auth: integration
         submit_to_testflight: true
         submit_to_app_store: false
+
+  # Second workflow later — do not enable until App Store Connect has
+  # an Icy Strait Crew app record, a bundle ID com.icystrait.crew, and
+  # a distinct App Store profile. Copy ios-testflight and set:
+  #   XCODE_SCHEME: IcyStraitCrew
+  #   BUNDLE_ID: com.icystrait.crew
+  #   APP_STORE_APPLE_ID: <Crew numeric Apple ID>
+  # Keep the customer workflow on IcyStraitScooterRentals / com.icystrait.scooterrentals.

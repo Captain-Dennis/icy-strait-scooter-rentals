@@ -4,8 +4,10 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage(AppPreferences.enforceSeasonHoursKey) private var enforceSeasonHours = false
+    @Environment(StaffServices.self) private var staffServices
     @Query(sort: \StaffSMSLog.sentAt, order: .reverse) private var smsLog: [StaffSMSLog]
     @Query(sort: \StaffMember.displayName) private var staff: [StaffMember]
+    @State private var pipeURL = SharedPipeConfig.httpBaseURL.absoluteString
 
     var body: some View {
         NavigationStack {
@@ -23,7 +25,7 @@ struct SettingsView: View {
                     }
                     .listRowBackground(Brand.card)
                 } footer: {
-                    Text("Starter: Front desk · \(StaffConfig.defaultDisplay). Add lot employees; only active members get SMS.")
+                    Text("Starter: Front desk / Dennis · \(StaffConfig.defaultDisplay) · maddasstoner@yahoo.com, f.vhappytimes@gmail.com. Only active members get SMS/email copy.")
                         .foregroundStyle(Brand.silver)
                 }
 
@@ -38,9 +40,32 @@ struct SettingsView: View {
 
                 Section("Providers") {
                     labeled("POS", "MockPOSProvider")
-                    labeled("Staff SMS", "MockStaffNotifier")
+                    labeled("Staff SMS/email", "MockStaffNotifier")
                     labeled("Twilio stub", "TwilioSMSNotifier (no keys)")
+                    labeled("Crew pipe", "HTTPLotStore (CloudKit compiled, not entitled here)")
                 }
+                .listRowBackground(Brand.card)
+
+                Section("Crew event pipe") {
+                    TextField("Shared event URL", text: $pipeURL)
+                        .keyboardType(.URL)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                    Button("Save pipe URL") {
+                        SharedPipeConfig.setHTTPBaseURL(pipeURL)
+                        Task { await staffServices.httpStore.setBaseURL(SharedPipeConfig.httpBaseURL) }
+                    }
+                    .foregroundStyle(Brand.orange)
+                    if let status = staffServices.lastPipeStatus {
+                        Text(status)
+                            .font(.caption)
+                            .foregroundStyle(Brand.silver)
+                    }
+                    Text("Customer checkout/return POST to this URL so the Crew phone can see the same per-unit list. Default is the in-repo tiny server at \(SharedPipeConfig.defaultHTTPURLString). CloudKit is implemented but not entitled on this TestFlight app.")
+                        .font(.footnote)
+                        .foregroundStyle(Brand.silver)
+                }
+                .listRowBackground(Brand.card)
 
                 Section {
                     NavigationLink {

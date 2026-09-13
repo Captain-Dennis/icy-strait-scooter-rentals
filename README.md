@@ -2,10 +2,13 @@
 
 Native iOS 17+ SwiftUI app for renting **4-wheel offroad e-scooters** (quad-style, four knobby all-terrain tires — not 2-wheel kick scooters) at Icy Strait Point.
 
-Open `IcyStraitScooterRentals.xcodeproj` in Xcode 15.4 or later, choose an iPhone Simulator, and run the **Icy Strait Scooter Rentals** scheme.
+Open `IcyStraitScooterRentals.xcodeproj` in Xcode 15.4 or later, choose an iPhone Simulator, and run the **Icy Strait Scooter Rentals** scheme (renters) or **IcyStraitCrew** (staff phones).
 
 Display name: **Icy Strait Scooter Rentals**  
 Bundle ID: `com.icystrait.scooterrentals`
+
+Crew display name: **Icy Strait Crew**  
+Crew bundle ID: `com.icystrait.crew`
 
 ## What you rent
 
@@ -76,15 +79,44 @@ Examples: 60:00 → $75.00; 60:01 → $112.50; 90:00 → $112.50; 90:01 → $150
 3. Check-in stays blocked until both sides are stored.
 4. Completing check-in stops the meter, captures the final POS amount, stores the JPEGs on the rental, frees hourly capacity, and texts active staff to inspect condition.
 
+## Crew app (Icy Strait Crew)
+
+Staff-only second target in the same project. Home is a 6-unit Hoonah lot board (Out / Back, renter, times). Unit detail is that scooter’s history. Roster adds/edits name, phone, email, active. Alert inbox shows the SMS / email / push copy that was queued, per unit.
+
+Sign-in is a beta PIN (`5152`, last four of the front-desk cell) plus the staff list. Not a full auth product.
+
+Starter crew: **Front desk / Dennis** · `+1 (907) 500-5152` · `maddasstoner@yahoo.com` and `f.vhappytimes@gmail.com`.
+
+### Shared event pipe (not on-device mock)
+
+The customer app’s SwiftData store stays on that phone. A rental on a renter device will not appear on a crew phone unless both apps share a live event list.
+
+CloudKit (same Apple team, container `iCloud.com.icystrait.scooterrentals`, query subscriptions / APNs) is compiled in `SharedKit/CloudKitLotStore.swift`. It is **not** entitled on the shipping customer app. Adding iCloud to `com.icystrait.scooterrentals` would require a new App Store profile and can break the current TestFlight upload. Optional entitlement files:
+
+- `IcyStraitScooterRentals/IcyStraitScooterRentals-CloudKit.entitlements`
+- `IcyStraitCrew/IcyStraitCrew-CloudKit.entitlements`
+
+v1 live pipe is a tiny HTTP JSON server both apps POST/GET:
+
+```text
+python3 tools/rental-events-server/server.py --port 8787
+```
+
+Point both apps at that host (Settings in the customer app, Roster → Pipe in Crew). Default is `http://127.0.0.1:8787` (Simulator on the same Mac). On two physical phones, use a LAN/public URL. `NSAllowsLocalNetworking` is on; no Twilio keys.
+
+On real checkout and check-in the customer app publishes a per-unit event (`scooterID`, `scooterName`, `rentalID`, renter display name if known, `startedAt`, `endedAt`) and queues mock SMS + email + a push payload. Notification text names the exact unit (e.g. `IS-104 Otter`), the renter if known, and Alaska time. Live APNs and live SMS are **not** claimed: Twilio stays a stub; push copy is stored and shown in Crew; local notifications fire when Crew is running or gets a refresh.
+
+Mock POS, season, hours, pricing, and per-unit QR stickers are unchanged.
+
 ## Staff SMS
 
 `StaffNotifier` + **`MockStaffNotifier`** (default). `TwilioSMSNotifier` is a compile-ready stub and does **not** send traffic or require API keys.
 
-- SwiftData `StaffMember`: id, display name, phone (E.164), active flag.
+- SwiftData `StaffMember`: id, display name, phone (E.164), emails, active flag.
 - **My rentals → gear → Staff roster**: list, add, edit, disable, delete.
-- Seeded once: **Front desk** · `9075005152` / `+19075005152` / **+1 (907) 500-5152** (editable). Deleting the roster does not recreate it on next launch.
-- Checkout and check-in notify **every active** staff member.
-- Simulator shows an orange **SMS sent** banner and a log in Settings. Message includes rental id, scooter id/name, start or return time; returns note that left/right condition photos were submitted.
+- Seeded once: **Front desk / Dennis** · `9075005152` / `+19075005152` / **+1 (907) 500-5152** · `maddasstoner@yahoo.com`, `f.vhappytimes@gmail.com` (editable). Deleting the roster does not recreate it on next launch.
+- Checkout and check-in notify **every active** staff member (mock SMS + email copy) and publish the same event to the crew pipe.
+- Simulator shows an orange **SMS sent** banner and a log in Settings. Message includes the exact unit (`IS-104 Otter`), renter if known, and time; returns note that left/right condition photos were submitted.
 
 To send real SMS later: implement `StaffNotifier` with Twilio (or swap in `TwilioSMSNotifier` after setting `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_FROM_NUMBER`) and point it at the active roster numbers.
 
@@ -159,11 +191,15 @@ Camera scanning needs a physical device. On Simulator:
 
 ## Persistence
 
-SwiftData on device: scooters, rentals, agreement acceptances, return photos (external storage), POS ledger, staff roster, SMS log.
+SwiftData on device: scooters, rentals, agreement acceptances, return photos (external storage), POS ledger, staff roster, SMS log. Live lot events for Crew live on the HTTP pipe (and CloudKit when entitled), not in the customer phone’s SwiftData.
 
 ## Tests
 
-Product target `IcyStraitScooterRentalsTests` covers billing increments, the 6/hour cap, the five-section agreement gate, left+right return photos, unique-per-scooter QR parsing (and rejection of shared/unknown codes), rental records bound to the scanned unit ID, and mock staff fan-out to multiple numbers.
+Product target `IcyStraitScooterRentalsTests` covers billing increments, the 6/hour cap, the five-section agreement gate, left+right return photos, unique-per-scooter QR parsing (and rejection of shared/unknown codes), rental records bound to the scanned unit ID, mock staff fan-out to multiple numbers, Dennis emails, and the shared crew event pipe (per-unit checkout/return events, board Out/Back, notification payloads that name the exact unit).
+
+```text
+python3 tools/rental-events-server/test_server.py
+```
 
 ```text
 Product → Test
@@ -178,8 +214,8 @@ Root `codemagic.yaml` builds the native iOS app and uploads to TestFlight. There
 | Setting | Value |
 | --- | --- |
 | Project | `IcyStraitScooterRentals.xcodeproj` |
-| Scheme | `IcyStraitScooterRentals` |
-| Bundle ID | `com.icystrait.scooterrentals` |
+| Scheme | `IcyStraitScooterRentals` (customer). Crew is `IcyStraitCrew` — see the commented second-workflow note in `codemagic.yaml`. |
+| Bundle ID | `com.icystrait.scooterrentals` (customer). Crew: `com.icystrait.crew` (needs its own App Store Connect record before a second workflow). |
 | `distribution_type` | `app_store` |
 | `submit_to_testflight` | `true` |
 | App Store Connect integration name | **`APP_STORE_CONNECT_INTEGRATION_NAME_TBD`** (placeholder) |
@@ -200,5 +236,7 @@ Do not commit `.p8`, `.p12`, provisioning profiles, or API tokens.
 - Calendar is the 2027 season; live checkout uses the device clock unless season hours are enforced.
 - Sample 2027 occupancy is a curated set of days, not every calendar day, so first launch stays fast.
 - Return photos are **left and right only** (not front/back).
-- SMS failure never rolls back a successful checkout or check-in.
+- SMS / event-pipe failure never rolls back a successful checkout or check-in.
 - Agreement and area-of-operation text is draft placeholder for counsel.
+- Customer TestFlight stays on empty entitlements. The live crew board uses the tiny HTTP event pipe; CloudKit is compiled and optional.
+- Live APNs and live Twilio SMS are not claimed in v1. Mock copies and local crew notifications are.
