@@ -69,6 +69,12 @@ EXISTING_CREW_SOURCES = [
     ("09C068A9B4926FE4E899F08D", "C0DE05000000000000000011", "StaffServices.swift"),
     ("541DFA80D782ED4B5F712400", "C0DE05000000000000000012", "StaffRosterView.swift"),
     ("22E12ECDEA35511CD68B4E77", "C0DE05000000000000000013", "AppPreferences.swift"),
+    # Types referenced by the files above. Missing these from Crew is
+    # "cannot find type in scope" on archive (SharedComponents/Rental/AppPreferences).
+    ("85B7339AD0C8A9A3216A7E8C", "C0DE05000000000000000015", "Scooter.swift"),
+    ("C5165AC808D412184357660D", "C0DE05000000000000000016", "CapacityCalculator.swift"),
+    ("C098FE7136E65CB524F8E267", "C0DE05000000000000000017", "POSProvider.swift"),
+    ("1E94C380D7CCB87862E5FA25", "C0DE05000000000000000018", "MockPOSProvider.swift"),
 ]
 
 # Existing file refs for those build files
@@ -92,6 +98,10 @@ EXISTING_FILE_REFS = {
     "StaffServices.swift": "520DB5C7948A34B13AAFF379",
     "StaffRosterView.swift": "FE1826D20AB2EE3CDAF7F7B0",
     "AppPreferences.swift": "C8EB231E36A084F6537CD9E2",
+    "Scooter.swift": "8E78DA695488BBC03D18FF2F",
+    "CapacityCalculator.swift": "38A33EEF4669FC7112993137",
+    "POSProvider.swift": "02789EE956C55D0ECF33CFD4",
+    "MockPOSProvider.swift": "37B4C15ECC87683FE24145EA",
     "Assets.xcassets": "D2BAA48C14157B374334CB7C",
 }
 
@@ -110,10 +120,44 @@ def file_ref(fid: str, name: str, path: str | None = None, ftype: str = "sourcec
     )
 
 
+def ensure_crew_sources(text: str) -> str:
+    """Add any EXISTING_CREW_SOURCES still missing from the Crew compile phase."""
+    added_build = ""
+    added_phase = ""
+    for _old_build, new_build, name in EXISTING_CREW_SOURCES:
+        phase_line = f"\t\t\t\t{new_build} /* {name} in Sources */,\n"
+        if phase_line in text:
+            continue
+        fid = EXISTING_FILE_REFS[name]
+        added_build += build_file(new_build, fid, name)
+        added_phase += phase_line
+    if not added_phase:
+        return text
+
+    if added_build:
+        text = text.replace(
+            "/* End PBXBuildFile section */",
+            added_build + "/* End PBXBuildFile section */",
+        )
+
+    # Crew-only compile IDs; insert after the last existing shared customer source.
+    marker = "\t\t\t\tC0DE05000000000000000013 /* AppPreferences.swift in Sources */,\n"
+    if marker not in text:
+        raise SystemExit("Crew Sources phase marker AppPreferences.swift not found")
+    text = text.replace(marker, marker + added_phase, 1)
+    print("Added missing Crew sources:\n" + added_phase)
+    return text
+
+
 def main() -> None:
     text = PBX.read_text()
     if "IcyStraitCrew" in text and "C0DE03000000000000000001" in text:
-        print("Already patched")
+        updated = ensure_crew_sources(text)
+        if updated != text:
+            PBX.write_text(updated)
+            print("Updated", PBX)
+        else:
+            print("Already patched")
         return
 
     build_entries = ""

@@ -102,6 +102,10 @@
 		C0DE05000000000000000011 /* StaffServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520DB5C7948A34B13AAFF379 /* StaffServices.swift */; };
 		C0DE05000000000000000012 /* StaffRosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1826D20AB2EE3CDAF7F7B0 /* StaffRosterView.swift */; };
 		C0DE05000000000000000013 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EB231E36A084F6537CD9E2 /* AppPreferences.swift */; };
+		C0DE05000000000000000015 /* Scooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E78DA695488BBC03D18FF2F /* Scooter.swift */; };
+		C0DE05000000000000000016 /* CapacityCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A33EEF4669FC7112993137 /* CapacityCalculator.swift */; };
+		C0DE05000000000000000017 /* POSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02789EE956C55D0ECF33CFD4 /* POSProvider.swift */; };
+		C0DE05000000000000000018 /* MockPOSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B4C15ECC87683FE24145EA /* MockPOSProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -745,6 +749,10 @@
 				C0DE05000000000000000011 /* StaffServices.swift in Sources */,
 				C0DE05000000000000000012 /* StaffRosterView.swift in Sources */,
 				C0DE05000000000000000013 /* AppPreferences.swift in Sources */,
+				C0DE05000000000000000015 /* Scooter.swift in Sources */,
+				C0DE05000000000000000016 /* CapacityCalculator.swift in Sources */,
+				C0DE05000000000000000017 /* POSProvider.swift in Sources */,
+				C0DE05000000000000000018 /* MockPOSProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
