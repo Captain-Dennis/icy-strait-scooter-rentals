@@ -76,12 +76,11 @@ workflows:
         submit_to_testflight: true
         submit_to_app_store: false
 
-  # Icy Strait Crew TestFlight. Ready except the numeric Apple ID and
-  # the actual `crew_app_store` provisioning profile. Captain Bot creates
-  # the App Store Connect app, then fills APP_STORE_APPLE_ID and generates
-  # the profile in Codemagic. Do not invent an Apple ID. Do not reuse the
-  # customer `app_store` profile. No triggering here — do not start a live
-  # Codemagic build until those two items exist.
+  # Icy Strait Crew TestFlight. Apple ID 6811694954 is set. Still needs
+  # the actual `crew_app_store` provisioning profile generated in
+  # Codemagic for com.icystrait.crew. Do not reuse the customer
+  # `app_store` profile. No triggering here — do not start a live
+  # Codemagic build until that profile exists.
   ios-crew-testflight:
     name: iOS Crew TestFlight
     max_build_duration: 120
@@ -92,7 +91,7 @@ workflows:
       ios_signing:
         # Distinct profile for com.icystrait.crew. Same team Distribution
         # cert is valid for both bundle IDs. Generate `crew_app_store` in
-        # Codemagic after the Crew App Store Connect app exists.
+        # Codemagic; do not reuse the customer `app_store` profile.
         provisioning_profiles:
           - crew_app_store
         certificates:
@@ -101,11 +100,9 @@ workflows:
         BUNDLE_ID: com.icystrait.crew
         XCODE_PROJECT: IcyStraitScooterRentals.xcodeproj
         XCODE_SCHEME: IcyStraitCrew
-        # TODO: Captain Bot will replace CREW_APP_STORE_APPLE_ID_PENDING
-        # with the numeric App Store Connect Apple ID (App Information)
-        # after creating the Icy Strait Crew app. Not a bundle ID. Do
-        # not invent a number. The Crew ASC app is not claimed to exist.
-        APP_STORE_APPLE_ID: CREW_APP_STORE_APPLE_ID_PENDING
+        # Numeric App Store Connect Apple ID (App Information) for
+        # Icy Strait Crew (com.icystrait.crew). Not a placeholder.
+        APP_STORE_APPLE_ID: 6811694954
       xcode: latest
     scripts:
       - name: Set up code signing settings on Xcode project
@@ -119,8 +116,8 @@ workflows:
           #!/bin/sh
           set -euo pipefail
           cd "$CM_BUILD_DIR"
-          # Same increment-build pattern as ios-testflight. Query fails
-          # until APP_STORE_APPLE_ID is a real numeric Apple ID.
+          # Same increment-build pattern as ios-testflight. 6811694954 is
+          # the real Crew App Store Connect Apple ID.
           MIN_BUILD_NUMBER=3
           LATEST_BUILD_NUMBER=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APPLE_ID" || true)
           if [ -n "${LATEST_BUILD_NUMBER:-}" ] && [ "$LATEST_BUILD_NUMBER" -eq "$LATEST_BUILD_NUMBER" ] 2>/dev/null; then
