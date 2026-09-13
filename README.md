@@ -210,16 +210,19 @@ Product → Test
 
 GitHub (Codemagic source): https://github.com/cotd99/icy-strait-scooter-rentals  
 
-Root `codemagic.yaml` builds the native iOS app and uploads to TestFlight. There are no CocoaPods and no secrets in the repo.
+Root `codemagic.yaml` has two TestFlight workflows. There are no CocoaPods and no secrets in the repo. Neither workflow is triggered from this file.
 
-| Setting | Value |
-| --- | --- |
-| Project | `IcyStraitScooterRentals.xcodeproj` |
-| Scheme | `IcyStraitScooterRentals` (customer). Crew is `IcyStraitCrew` — see the commented second-workflow note in `codemagic.yaml`. |
-| Bundle ID | `com.icystrait.scooterrentals` (customer). Crew: `com.icystrait.crew` (needs its own App Store Connect record before a second workflow). |
-| `distribution_type` | `app_store` |
-| `submit_to_testflight` | `true` |
-| App Store Connect integration name | **`APP_STORE_CONNECT_INTEGRATION_NAME_TBD`** (placeholder) |
+| Setting | Customer `ios-testflight` | Crew `ios-crew-testflight` |
+| --- | --- | --- |
+| Name | iOS TestFlight | iOS Crew TestFlight |
+| Project | `IcyStraitScooterRentals.xcodeproj` | `IcyStraitScooterRentals.xcodeproj` |
+| Scheme | `IcyStraitScooterRentals` | `IcyStraitCrew` |
+| Bundle ID | `com.icystrait.scooterrentals` | `com.icystrait.crew` |
+| Apple ID | `6810469934` | `CREW_APP_STORE_APPLE_ID_PENDING` (Captain Bot fills this after creating the App Store Connect app — do not invent a number) |
+| Profile ref | `app_store` | `crew_app_store` (generate in Codemagic after the Crew ASC app exists; do not reuse `app_store`) |
+| Certificate | `ios-distribution` | `ios-distribution` (same team cert) |
+| `submit_to_testflight` | `true` | `true` |
+| App Store Connect integration | **Escooter rental** | **Escooter rental** |
 
 Replace the integration name in `codemagic.yaml` with the **exact** name of the App Store Connect API key you add in Codemagic:
 
@@ -227,7 +230,7 @@ Replace the integration name in `codemagic.yaml` with the **exact** name of the 
 2. Add the `.p8` key from App Store Connect (Users and Access → Integrations → App Store Connect API).  
 3. Copy that Codemagic key name into `integrations.app_store_connect`.  
 4. Codemagic → Team settings → codemagic.yaml settings → Code signing identities: Apple Distribution certificate + App Store profile for `com.icystrait.scooterrentals`.  
-5. Replace `APP_STORE_APPLE_ID_TBD` with the numeric Apple ID from App Store Connect → App Information (not the bundle ID). Create the App Store Connect app record before the first automated upload.
+5. Customer Apple ID `6810469934` is already set. After Captain Bot creates the Crew App Store Connect app, replace `CREW_APP_STORE_APPLE_ID_PENDING` with that numeric Apple ID (App Information, not the bundle ID) and generate the `crew_app_store` profile for `com.icystrait.crew`. Do not start a Crew Codemagic build until both exist.
 
 Do not commit `.p8`, `.p12`, provisioning profiles, or API tokens.
 
