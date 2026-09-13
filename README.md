@@ -218,8 +218,8 @@ Root `codemagic.yaml` has two TestFlight workflows. There are no CocoaPods and n
 | Project | `IcyStraitScooterRentals.xcodeproj` | `IcyStraitScooterRentals.xcodeproj` |
 | Scheme | `IcyStraitScooterRentals` | `IcyStraitCrew` |
 | Bundle ID | `com.icystrait.scooterrentals` | `com.icystrait.crew` |
-| Apple ID | `6810469934` | `CREW_APP_STORE_APPLE_ID_PENDING` (Captain Bot fills this after creating the App Store Connect app — do not invent a number) |
-| Profile ref | `app_store` | `crew_app_store` (generate in Codemagic after the Crew ASC app exists; do not reuse `app_store`) |
+| Apple ID | `6810469934` | `6811694954` |
+| Profile ref | `app_store` | `crew_app_store` (generate in Codemagic; do not reuse `app_store`) |
 | Certificate | `ios-distribution` | `ios-distribution` (same team cert) |
 | `submit_to_testflight` | `true` | `true` |
 | App Store Connect integration | **Escooter rental** | **Escooter rental** |
@@ -230,7 +230,7 @@ Replace the integration name in `codemagic.yaml` with the **exact** name of the 
 2. Add the `.p8` key from App Store Connect (Users and Access → Integrations → App Store Connect API).  
 3. Copy that Codemagic key name into `integrations.app_store_connect`.  
 4. Codemagic → Team settings → codemagic.yaml settings → Code signing identities: Apple Distribution certificate + App Store profile for `com.icystrait.scooterrentals`.  
-5. Customer Apple ID `6810469934` is already set. After Captain Bot creates the Crew App Store Connect app, replace `CREW_APP_STORE_APPLE_ID_PENDING` with that numeric Apple ID (App Information, not the bundle ID) and generate the `crew_app_store` profile for `com.icystrait.crew`. Do not start a Crew Codemagic build until both exist.
+5. Customer Apple ID `6810469934` (`com.icystrait.scooterrentals`) and Crew Apple ID `6811694954` (Icy Strait Crew, `com.icystrait.crew`) are already set. Generate the `crew_app_store` profile for `com.icystrait.crew`. Do not start a Crew Codemagic build until that profile exists.
 
 Do not commit `.p8`, `.p12`, provisioning profiles, or API tokens.
 
