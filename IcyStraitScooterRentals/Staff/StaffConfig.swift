@@ -4,7 +4,14 @@ enum StaffConfig {
     static let defaultNational = "9075005152"
     static let defaultE164 = "+19075005152"
     static let defaultDisplay = "+1 (907) 500-5152"
-    static let starterName = "Front desk"
+    static let starterName = "Front desk / Dennis"
+    static let defaultEmails = [
+        "maddasstoner@yahoo.com",
+        "f.vhappytimes@gmail.com"
+    ]
+    /// Beta Crew unlock. Last four of the front-desk cell. Not a product auth system.
+    static let betaPIN = "5152"
+    static let starterStaffID = UUID(uuidString: "00000000-0000-4000-8000-000000005152")!
 
     static func normalize(_ raw: String) -> String {
         let digits = raw.filter(\.isNumber)
@@ -33,6 +40,22 @@ enum StaffConfig {
         let digits = normalize(raw).filter(\.isNumber)
         return digits.count == 11 && digits.hasPrefix("1")
     }
+
+    static func parseEmails(_ raw: String) -> [String] {
+        raw
+            .split(whereSeparator: { $0 == "," || $0 == ";" || $0.isNewline })
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+            .filter { $0.contains("@") && $0.contains(".") }
+    }
+
+    static func joinEmails(_ emails: [String]) -> String {
+        emails.joined(separator: ", ")
+    }
+
+    static func isValidEmail(_ raw: String) -> Bool {
+        let value = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        return value.contains("@") && value.contains(".")
+    }
 }
 
 struct StaffMessage: Equatable, Sendable {
@@ -47,16 +70,28 @@ struct StaffMessage: Equatable, Sendable {
     var scooterName: String
     var occurredAt: Date
     var extraNote: String
+    var renterDisplayName: String? = nil
+
+    var unitLabel: String { "\(scooterID) \(scooterName)" }
+
+    var renterLabel: String {
+        let trimmed = renterDisplayName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        return trimmed.isEmpty ? "Guest" : trimmed
+    }
 
     func body() -> String {
-        let time = occurredAt.formatted(date: .abbreviated, time: .shortened)
-        let shortID = String(rentalID.uuidString.prefix(8))
-        switch kind {
-        case .checkout:
-            return "Icy Strait: \(scooterID) \(scooterName) checkout. Rental \(shortID) started \(time). Stage that exact unit — not another scooter."
-        case .checkIn:
-            return "Icy Strait: \(scooterID) \(scooterName) return. Rental \(shortID) checked in \(time). \(extraNote)"
-        }
+        let eventKind: RentalLifecycleEvent.Kind = kind == .checkout ? .checkout : .returned
+        let event = RentalLifecycleEvent(
+            kind: eventKind,
+            scooterID: scooterID,
+            scooterName: scooterName,
+            rentalID: rentalID,
+            renterDisplayName: renterDisplayName,
+            startedAt: occurredAt,
+            endedAt: kind == .checkIn ? occurredAt : nil,
+            occurredAt: occurredAt
+        )
+        return CrewAlertCopy.smsBody(for: event, extraNote: extraNote)
     }
 }
 
@@ -64,16 +99,37 @@ struct StaffDispatch: Equatable, Identifiable, Sendable {
     var id: UUID
     var staffName: String
     var phoneE164: String
+    var email: String?
+    var channel: StaffAlertChannel
     var body: String
     var sentAt: Date
     var kind: StaffMessage.Kind
     var rentalID: UUID
     var providerName: String
+    var liveDelivery: Bool
 
     var displayPhone: String { StaffConfig.display(phoneE164) }
 
+    var address: String {
+        switch channel {
+        case .sms:
+            return phoneE164
+        case .email:
+            return email ?? ""
+        case .push:
+            return "apns-not-wired"
+        }
+    }
+
     var bannerText: String {
-        "SMS sent to \(staffName) · \(displayPhone)"
+        switch channel {
+        case .sms:
+            return "SMS sent to \(staffName) · \(displayPhone)"
+        case .email:
+            return "Email queued to \(staffName) · \(email ?? "")"
+        case .push:
+            return "Push payload ready · \(staffName)"
+        }
     }
 }
 

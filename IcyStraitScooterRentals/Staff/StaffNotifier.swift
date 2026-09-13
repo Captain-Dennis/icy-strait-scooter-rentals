@@ -19,20 +19,45 @@ actor MockStaffNotifier: StaffNotifier {
         if simulatedDelayNanoseconds > 0 {
             try await Task.sleep(nanoseconds: simulatedDelayNanoseconds)
         }
-        let active = recipients.filter { !$0.phoneE164.isEmpty }
+        let active = recipients.filter { $0.hasContact }
         guard !active.isEmpty else { throw StaffNotifyError.noRecipients }
         let body = message.body()
-        let batch: [StaffDispatch] = active.map { person in
-            StaffDispatch(
-                id: UUID(),
-                staffName: person.displayName,
-                phoneE164: person.phoneE164,
-                body: body,
-                sentAt: .now,
-                kind: message.kind,
-                rentalID: message.rentalID,
-                providerName: providerName
-            )
+        var batch: [StaffDispatch] = []
+        for person in active {
+            if !person.phoneE164.isEmpty {
+                batch.append(
+                    StaffDispatch(
+                        id: UUID(),
+                        staffName: person.displayName,
+                        phoneE164: person.phoneE164,
+                        email: nil,
+                        channel: .sms,
+                        body: body,
+                        sentAt: .now,
+                        kind: message.kind,
+                        rentalID: message.rentalID,
+                        providerName: providerName,
+                        liveDelivery: false
+                    )
+                )
+            }
+            for email in person.emails {
+                batch.append(
+                    StaffDispatch(
+                        id: UUID(),
+                        staffName: person.displayName,
+                        phoneE164: person.phoneE164,
+                        email: email,
+                        channel: .email,
+                        body: body,
+                        sentAt: .now,
+                        kind: message.kind,
+                        rentalID: message.rentalID,
+                        providerName: providerName,
+                        liveDelivery: false
+                    )
+                )
+            }
         }
         outbox.append(contentsOf: batch)
         return batch

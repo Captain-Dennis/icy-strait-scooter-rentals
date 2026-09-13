@@ -19,6 +19,7 @@ enum RentalOperations {
     ) throws {
         guard let scooter else { throw CheckoutError.unknownScooter }
         guard FleetCatalog.isKnown(scooter.scooterID) else { throw CheckoutError.unknownScooter }
+        guard FleetCatalog.isRentableNow(scooter.scooterID) else { throw CheckoutError.nextSeasonNotOnLot }
         guard scooter.isInService else { throw CheckoutError.outOfService }
         if activeRental(for: scooter.scooterID, in: rentals) != nil {
             throw CheckoutError.alreadyRented
@@ -31,7 +32,12 @@ enum RentalOperations {
             if !Season.isDuringHours(now) { throw CheckoutError.outsideHours }
         }
         let snaps = snapshots(from: rentals)
-        if !CapacityCalculator.hasCapacity(rentals: snaps, at: now, now: now) {
+        if !CapacityCalculator.hasCapacity(
+            rentals: snaps,
+            at: now,
+            now: now,
+            capacity: FleetCatalog.liveCapacityPerHour
+        ) {
             throw CheckoutError.hourFull
         }
     }

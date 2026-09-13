@@ -67,6 +67,15 @@ final class Rental {
 
     var isActive: Bool { endedAt == nil && status == .active }
 
+    /// Walk-up checkout does not collect a legal name. Use the email if it is not the demo guest.
+    var renterLabel: String {
+        let email = customerEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+        if email.isEmpty || email == "guest@icystraitscooters.example" {
+            return "Guest"
+        }
+        return email
+    }
+
     var returnPayload: QRPayload {
         .returnRental(rentalID: rentalID, token: returnToken)
     }

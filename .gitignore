@@ -9,4 +9,8 @@ DerivedData/
 *.dSYM
 .swiftpm/
 build/
+tools/rental-events-server/lot-events.json
+tools/rental-events-server/*.tmp
+__pycache__/
+*.pyc
 agent-tools/

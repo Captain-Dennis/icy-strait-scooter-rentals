@@ -34,6 +34,7 @@ final class POSEnvironment {
 
 enum CheckoutError: LocalizedError, Equatable {
     case unknownScooter
+    case nextSeasonNotOnLot
     case outOfService
     case alreadyRented
     case hourFull
@@ -50,12 +51,14 @@ enum CheckoutError: LocalizedError, Equatable {
         switch self {
         case .unknownScooter:
             return "That scooter ID is not in the Icy Strait fleet."
+        case .nextSeasonNotOnLot:
+            return "That unit is cataloged for the 2027 season. It is not on the lot and is not rentable. Only IS-101 Glacier is live today."
         case .outOfService:
             return "This 4-wheel offroad e-scooter is tagged out of service."
         case .alreadyRented:
             return "This unit already has an active rental."
         case .hourFull:
-            return "This hour is at capacity (6 of 6). Try the next open slot."
+            return "This hour is at capacity. Only IS-101 Glacier is on the lot today."
         case .outsideSeason:
             return "Rentals run May 1–September 30, 2027 only."
         case .outsideHours:

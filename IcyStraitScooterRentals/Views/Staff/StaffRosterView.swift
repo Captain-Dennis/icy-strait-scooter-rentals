@@ -4,6 +4,7 @@ import SwiftUI
 struct StaffRosterView: View {
     @Query(sort: \StaffMember.displayName) private var staff: [StaffMember]
     @Environment(\.modelContext) private var modelContext
+    @Environment(StaffServices.self) private var staffServices
     @State private var editor: StaffDraft?
     @State private var confirmDelete: StaffMember?
 
@@ -38,7 +39,12 @@ struct StaffRosterView: View {
                                 Text(person.displayPhone)
                                     .font(.subheadline.monospaced())
                                     .foregroundStyle(Brand.silver)
-                                Text(person.isActive ? "Active — receives SMS" : "Disabled")
+                                if !person.emails.isEmpty {
+                                    Text(person.emails.joined(separator: ", "))
+                                        .font(.caption)
+                                        .foregroundStyle(Brand.silver)
+                                }
+                                Text(person.isActive ? "Active — receives SMS + email copy" : "Disabled")
                                     .font(.caption)
                                     .foregroundStyle(person.isActive ? Brand.ok : Brand.silver)
                             }
@@ -98,21 +104,26 @@ struct StaffRosterView: View {
 
     private func save(_ draft: StaffDraft) {
         let phone = StaffConfig.normalize(draft.phone)
+        let emails = StaffConfig.parseEmails(draft.emails)
         if let existing = staff.first(where: { $0.staffID == draft.id }) {
             existing.displayName = draft.name.trimmingCharacters(in: .whitespacesAndNewlines)
             existing.phoneE164 = phone
+            existing.emails = emails
             existing.isActive = draft.isActive
+            existing.updatedAt = .now
         } else {
             modelContext.insert(
                 StaffMember(
                     staffID: draft.id,
                     displayName: draft.name.trimmingCharacters(in: .whitespacesAndNewlines),
                     phoneE164: phone,
+                    emails: emails,
                     isActive: draft.isActive
                 )
             )
         }
         try? modelContext.save()
+        Task { await staffServices.pushLocalRoster(modelContext) }
     }
 }
 
@@ -120,6 +131,7 @@ struct StaffDraft: Identifiable, Equatable {
     var id: UUID
     var name: String
     var phone: String
+    var emails: String
     var isActive: Bool
     var isNew: Bool
 
@@ -127,6 +139,7 @@ struct StaffDraft: Identifiable, Equatable {
         id = UUID()
         name = ""
         phone = ""
+        emails = ""
         isActive = true
         isNew = true
     }
@@ -135,6 +148,7 @@ struct StaffDraft: Identifiable, Equatable {
         id = person.staffID
         name = person.displayName
         phone = person.phoneE164
+        emails = StaffConfig.joinEmails(person.emails)
         isActive = person.isActive
         isNew = false
     }
@@ -151,8 +165,10 @@ struct StaffEditorView: View {
     }
 
     private var canSave: Bool {
-        !draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let emails = StaffConfig.parseEmails(draft.emails)
+        return !draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             && StaffConfig.isValidPhone(draft.phone)
+            && (draft.emails.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !emails.isEmpty)
     }
 
     var body: some View {
@@ -162,7 +178,10 @@ struct StaffEditorView: View {
                     TextField("Display name", text: $draft.name)
                     TextField("Cell phone", text: $draft.phone)
                         .keyboardType(.phonePad)
-                    Toggle("Active — receive SMS", isOn: $draft.isActive)
+                    TextField("Email (comma-separated)", text: $draft.emails)
+                        .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                    Toggle("Active — receive SMS + email copy", isOn: $draft.isActive)
                 }
                 .listRowBackground(Brand.card)
 

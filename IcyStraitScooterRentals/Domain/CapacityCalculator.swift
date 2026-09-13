@@ -18,21 +18,23 @@ enum CapacityCalculator {
         rentals: [RentalSnapshot],
         slotStart: Date,
         slotEnd: Date,
-        now: Date
+        now: Date,
+        capacity: Int = CapacityCalculator.maxPerHour
     ) -> Int {
-        max(0, maxPerHour - occupancy(rentals: rentals, slotStart: slotStart, slotEnd: slotEnd, now: now))
+        max(0, capacity - occupancy(rentals: rentals, slotStart: slotStart, slotEnd: slotEnd, now: now))
     }
 
     static func hasCapacity(
         rentals: [RentalSnapshot],
         at date: Date,
-        now: Date
+        now: Date,
+        capacity: Int = CapacityCalculator.maxPerHour
     ) -> Bool {
         let hour = AppTimeZone.calendar.component(.hour, from: date)
         let day = AppTimeZone.calendar.startOfDay(for: date)
         let start = Season.slotStart(on: day, hour: hour)
         let end = Season.slotEnd(on: day, hour: hour)
-        return remaining(rentals: rentals, slotStart: start, slotEnd: end, now: now) > 0
+        return remaining(rentals: rentals, slotStart: start, slotEnd: end, now: now, capacity: capacity) > 0
     }
 
     static func overlaps(
