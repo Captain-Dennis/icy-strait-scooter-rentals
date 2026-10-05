@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Silhouette of the official 4-wheel offroad e-scooter.
 /// Do not substitute SF Symbol `scooter` — that glyph is a 2-wheel kick scooter.
@@ -76,5 +77,71 @@ struct FleetHeroImage: View {
                     .strokeBorder(Brand.cardStroke, lineWidth: 1)
             )
             .accessibilityLabel("Official 4-wheel offroad e-scooter with bright orange frame, black fenders, and knobby all-terrain tires")
+    }
+}
+
+/// Asset names match the unit-photo imagesets (`UnitIS101` … `UnitIS106`).
+/// Screens ask for a unit id; a later catalog `photoAssetName` can replace this lookup.
+enum FleetPhoto {
+    static func assetName(for scooterID: String) -> String {
+        let normalized = QRPayload.normalizeScooterID(scooterID)
+        guard FleetCatalog.unit(id: normalized) != nil else { return "FleetHero" }
+        let compact = normalized.filter { $0.isLetter || $0.isNumber }
+        return "Unit\(compact)"
+    }
+}
+
+/// One physical unit. Full-width hero, or a square thumb when `thumb` is set.
+struct UnitPhoto: View {
+    var scooterID: String
+    var unitName: String
+    var height: CGFloat = 160
+    var cornerRadius: CGFloat = 16
+    var thumb: CGFloat? = nil
+
+    private var assetName: String { FleetPhoto.assetName(for: scooterID) }
+
+    var body: some View {
+        framed
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .strokeBorder(Brand.cardStroke, lineWidth: 1)
+            )
+            .accessibilityLabel("Photo of \(scooterID) \(unitName)")
+    }
+
+    @ViewBuilder
+    private var framed: some View {
+        if let thumb {
+            photo
+                .frame(width: thumb, height: thumb)
+                .clipped()
+        } else {
+            photo
+                .frame(maxWidth: .infinity)
+                .frame(height: height)
+                .clipped()
+        }
+    }
+
+    @ViewBuilder
+    private var photo: some View {
+        if UIImage(named: assetName) != nil {
+            Image(assetName)
+                .resizable()
+                .scaledToFill()
+        } else if UIImage(named: "FleetHero") != nil {
+            Image("FleetHero")
+                .resizable()
+                .scaledToFill()
+        } else {
+            ZStack {
+                Brand.slate
+                Text(scooterID)
+                    .font(BrandFont.mono(CGFloat(thumb == nil ? 18 : 11)))
+                    .foregroundStyle(Brand.orange)
+            }
+        }
     }
 }

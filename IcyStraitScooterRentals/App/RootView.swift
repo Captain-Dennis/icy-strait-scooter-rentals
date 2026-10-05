@@ -62,13 +62,18 @@ struct RootView: View {
         Button {
             staff.lastBanner = nil
         } label: {
-            HStack(alignment: .top, spacing: 10) {
-                Image(systemName: "message.fill")
-                Text(text)
-                    .multilineTextAlignment(.leading)
-                Spacer()
+            VStack(alignment: .leading, spacing: 4) {
+                Text("DESK COPY")
+                    .font(BrandFont.eyebrow(10))
+                    .tracking(1.2)
+                HStack(alignment: .top, spacing: 10) {
+                    Image(systemName: "message.fill")
+                    Text(text)
+                        .multilineTextAlignment(.leading)
+                    Spacer(minLength: 0)
+                }
+                .font(.subheadline.weight(.semibold))
             }
-            .font(.subheadline.weight(.semibold))
             .foregroundStyle(.black)
             .padding(12)
             .background(Brand.orange, in: RoundedRectangle(cornerRadius: 14, style: .continuous))

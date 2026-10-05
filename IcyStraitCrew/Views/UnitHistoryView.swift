@@ -11,14 +11,14 @@ struct UnitHistoryView: View {
             VStack(alignment: .leading, spacing: 16) {
                 UnitBoardCard(row: lot.rows.first(where: { $0.scooterID == row.scooterID }) ?? row)
 
-                Text("History")
-                    .font(BrandFont.title(22))
-                    .foregroundStyle(.white)
+                SectionLabel(title: "History")
                 if row.isNextSeason {
                     Text("\(row.unitLabel) is cataloged for the 2027 season. It is not on the lot and is not rentable — not inbound this month.")
+                        .font(.subheadline)
                         .foregroundStyle(Brand.silver)
                 } else if events.isEmpty {
-                    Text("No live events for Glacier yet. A customer checkout on \(row.scooterID) will land here.")
+                    Text("No live events for \(row.scooterName) yet. A customer checkout on \(row.scooterID) will land here.")
+                        .font(.subheadline)
                         .foregroundStyle(Brand.silver)
                 } else {
                     ForEach(events) { event in
@@ -26,11 +26,10 @@ struct UnitHistoryView: View {
                     }
                 }
 
-                Text("Alert copy")
-                    .font(BrandFont.title(22))
-                    .foregroundStyle(.white)
+                SectionLabel(title: "Alert copy")
                 if alerts.isEmpty {
-                    Text("No SMS/push copy for this unit yet.")
+                    Text("No SMS or push copy for this unit yet.")
+                        .font(.subheadline)
                         .foregroundStyle(Brand.silver)
                 } else {
                     ForEach(alerts) { alert in
@@ -62,8 +61,8 @@ struct UnitHistoryView: View {
                 .font(.caption.monospaced())
                 .foregroundStyle(Brand.silver)
         }
-        .padding(14)
+        .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Brand.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .brandCard(radius: 14)
     }
 }

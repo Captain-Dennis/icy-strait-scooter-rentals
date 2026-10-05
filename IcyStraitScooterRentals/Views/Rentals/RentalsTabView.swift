@@ -17,8 +17,14 @@ struct RentalsTabView: View {
                 VStack(alignment: .leading, spacing: 18) {
                     if active.isEmpty && past.isEmpty {
                         EmptyHeroState(
-                            title: "No live rentals yet",
-                            message: "Scan a 4-wheel offroad e-scooter to start. Your active meter and return QR will land here."
+                            title: "The dock is quiet",
+                            message: "Scan Glacier’s stem QR to start. The running charge and return code land here.",
+                            kicker: "Hoonah · Icy Strait Point"
+                        )
+                    } else {
+                        PlaceLockup(
+                            title: "Your rides",
+                            subtitle: "Active meters stay at the top. Tap a ride for the return QR."
                         )
                     }
                     if !active.isEmpty {
@@ -29,6 +35,7 @@ struct RentalsTabView: View {
                             } label: {
                                 rentalRow(rental)
                             }
+                            .buttonStyle(.plain)
                         }
                     }
                     if !past.isEmpty {
@@ -39,6 +46,7 @@ struct RentalsTabView: View {
                             } label: {
                                 rentalRow(rental)
                             }
+                            .buttonStyle(.plain)
                         }
                     }
                     if !samples.isEmpty {
@@ -49,6 +57,7 @@ struct RentalsTabView: View {
                             } label: {
                                 rentalRow(rental)
                             }
+                            .buttonStyle(.plain)
                         }
                     }
                 }
@@ -56,6 +65,7 @@ struct RentalsTabView: View {
             }
             .icyScreenBackground()
             .navigationTitle("My rentals")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Brand.ink, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
@@ -79,32 +89,34 @@ struct RentalsTabView: View {
     }
 
     private func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(BrandFont.headline(18))
-            .foregroundStyle(.white)
+        SectionLabel(title: text)
     }
 
     private func rentalRow(_ rental: Rental) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            FourWheelScooterMark()
-                .frame(width: 56, height: 36)
-            VStack(alignment: .leading, spacing: 4) {
+        HStack(alignment: .center, spacing: 12) {
+            UnitPhoto(
+                scooterID: rental.scooterID,
+                unitName: rental.scooterName,
+                cornerRadius: 10,
+                thumb: 56
+            )
+            VStack(alignment: .leading, spacing: 3) {
                 Text(rental.scooterName)
-                    .font(BrandFont.headline(16))
+                    .font(BrandFont.display(20))
                     .foregroundStyle(.white)
-                Text("\(rental.scooterID) · \(rental.isActive ? "Active" : "Returned")")
+                Text("\(rental.scooterID) · \(rental.isActive ? "Active" : (rental.isSeededSample ? "2027 sample" : "Returned"))")
                     .font(.caption)
-                    .foregroundStyle(Brand.silver)
+                    .foregroundStyle(Brand.tide)
                 Text(rental.startedAt, format: Date.FormatStyle().month(.abbreviated).day().hour().minute())
                     .font(.caption)
                     .foregroundStyle(Brand.silver)
             }
-            Spacer()
+            Spacer(minLength: 8)
             Text(MoneyFormat.string(rental.quotedCharge(at: rental.endedAt ?? .now)))
-                .font(.subheadline.weight(.semibold))
+                .font(BrandFont.headline(15))
                 .foregroundStyle(Brand.orange)
         }
-        .padding(14)
-        .background(Brand.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .padding(12)
+        .brandCard(radius: 16, stroke: rental.isActive ? Brand.orange.opacity(0.4) : Brand.cardStroke)
     }
 }

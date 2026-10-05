@@ -9,72 +9,75 @@ struct CrewSignInView: View {
     @State private var selectedName = StaffConfig.starterName
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            FourWheelScooterMark()
-                .frame(width: 92, height: 56)
-            Text("Icy Strait Crew")
-                .font(BrandFont.title(32))
-                .foregroundStyle(Brand.orange)
-            Text("Staff phones only. Hoonah lot board for the six stem-sticker units.")
-                .font(.body)
-                .foregroundStyle(Brand.silver)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                PlaceLockup(
+                    kicker: "Icy Strait Crew",
+                    title: "Hoonah desk",
+                    subtitle: "Staff phones only. Six stem stickers. Glacier is the live unit."
+                )
+                UnitPhoto(scooterID: "IS-101", unitName: "Glacier", height: 140, cornerRadius: 14)
 
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Who’s on the desk")
-                    .font(BrandFont.headline(14))
-                    .foregroundStyle(Brand.silver)
-                Picker("Operator", selection: $selectedName) {
-                    ForEach(staff.filter(\.isActive), id: \.staffID) { person in
-                        Text(person.displayName).tag(person.displayName)
+                VStack(alignment: .leading, spacing: 8) {
+                    SectionLabel(title: "Who’s on the desk")
+                    Picker("Operator", selection: $selectedName) {
+                        ForEach(staff.filter(\.isActive), id: \.staffID) { person in
+                            Text(person.displayName).tag(person.displayName)
+                        }
+                        if staff.isEmpty {
+                            Text(StaffConfig.starterName).tag(StaffConfig.starterName)
+                        }
                     }
-                    if staff.isEmpty {
-                        Text(StaffConfig.starterName).tag(StaffConfig.starterName)
-                    }
+                    .pickerStyle(.menu)
+                    .tint(Brand.orange)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .brandCard(radius: 12)
                 }
-                .pickerStyle(.menu)
-                .tint(Brand.orange)
+
+                Text(pin.maskedPIN)
+                    .font(BrandFont.mono(32))
+                    .foregroundStyle(.white)
+                    .tracking(6)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .brandCard(radius: 14)
+
+                pinPad
+
+                if let error {
+                    Text(error)
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(Brand.danger)
+                }
+
+                Text("Beta PIN is the last four of the front-desk cell (\(StaffConfig.betaPIN)). This is not a full login product.")
+                    .font(.caption)
+                    .foregroundStyle(Brand.tide)
             }
-
-            Text(pin.maskedPIN)
-                .font(BrandFont.mono(36))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(Brand.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-
-            pinPad
-
-            if let error {
-                Text(error)
-                    .font(.footnote.weight(.semibold))
-                    .foregroundStyle(Brand.danger)
-            }
-
-            Text("Beta PIN is the last four of the front-desk cell (\(StaffConfig.betaPIN)). This is not a full login product.")
-                .font(.footnote)
-                .foregroundStyle(Brand.silver)
-            Spacer()
+            .padding(20)
         }
-        .padding(22)
         .icyScreenBackground()
     }
 
     private var pinPad: some View {
         let keys = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["", "0", "⌫"]]
-        return VStack(spacing: 10) {
+        return VStack(spacing: 8) {
             ForEach(keys, id: \.self) { row in
-                HStack(spacing: 10) {
+                HStack(spacing: 8) {
                     ForEach(row, id: \.self) { key in
                         Button {
                             tap(key)
                         } label: {
                             Text(key)
-                                .font(BrandFont.title(24))
+                                .font(BrandFont.title(22))
                                 .foregroundStyle(.white)
-                                .frame(maxWidth: .infinity, minHeight: 64)
-                                .background(key.isEmpty ? Color.clear : Brand.slate, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                .frame(maxWidth: .infinity, minHeight: 56)
+                                .background(key.isEmpty ? Color.clear : Brand.slate, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                         }
                         .disabled(key.isEmpty)
+                        .buttonStyle(.plain)
                     }
                 }
             }

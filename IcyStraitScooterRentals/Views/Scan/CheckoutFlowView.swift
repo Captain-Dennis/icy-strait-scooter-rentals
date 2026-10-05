@@ -76,27 +76,58 @@ struct CheckoutFlowView: View {
     private var unitStep: some View {
         VStack(spacing: 0) {
             ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
-                    Text("You’re renting \(scooter.scooterID)")
-                        .font(BrandFont.title(28))
-                        .foregroundStyle(Brand.orange)
-                        .accessibilityAddTraits(.isHeader)
-                    Text(scooter.scooterID)
-                        .font(BrandFont.title(44))
-                        .foregroundStyle(.white)
-                    Text(scooter.name)
-                        .font(BrandFont.title(26))
-                        .foregroundStyle(.white)
-                    FleetHeroImage(height: 160)
-                    Text("This QR belongs only to \(scooter.scooterID). Wrong unit? Cancel and scan the sticker on that scooter.")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.white)
-                    Text("This hour · \(remainingThisHour)/\(FleetCatalog.liveCapacityPerHour) open · Glacier only")
-                        .font(BrandFont.headline(16))
-                        .foregroundStyle(remainingThisHour == 0 ? Brand.danger : Brand.ok)
-                    Text("First hour \(MoneyFormat.string(BillingCalculator.firstHour)). Then \(MoneyFormat.string(BillingCalculator.additionalHalfHour)) each extra 30 minutes.")
+                VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("CONFIRM THE UNIT")
+                            .font(BrandFont.eyebrow())
+                            .tracking(1.5)
+                            .foregroundStyle(Brand.orange)
+                        Text("You’re renting \(scooter.scooterID)")
+                            .font(BrandFont.title(22))
+                            .foregroundStyle(.white)
+                            .accessibilityAddTraits(.isHeader)
+                        Text(scooter.name)
+                            .font(BrandFont.display(40))
+                            .foregroundStyle(.white)
+                    }
+                    UnitPhoto(scooterID: scooter.scooterID, unitName: scooter.name, height: 188)
+                    VStack(alignment: .leading, spacing: 8) {
+                        FactChip(text: scooter.dockLabel, symbol: "mappin.and.ellipse")
+                        HStack(spacing: 8) {
+                            FactChip(text: "\(scooter.batteryPercent)% battery", symbol: "bolt.fill")
+                            FactChip(text: "~\(scooter.estimatedRangeMiles) mi", symbol: "arrow.left.and.right")
+                        }
+                    }
+                    Text("This sticker belongs only to \(scooter.scooterID). Wrong scooter? Cancel and scan the one in front of you.")
                         .font(.subheadline)
                         .foregroundStyle(Brand.silver)
+                        .fixedSize(horizontal: false, vertical: true)
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(alignment: .firstTextBaseline) {
+                            Text("First hour")
+                                .font(.subheadline)
+                                .foregroundStyle(Brand.tide)
+                            Spacer()
+                            Text(MoneyFormat.string(BillingCalculator.firstHour))
+                                .font(BrandFont.mono(22))
+                                .foregroundStyle(.white)
+                        }
+                        HStack {
+                            Text("Each extra 30 minutes")
+                                .font(.caption)
+                                .foregroundStyle(Brand.silver)
+                            Spacer()
+                            Text(MoneyFormat.string(BillingCalculator.additionalHalfHour))
+                                .font(BrandFont.headline(15))
+                                .foregroundStyle(.white)
+                        }
+                        Text("This hour · \(remainingThisHour)/\(FleetCatalog.liveCapacityPerHour) open · Glacier only")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(remainingThisHour == 0 ? Brand.danger : Brand.ok)
+                    }
+                    .padding(14)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .brandCard(radius: 16)
                 }
                 .padding(20)
             }
@@ -104,6 +135,7 @@ struct CheckoutFlowView: View {
                 step = .agreements
             }
             .padding(16)
+            .background(Brand.charcoal.ignoresSafeArea(edges: .bottom))
         }
     }
 
