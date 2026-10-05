@@ -11,12 +11,13 @@ enum SharedPipeConfig {
     static let cloudKitStaffRecordType = "CrewMember"
 
     /// UserDefaults switch. Ignored unless this binary was built with `CLOUDKIT_ENTITLED`.
-    /// Missing key reads as false, so shipping and newly entitled builds stay on HTTP.
+    /// A missing key on an entitled build reads as true (TestFlight starts on CloudKit).
+    /// An explicit false forces HTTP. Unentitled builds ignore the key.
     static let preferCloudKitDefaultsKey = "icystrait.preferCloudKit"
 
     /// True only when the target was built with Config/*-CloudKit.xcconfig
     /// (`SWIFT_ACTIVE_COMPILATION_CONDITIONS` includes `CLOUDKIT_ENTITLED`).
-    /// Shipping Debug/Release xcconfigs do not set that flag.
+    /// Release uses those files. Debug stays on the empty-entitlements xcconfigs.
     static var cloudKitEntitled: Bool {
         #if CLOUDKIT_ENTITLED
         true
@@ -25,19 +26,34 @@ enum SharedPipeConfig {
         #endif
     }
 
-    /// Historical name. False on the shipping customer and crew builds.
+    /// Historical name. Matches `cloudKitEntitled` for whichever target compiled this file.
     static var customerCloudKitEntitled: Bool { cloudKitEntitled }
 
     /// Prefer the CloudKit public database when this build is entitled.
     /// Unentitled builds always return false, even if the defaults key is true.
     static var preferCloudKit: Bool {
         get {
-            guard cloudKitEntitled else { return false }
-            return UserDefaults.standard.bool(forKey: preferCloudKitDefaultsKey)
+            resolvedPreferCloudKit(
+                entitled: cloudKitEntitled,
+                stored: UserDefaults.standard.object(forKey: preferCloudKitDefaultsKey)
+            )
         }
         set {
             UserDefaults.standard.set(newValue, forKey: preferCloudKitDefaultsKey)
         }
+    }
+
+    /// Entitled + missing key is on. Entitled + stored false is off. Unentitled is always off.
+    static func resolvedPreferCloudKit(entitled: Bool, stored: Any?) -> Bool {
+        guard entitled else { return false }
+        guard let stored else { return true }
+        if let value = stored as? Bool {
+            return value
+        }
+        if let number = stored as? NSNumber {
+            return number.boolValue
+        }
+        return true
     }
 
     /// The single runtime gate. HTTP remains the store until this is true.

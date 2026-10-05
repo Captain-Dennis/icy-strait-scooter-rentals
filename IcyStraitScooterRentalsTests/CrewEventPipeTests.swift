@@ -139,7 +139,7 @@ final class CrewEventPipeTests: XCTestCase {
         XCTAssertEqual(StaffConfig.parseEmails("maddasstoner@yahoo.com, f.vhappytimes@gmail.com").count, 2)
     }
 
-    func testShippingBuildIgnoresCloudKitPreference() {
+    func testDebugBuildIgnoresCloudKitPreference() {
         let key = SharedPipeConfig.preferCloudKitDefaultsKey
         let previous = UserDefaults.standard.object(forKey: key)
         defer {
@@ -151,11 +151,23 @@ final class CrewEventPipeTests: XCTestCase {
         }
         UserDefaults.standard.set(true, forKey: key)
         SharedPipeConfig.preferCloudKit = true
+        // Debug (this test host) is not CLOUDKIT_ENTITLED. Release archives are.
         XCTAssertFalse(SharedPipeConfig.cloudKitEntitled)
         XCTAssertFalse(SharedPipeConfig.customerCloudKitEntitled)
         XCTAssertFalse(SharedPipeConfig.preferCloudKit)
         XCTAssertFalse(SharedPipeConfig.usesCloudKit)
         XCTAssertEqual(SharedPipeConfig.liveStoreName, "HTTPLotStore")
+        XCTAssertEqual(SharedPipeConfig.cloudKitContainer, "iCloud.com.icystrait.scooterrentals")
+    }
+
+    func testEntitledBuildPrefersCloudKitUntilTurnedOff() {
+        XCTAssertTrue(SharedPipeConfig.resolvedPreferCloudKit(entitled: true, stored: nil))
+        XCTAssertTrue(SharedPipeConfig.resolvedPreferCloudKit(entitled: true, stored: true))
+        XCTAssertTrue(SharedPipeConfig.resolvedPreferCloudKit(entitled: true, stored: NSNumber(value: true)))
+        XCTAssertFalse(SharedPipeConfig.resolvedPreferCloudKit(entitled: true, stored: false))
+        XCTAssertFalse(SharedPipeConfig.resolvedPreferCloudKit(entitled: true, stored: NSNumber(value: false)))
+        XCTAssertFalse(SharedPipeConfig.resolvedPreferCloudKit(entitled: false, stored: nil))
+        XCTAssertFalse(SharedPipeConfig.resolvedPreferCloudKit(entitled: false, stored: true))
         XCTAssertEqual(SharedPipeConfig.cloudKitContainer, "iCloud.com.icystrait.scooterrentals")
     }
 

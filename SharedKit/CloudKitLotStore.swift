@@ -2,8 +2,8 @@ import CloudKit
 import Foundation
 
 /// CloudKit public-database pipe for container `SharedPipeConfig.cloudKitContainer`.
-/// Selected only when `SharedPipeConfig.usesCloudKit` is true (entitled build and Prefer CloudKit).
-/// Shipping TestFlight keeps the empty entitlements files, so this store is not opened.
+/// Selected when `SharedPipeConfig.usesCloudKit` is true (entitled Release build, Prefer CloudKit on).
+/// HTTP remains the store when the switch is off and when a CloudKit call fails.
 actor CloudKitLotStore: SharedLotStore {
     nonisolated var providerName: String { "CloudKitLotStore" }
 
@@ -46,8 +46,8 @@ actor CloudKitLotStore: SharedLotStore {
         }
     }
 
-    /// Query subscription for new rental events. Requires Push + CloudKit on the Crew App ID.
-    /// Live APNs is not claimed until that portal wiring exists.
+    /// Query subscription for new rental events. Requires the Production schema and Push + CloudKit on the crew profile.
+    /// A failed save does not block the board; Crew still refreshes over the pipe.
     func registerEventSubscription() async throws -> CKSubscription.ID {
         let predicate = NSPredicate(value: true)
         let subscription = CKQuerySubscription(

@@ -68,7 +68,7 @@ struct SettingsView: View {
                             .font(.caption)
                             .foregroundStyle(Brand.silver)
                     }
-                    Text("Customer checkout and return publish here so the Crew phone sees the same per-unit list. Default is \(SharedPipeConfig.defaultHTTPURLString). Prefer CloudKit stays off until a build is signed with the CloudKit entitlements. HTTP is used until then, and if CloudKit fails. Container \(SharedPipeConfig.cloudKitContainer).")
+                    Text("Customer checkout and return publish here so the Crew phone sees the same per-unit list. TestFlight starts with Prefer CloudKit on. HTTP is used when the switch is off and whenever CloudKit fails. Default HTTP URL is \(SharedPipeConfig.defaultHTTPURLString). Container \(SharedPipeConfig.cloudKitContainer).")
                         .font(.footnote)
                         .foregroundStyle(Brand.silver)
                 }

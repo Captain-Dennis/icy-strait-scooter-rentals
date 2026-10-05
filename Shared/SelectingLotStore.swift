@@ -1,8 +1,8 @@
 import Foundation
 
 /// Live pipe for both apps.
-/// Prefers CloudKit only when this binary is CloudKit-entitled and Prefer CloudKit is on.
-/// Otherwise, and whenever a CloudKit call fails, it uses the HTTP store.
+/// Prefers CloudKit when this binary is CloudKit-entitled and Prefer CloudKit is on.
+/// Entitled Release builds start with that switch on. A failed CloudKit call retries on HTTP.
 actor SelectingLotStore: SharedLotStore {
     nonisolated var providerName: String { SharedPipeConfig.liveStoreName }
 

@@ -1,6 +1,6 @@
-// Opt-in crew CloudKit build for TestFlight / App Store.
-// Uses production aps-environment. Do not use this file with a development profile.
-// Same container as the customer app: iCloud.com.icystrait.scooterrentals.
+// Release configuration for Icy Strait Crew (Codemagic ios-crew-testflight).
+// Production aps-environment. Do not use this file with a development profile.
+// Debug stays on Crew.xcconfig. Same container as customer: iCloud.com.icystrait.scooterrentals.
 #include "Crew.xcconfig"
 ICY_ENTITLEMENTS_FILE = IcyStraitCrew/IcyStraitCrew-CloudKit.entitlements
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) CLOUDKIT_ENTITLED

@@ -1,7 +1,7 @@
 import Foundation
 
-/// Tiny HTTP pipe both apps share. This is the live event list until Prefer CloudKit is on.
-/// `SelectingLotStore` also uses it as the fallback when a CloudKit call fails.
+/// Tiny HTTP pipe both apps share.
+/// Live store when Prefer CloudKit is off, and the fallback when a CloudKit call fails.
 actor HTTPLotStore: SharedLotStore {
     nonisolated var providerName: String { "HTTPLotStore" }
 

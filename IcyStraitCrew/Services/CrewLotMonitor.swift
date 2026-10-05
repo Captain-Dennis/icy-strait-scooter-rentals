@@ -60,7 +60,7 @@ final class CrewLotMonitor {
         }
     }
 
-    /// Query subscription for new rental events. No-op until Prefer CloudKit is on in an entitled build.
+    /// Query subscription for new rental events. Runs when Prefer CloudKit is on in an entitled build.
     private func registerSubscriptionIfNeeded() async {
         guard SharedPipeConfig.usesCloudKit, !didRegisterSubscription else { return }
         do {

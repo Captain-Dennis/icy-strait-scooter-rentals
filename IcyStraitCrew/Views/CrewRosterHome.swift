@@ -47,6 +47,9 @@ struct CrewRosterHome: View {
                         .font(.footnote)
                         .foregroundStyle(Brand.danger)
                 }
+            } footer: {
+                Text("Entitled builds start with Prefer CloudKit on. HTTP is used when this is off and when CloudKit fails. Container \(SharedPipeConfig.cloudKitContainer).")
+                    .foregroundStyle(Brand.silver)
             }
             .listRowBackground(Brand.card)
 

@@ -1,5 +1,5 @@
-// Opt-in customer CloudKit build. Not used by Debug or Release today.
-// Same container as the crew app: iCloud.com.icystrait.scooterrentals.
+// Release configuration for Icy Strait Scooter Rentals (Codemagic ios-testflight).
+// Debug stays on Customer.xcconfig. Same container as crew: iCloud.com.icystrait.scooterrentals.
 #include "Customer.xcconfig"
 ICY_ENTITLEMENTS_FILE = IcyStraitScooterRentals/IcyStraitScooterRentals-CloudKit.entitlements
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) CLOUDKIT_ENTITLED

@@ -1,65 +1,54 @@
-# CloudKit, ready to turn on
+# CloudKit is the TestFlight sync path
 
-Current TestFlight (customer build 4 / crew build 3, and the next builds from today's workflows) stays on the **empty** entitlements and the HTTP pipe. This document is the later flip. No architecture change is required after the portal work below.
+Season-one TestFlight uses CloudKit. Customer `ios-testflight` and crew `ios-crew-testflight` archive Release with the CloudKit xcconfigs. An entitled build starts with **Prefer CloudKit** on. If a CloudKit call throws, the same operation is retried on the HTTP pipe.
 
-CloudKit at this lot's size is included with the existing Apple Developer Program. There is no paid CloudKit add-on.
+Builds already installed (customer build 4 / crew build 3, and any archive made before this change) stay on the empty entitlements until the next TestFlight pair is installed.
 
-## What is already wired
+CloudKit at this lot's size is included with the existing Apple Developer Program. There is no paid CloudKit add-on. Record types are created in CloudKit Dashboard. This repo does not invent schema.
+
+## What ships
 
 Both apps share one public-database container:
 
 `iCloud.com.icystrait.scooterrentals` (`SharedPipeConfig.cloudKitContainer`)
 
-| App | Bundle ID | Shipping entitlements (default) | CloudKit entitlements (opt-in) |
+| App | Bundle ID | Debug | Release (TestFlight / App Store) |
 | --- | --- | --- | --- |
-| Icy Strait Scooter Rentals | `com.icystrait.scooterrentals` | `IcyStraitScooterRentals/IcyStraitScooterRentals.entitlements` (empty) | `IcyStraitScooterRentals/IcyStraitScooterRentals-CloudKit.entitlements` |
-| Icy Strait Crew | `com.icystrait.crew` | `IcyStraitCrew/IcyStraitCrew.entitlements` (empty) | `IcyStraitCrew/IcyStraitCrew-CloudKit.entitlements` |
+| Icy Strait Scooter Rentals | `com.icystrait.scooterrentals` | `Config/Customer.xcconfig` → empty entitlements | `Config/Customer-CloudKit.xcconfig` → `IcyStraitScooterRentals-CloudKit.entitlements` |
+| Icy Strait Crew | `com.icystrait.crew` | `Config/Crew.xcconfig` → empty entitlements | `Config/Crew-CloudKit.xcconfig` → `IcyStraitCrew-CloudKit.entitlements` (`aps-environment` = `production`) |
 
-Debug and Release on each target use `Config/Customer.xcconfig` or `Config/Crew.xcconfig`. Those files set `ICY_ENTITLEMENTS_FILE` to the empty plist. `CODE_SIGN_ENTITLEMENTS` is `$(ICY_ENTITLEMENTS_FILE)`, so the default archive does not embed CloudKit.
+`CODE_SIGN_ENTITLEMENTS` is `$(ICY_ENTITLEMENTS_FILE)`. Release sets that to the CloudKit plist and adds `CLOUDKIT_ENTITLED`. Debug does not, so Simulator and the unit-test host stay on HTTP.
 
-`codemagic.yaml` does **not** pass `CLOUDKIT_ENTITLED` or a CloudKit entitlements path.
+`codemagic.yaml` passes the same files again:
+
+- `--archive-flags "-xcconfig …/Customer-CloudKit.xcconfig"` (or `Crew-CloudKit.xcconfig`). Codemagic applies archive flags before `xcodebuild archive`, which is where `-xcconfig` belongs.
+- `--archive-xcargs` also sets `ICY_ENTITLEMENTS_FILE` and `SWIFT_ACTIVE_COMPILATION_CONDITIONS=CLOUDKIT_ENTITLED`.
+
+Crew distribution must stay on `Config/Crew-CloudKit.xcconfig`. `Config/Crew-CloudKit-Development.xcconfig` is only for a local development-signed run (`aps-environment` = `development`).
 
 ## The switch
 
-Two gates, both off today. CloudKit is used only when **both** are true. If a CloudKit call throws, the same operation is retried on the HTTP pipe.
+CloudKit is used when the binary is entitled and Prefer CloudKit is on. HTTP is used otherwise, and whenever CloudKit throws.
 
-1. **Build gate.** `Config/Customer-CloudKit.xcconfig` and `Config/Crew-CloudKit.xcconfig` select the CloudKit entitlements and add the compile flag `CLOUDKIT_ENTITLED`. Shipping xcconfigs do not. An unentitled build ignores the runtime switch, even if UserDefaults is already `true`.
-2. **Runtime switch.** `SharedPipeConfig.preferCloudKit` (UserDefaults key `icystrait.preferCloudKit`). Default is **false**. In an entitled build, Settings (customer) and Roster (crew) show **Prefer CloudKit**. On this shipping build the toggle is disabled.
+1. **Build gate.** Release and the two Codemagic workflows set `CLOUDKIT_ENTITLED`. An unentitled (Debug) build ignores the runtime switch, even if UserDefaults is already `true`.
+2. **Runtime switch.** `SharedPipeConfig.preferCloudKit` (UserDefaults key `icystrait.preferCloudKit`). On an entitled build, a missing key reads as **true**. Settings (customer) and Roster (crew) still show **Prefer CloudKit**. Turn it off to force HTTP. An explicit `false` stays off across launches.
 
-`SharedPipeConfig.usesCloudKit` is that pair. `customerCloudKitEntitled` is the same build gate and is false here.
+`SharedPipeConfig.usesCloudKit` is that pair. `SelectingLotStore` tries CloudKit first, then the HTTP store.
 
-## Turn it on (next TestFlight)
+## Before the next Codemagic build
 
-Do this only after the portal list. Skip a step and the phones stay on HTTP.
+Container attach and profile regeneration are done on Apple Developer: `iCloud.com.icystrait.scooterrentals` is on both App IDs, and `app_store` / `crew_app_store` were regenerated ACTIVE. The archive still fails or falls back if the steps below are skipped.
 
-1. **Container.** In [developer.apple.com](https://developer.apple.com) → Identifiers, confirm `iCloud.com.icystrait.scooterrentals` exists and is attached to **both** `com.icystrait.scooterrentals` and `com.icystrait.crew`. iCloud / CloudKit is already enabled (or in progress) on both App IDs.
-2. **Dashboard schema.** [CloudKit Console](https://icloud.developer.apple.com) → this container → **Development**, public database. Add the record types below, then **Deploy Schema to Production**. Queries use `NSPredicate(value: true)`, so each type needs to be queryable (mark at least one field Queryable, or use the console's queryable-record-type index).
-3. **Profiles.** Regenerate the App Store profiles after iCloud is on the App IDs. Customer profile must include CloudKit. Crew profile must include CloudKit **and** Push. `aps-environment` on the crew distribution entitlements file is **`production`** (required for TestFlight / App Store). `development` is only in `IcyStraitCrew-CloudKit-Development.entitlements` for a local development-signed run (`Config/Crew-CloudKit-Development.xcconfig`).
-4. **Codemagic.** Team settings → code signing identities: refresh `app_store` and `crew_app_store` so the new profiles replace the ones baked before iCloud. Do not reuse the customer profile for crew.
-5. **Build gate, both apps.** Either change the target's configuration file, or pass build settings. Do both apps in the same TestFlight pair or one phone will write a store the other is not reading.
-   - Xcode → target → Build Settings → Based on Configuration File: `Config/Customer-CloudKit.xcconfig` or `Config/Crew-CloudKit.xcconfig` for Debug and Release.
-   - Or leave the shipping xcconfig in place and pass, for the customer archive:
+1. **Dashboard schema (portal, not code).** [CloudKit Console](https://icloud.developer.apple.com) → container `iCloud.com.icystrait.scooterrentals` → **Development**, public database. Add the record types below, then **Deploy Schema to Production**. Queries use `NSPredicate(value: true)`, so each type needs to be queryable (mark at least one field Queryable, or use the console's queryable-record-type index). Until Production has these types, CloudKit calls fail and both apps use HTTP. Do not add a schema bootstrap in the app.
+2. **Codemagic identities.** Team settings → code signing identities: `app_store` and `crew_app_store` must be the regenerated profiles (CloudKit on both; CloudKit **and** Push on crew). Replace any profile uploaded before the container was attached. Do not reuse the customer profile for crew. The fresh `.mobileprovision` files are the ones to upload if Codemagic still has the older copies.
+3. **Start both workflows** from the commit that contains this Codemagic change (`ios-testflight` and `ios-crew-testflight`). This file does not trigger builds. Install that pair on both phones. One phone on the old HTTP build will not read the other's CloudKit records.
+4. **Prefer CloudKit on device.** A fresh install of this build already has the switch on. Open it only if an earlier build saved `icystrait.preferCloudKit` as false: customer Settings, crew Roster. Turn it off later to force HTTP without another archive.
 
-     ```text
-     ICY_ENTITLEMENTS_FILE=IcyStraitScooterRentals/IcyStraitScooterRentals-CloudKit.entitlements SWIFT_ACTIVE_COMPILATION_CONDITIONS=CLOUDKIT_ENTITLED
-     ```
-
-     Crew archive (production APNs):
-
-     ```text
-     ICY_ENTITLEMENTS_FILE=IcyStraitCrew/IcyStraitCrew-CloudKit.entitlements SWIFT_ACTIVE_COMPILATION_CONDITIONS=CLOUDKIT_ENTITLED
-     ```
-
-     Codemagic: append those two settings to that workflow's `--archive-xcargs`. Do not add them to the workflows that are shipping now.
-6. **Runtime switch, both phones.** Install that build. Customer: Settings → **Prefer CloudKit**. Crew: Roster → **Prefer CloudKit**. That sets `icystrait.preferCloudKit`. Until both phones are on, keep using the HTTP URL (Settings / Roster pipe field, default `http://127.0.0.1:8787`).
-
-Crew then registers the public-database subscription `icystrait.rental-events` on `RentalEvent` (fires on record creation). Push still needs the production profile from step 3. Local notifications on refresh stay in place either way.
-
-To force HTTP again on an entitled build, turn **Prefer CloudKit** off. You do not need another code change.
+Crew registers the public-database subscription `icystrait.rental-events` on `RentalEvent` (fires on record creation) when Prefer CloudKit is on. That save needs the Production schema and the crew push entitlement. If it fails, the board still loads on refresh. Local notifications on refresh stay in place either way.
 
 ## Dashboard fields
 
-Public database. Record names are the UUID strings the apps already use.
+Public database. Record names are the UUID strings the apps already use. Create these in the console. Do not add new record types in code to "fix" a missing schema.
 
 **RentalEvent**
 
@@ -103,7 +92,6 @@ Public database. Record names are the UUID strings the apps already use.
 
 ## Still human
 
-- Confirm the shared container is created and attached to both App IDs (portal).
-- Deploy the schema above to Production.
-- Regenerate App Store profiles, then refresh `app_store` and `crew_app_store` in Codemagic.
-- Flip step 5 and step 6 together on the **next** TestFlight, not on the build this repo ships today.
+- Deploy the schema above to Production (Development first, then Deploy Schema to Production).
+- Confirm Codemagic `app_store` and `crew_app_store` are the regenerated profiles, then start both TestFlight workflows.
+- On device, Prefer CloudKit is already on for a new entitled install. Turn it on once only if a previous build saved it off.

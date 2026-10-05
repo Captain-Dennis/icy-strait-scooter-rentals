@@ -1,6 +1,11 @@
 # Native iOS → TestFlight (Codemagic).
 # No CocoaPods. No secrets in this file.
 #
+# Both workflows archive Release with the CloudKit xcconfigs
+# (CLOUDKIT_ENTITLED + CloudKit entitlements). Prefer CloudKit defaults on.
+# HTTP is the fallback when CloudKit fails. Debug stays unentitled.
+# Schema is CloudKit Dashboard work; this file does not create record types.
+#
 # Before the first green TestFlight upload:
 # 1. In Codemagic → Team settings → Integrations → Developer Portal,
 #    add an App Store Connect API key. Copy the exact integration name.
@@ -62,12 +67,15 @@ workflows:
           agvtool new-version -all "$NEXT_BUILD_NUMBER"
       - name: Build ipa for distribution
         script: |
-          # Empty entitlements stay the default. Do not add ICY_ENTITLEMENTS_FILE
-          # or CLOUDKIT_ENTITLED here until docs/cloudkit-ready.md.
+          # Release already uses Config/Customer-CloudKit.xcconfig.
+          # --archive-flags is applied before xcodebuild's archive action, so
+          # -xcconfig selects that file. --archive-xcargs repeats the entitlements
+          # path and CLOUDKIT_ENTITLED as build settings (after archive).
           xcode-project build-ipa \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
-            --archive-xcargs "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=3RJHN4N474"
+            --archive-flags "-xcconfig $CM_BUILD_DIR/Config/Customer-CloudKit.xcconfig" \
+            --archive-xcargs "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=3RJHN4N474 ICY_ENTITLEMENTS_FILE=IcyStraitScooterRentals/IcyStraitScooterRentals-CloudKit.entitlements SWIFT_ACTIVE_COMPILATION_CONDITIONS=CLOUDKIT_ENTITLED"
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
@@ -78,11 +86,9 @@ workflows:
         submit_to_testflight: true
         submit_to_app_store: false
 
-  # Icy Strait Crew TestFlight. Apple ID 6811694954 is set. Still needs
-  # the actual `crew_app_store` provisioning profile generated in
-  # Codemagic for com.icystrait.crew. Do not reuse the customer
-  # `app_store` profile. No triggering here — do not start a live
-  # Codemagic build until that profile exists.
+  # Icy Strait Crew TestFlight. Apple ID 6811694954 is set.
+  # Use the regenerated `crew_app_store` profile (CloudKit + Push).
+  # Do not reuse the customer `app_store` profile. No triggering here.
   ios-crew-testflight:
     name: iOS Crew TestFlight
     max_build_duration: 120
@@ -92,8 +98,8 @@ workflows:
     environment:
       ios_signing:
         # Distinct profile for com.icystrait.crew. Same team Distribution
-        # cert is valid for both bundle IDs. Generate `crew_app_store` in
-        # Codemagic; do not reuse the customer `app_store` profile.
+        # cert is valid for both bundle IDs. Use the regenerated
+        # `crew_app_store` profile (CloudKit + Push). Do not reuse `app_store`.
         provisioning_profiles:
           - crew_app_store
         certificates:
@@ -136,12 +142,15 @@ workflows:
           agvtool new-version -all "$NEXT_BUILD_NUMBER"
       - name: Build ipa for distribution
         script: |
-          # Empty entitlements stay the default. Do not add ICY_ENTITLEMENTS_FILE
-          # or CLOUDKIT_ENTITLED here until docs/cloudkit-ready.md.
+          # Release already uses Config/Crew-CloudKit.xcconfig (production APNs).
+          # Do not point this workflow at Crew-CloudKit-Development.xcconfig.
+          # --archive-flags applies -xcconfig before the archive action.
+          # --archive-xcargs repeats the entitlements path and CLOUDKIT_ENTITLED.
           xcode-project build-ipa \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
-            --archive-xcargs "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=3RJHN4N474"
+            --archive-flags "-xcconfig $CM_BUILD_DIR/Config/Crew-CloudKit.xcconfig" \
+            --archive-xcargs "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=3RJHN4N474 ICY_ENTITLEMENTS_FILE=IcyStraitCrew/IcyStraitCrew-CloudKit.entitlements SWIFT_ACTIVE_COMPILATION_CONDITIONS=CLOUDKIT_ENTITLED"
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
