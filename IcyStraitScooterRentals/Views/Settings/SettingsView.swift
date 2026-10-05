@@ -144,6 +144,12 @@ struct FleetQRStickersView: View {
             ForEach(FleetCatalog.stickerPayloads) { sticker in
                 Section(sticker.id) {
                     VStack(alignment: .leading, spacing: 12) {
+                        UnitPhoto(
+                            assetName: FleetCatalog.photoAssetName(for: sticker.id),
+                            unitID: sticker.id,
+                            unitName: sticker.name,
+                            height: 160
+                        )
                         HStack(alignment: .top, spacing: 16) {
                             QRCodeView(payload: sticker.httpsPayload, dimension: 140)
                             VStack(alignment: .leading, spacing: 6) {

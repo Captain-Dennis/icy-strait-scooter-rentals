@@ -86,8 +86,14 @@ struct RentalsTabView: View {
 
     private func rentalRow(_ rental: Rental) -> some View {
         HStack(alignment: .top, spacing: 12) {
-            FourWheelScooterMark()
-                .frame(width: 56, height: 36)
+            UnitPhoto(
+                assetName: FleetCatalog.photoAssetName(for: rental.scooterID),
+                unitID: rental.scooterID,
+                unitName: rental.scooterName,
+                height: 72,
+                cornerRadius: 10
+            )
+            .frame(width: 96)
             VStack(alignment: .leading, spacing: 4) {
                 Text(rental.scooterName)
                     .font(BrandFont.headline(16))

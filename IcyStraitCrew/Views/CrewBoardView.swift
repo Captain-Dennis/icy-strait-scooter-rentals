@@ -97,56 +97,68 @@ struct CrewBoardView: View {
 struct UnitBoardCard: View {
     var row: UnitBoardRow
 
+    var showsPhoto: Bool = true
+
     var body: some View {
-        HStack(alignment: .center, spacing: 14) {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(row.isNextSeason ? Brand.slate : (row.isOut ? Brand.orange : Brand.ok))
-                .frame(width: 8)
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text(row.scooterID)
-                        .font(BrandFont.title(26))
-                        .foregroundStyle(.white)
-                    Spacer()
-                    StatusPill(
-                        text: row.statusTitle,
-                        tint: row.isNextSeason ? Brand.silver : (row.isOut ? Brand.orange : Brand.ok)
-                    )
-                }
-                Text(row.scooterName)
-                    .font(BrandFont.headline(20))
-                    .foregroundStyle(.white)
-                Text(row.dock)
-                    .font(.caption)
-                    .foregroundStyle(Brand.silver)
-                if row.isNextSeason {
-                    Text("Next season 2027 · not on the lot · not rentable")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.silver)
-                } else if row.isOut {
-                    Text("Renter  \(row.renterLabel)")
-                        .font(BrandFont.headline(16))
-                        .foregroundStyle(.white)
-                    if let started = row.startedAt {
-                        Text("Out since  \(CrewAlertCopy.alaskaTime(started))")
-                            .font(.subheadline)
-                            .foregroundStyle(Brand.orangeSoft)
-                    }
-                } else if let ended = row.endedAt {
-                    Text("Back  \(CrewAlertCopy.alaskaTime(ended))")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.ok)
-                    Text(row.renterLabel == "—" ? "No live rental" : "Last renter  \(row.renterLabel)")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.silver)
-                } else {
-                    Text("Free on the lot")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.ok)
-                }
+        VStack(alignment: .leading, spacing: 12) {
+            if showsPhoto {
+                UnitPhoto(
+                    assetName: row.photoAssetName,
+                    unitID: row.scooterID,
+                    unitName: row.scooterName,
+                    height: 156
+                )
             }
-            Image(systemName: "chevron.right")
-                .foregroundStyle(Brand.silver)
+            HStack(alignment: .center, spacing: 14) {
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(row.isNextSeason ? Brand.slate : (row.isOut ? Brand.orange : Brand.ok))
+                    .frame(width: 8)
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Text(row.scooterID)
+                            .font(BrandFont.title(26))
+                            .foregroundStyle(.white)
+                        Spacer()
+                        StatusPill(
+                            text: row.statusTitle,
+                            tint: row.isNextSeason ? Brand.silver : (row.isOut ? Brand.orange : Brand.ok)
+                        )
+                    }
+                    Text(row.scooterName)
+                        .font(BrandFont.headline(20))
+                        .foregroundStyle(.white)
+                    Text(row.dock)
+                        .font(.caption)
+                        .foregroundStyle(Brand.silver)
+                    if row.isNextSeason {
+                        Text("Next season 2027 · not on the lot · not rentable")
+                            .font(.subheadline)
+                            .foregroundStyle(Brand.silver)
+                    } else if row.isOut {
+                        Text("Renter  \(row.renterLabel)")
+                            .font(BrandFont.headline(16))
+                            .foregroundStyle(.white)
+                        if let started = row.startedAt {
+                            Text("Out since  \(CrewAlertCopy.alaskaTime(started))")
+                                .font(.subheadline)
+                                .foregroundStyle(Brand.orangeSoft)
+                        }
+                    } else if let ended = row.endedAt {
+                        Text("Back  \(CrewAlertCopy.alaskaTime(ended))")
+                            .font(.subheadline)
+                            .foregroundStyle(Brand.ok)
+                        Text(row.renterLabel == "—" ? "No live rental" : "Last renter  \(row.renterLabel)")
+                            .font(.subheadline)
+                            .foregroundStyle(Brand.silver)
+                    } else {
+                        Text("Free on the lot")
+                            .font(.subheadline)
+                            .foregroundStyle(Brand.ok)
+                    }
+                }
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(Brand.silver)
+            }
         }
         .padding(16)
         .frame(minHeight: 118)

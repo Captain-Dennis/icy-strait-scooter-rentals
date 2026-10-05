@@ -136,7 +136,12 @@ struct ScooterDetailCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            FleetHeroImage(height: 176)
+            UnitPhoto(
+                assetName: scooter.resolvedPhotoAssetName,
+                unitID: scooter.scooterID,
+                unitName: scooter.name,
+                height: 176
+            )
             HStack(alignment: .firstTextBaseline) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(scooter.name)

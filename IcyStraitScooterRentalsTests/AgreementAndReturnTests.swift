@@ -88,6 +88,31 @@ final class AgreementAndReturnTests: XCTestCase {
         )
     }
 
+    func testEachUnitHasADistinctPhotoAsset() {
+        let names = FleetCatalog.units.map(\.photoAssetName)
+        XCTAssertEqual(
+            names,
+            ["UnitIS101", "UnitIS102", "UnitIS103", "UnitIS104", "UnitIS105", "UnitIS106"]
+        )
+        XCTAssertEqual(Set(names).count, 6)
+        for unit in FleetCatalog.units {
+            XCTAssertEqual(FleetCatalog.photoAssetName(for: unit.id), unit.photoAssetName)
+            XCTAssertEqual(FleetCatalog.photoAssetName(for: unit.id.lowercased()), unit.photoAssetName)
+        }
+        let glacier = Scooter(
+            scooterID: "is-101",
+            name: "Glacier",
+            dockLabel: "Dock A · North lot",
+            batteryPercent: 94,
+            estimatedRangeMiles: 28,
+            sortIndex: 0
+        )
+        XCTAssertEqual(glacier.photoAssetName, "UnitIS101")
+        XCTAssertEqual(glacier.resolvedPhotoAssetName, "UnitIS101")
+        let rows = CrewBoard.rows(events: [], units: FleetCatalog.boardUnits)
+        XCTAssertEqual(rows.map(\.photoAssetName), names)
+    }
+
     func testEachScooterHasAUniqueCheckoutQR() {
         XCTAssertEqual(FleetCatalog.ids, ["IS-101", "IS-102", "IS-103", "IS-104", "IS-105", "IS-106"])
         let links = FleetCatalog.uniqueCheckoutLinks

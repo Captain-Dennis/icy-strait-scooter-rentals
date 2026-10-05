@@ -87,7 +87,15 @@ struct CheckoutFlowView: View {
                     Text(scooter.name)
                         .font(BrandFont.title(26))
                         .foregroundStyle(.white)
-                    FleetHeroImage(height: 160)
+                    UnitPhoto(
+                        assetName: scooter.resolvedPhotoAssetName,
+                        unitID: scooter.scooterID,
+                        unitName: scooter.name,
+                        height: 200
+                    )
+                    Text(scooter.dockLabel)
+                        .font(BrandFont.headline(16))
+                        .foregroundStyle(Brand.silver)
                     Text("This QR belongs only to \(scooter.scooterID). Wrong unit? Cancel and scan the sticker on that scooter.")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.white)

@@ -4,12 +4,22 @@ struct UnitHistoryView: View {
     var row: UnitBoardRow
     @Environment(CrewLotMonitor.self) private var lot
 
+    private var displayed: UnitBoardRow {
+        lot.rows.first(where: { $0.scooterID == row.scooterID }) ?? row
+    }
+
     var body: some View {
         let events = lot.history(for: row.scooterID)
         let alerts = lot.alerts(for: row.scooterID)
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                UnitBoardCard(row: lot.rows.first(where: { $0.scooterID == row.scooterID }) ?? row)
+                UnitPhoto(
+                    assetName: displayed.photoAssetName,
+                    unitID: displayed.scooterID,
+                    unitName: displayed.scooterName,
+                    height: 220
+                )
+                UnitBoardCard(row: displayed, showsPhoto: false)
 
                 Text("History")
                     .font(BrandFont.title(22))

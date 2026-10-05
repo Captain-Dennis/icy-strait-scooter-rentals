@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Silhouette of the official 4-wheel offroad e-scooter.
 /// Do not substitute SF Symbol `scooter` — that glyph is a 2-wheel kick scooter.
@@ -76,5 +77,65 @@ struct FleetHeroImage: View {
                     .strokeBorder(Brand.cardStroke, lineWidth: 1)
             )
             .accessibilityLabel("Official 4-wheel offroad e-scooter with bright orange frame, black fenders, and knobby all-terrain tires")
+    }
+}
+
+/// One physical unit. Loads `assetName` from the catalog so a photo swap is a file replacement.
+struct UnitPhoto: View {
+    var assetName: String
+    var unitID: String
+    var unitName: String
+    var height: CGFloat = 160
+    var cornerRadius: CGFloat = 16
+
+    var body: some View {
+        photo
+            .frame(maxWidth: .infinity)
+            .frame(height: height)
+            .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .strokeBorder(Brand.cardStroke, lineWidth: 1)
+            )
+            .accessibilityLabel("Photo of \(unitID) \(unitName)")
+    }
+
+    @ViewBuilder
+    private var photo: some View {
+        if UIImage(named: assetName) != nil {
+            Image(assetName)
+                .resizable()
+                .scaledToFill()
+        } else {
+            placeholder
+        }
+    }
+
+    private var placeholder: some View {
+        ZStack {
+            accent
+            VStack(spacing: 4) {
+                Text(unitID)
+                    .font(BrandFont.title(min(height * 0.28, 32)))
+                    .foregroundStyle(.white)
+                Text(unitName)
+                    .font(BrandFont.headline(min(height * 0.16, 18)))
+                    .foregroundStyle(.white.opacity(0.92))
+            }
+            .padding(8)
+        }
+    }
+
+    private var accent: Color {
+        switch unitID {
+        case "IS-101": return Color(red: 0.27, green: 0.66, blue: 0.82)
+        case "IS-102": return Color(red: 0.07, green: 0.36, blue: 0.62)
+        case "IS-103": return Color(red: 0.13, green: 0.48, blue: 0.28)
+        case "IS-104": return Color(red: 0.72, green: 0.42, blue: 0.13)
+        case "IS-105": return Color(red: 0.36, green: 0.24, blue: 0.58)
+        case "IS-106": return Color(red: 0.05, green: 0.59, blue: 0.58)
+        default: return Brand.orange
+        }
     }
 }

@@ -161,17 +161,23 @@ struct ScanTabView: View {
                         }
                     } label: {
                         VStack(alignment: .leading, spacing: 6) {
-                            HStack {
-                                Text(scooter.scooterID)
-                                    .font(.caption.weight(.bold))
-                                    .foregroundStyle(rentable ? Brand.orange : Brand.silver)
-                                Spacer()
-                                FourWheelScooterMark()
-                                    .frame(width: 40, height: 24)
-                            }
+                            UnitPhoto(
+                                assetName: scooter.resolvedPhotoAssetName,
+                                unitID: scooter.scooterID,
+                                unitName: scooter.name,
+                                height: 104,
+                                cornerRadius: 10
+                            )
+                            Text(scooter.scooterID)
+                                .font(.caption.weight(.bold))
+                                .foregroundStyle(rentable ? Brand.orange : Brand.silver)
                             Text(scooter.name)
                                 .font(BrandFont.headline(16))
                                 .foregroundStyle(.white)
+                            Text(scooter.dockLabel)
+                                .font(.caption2)
+                                .foregroundStyle(Brand.silver)
+                                .lineLimit(1)
                             Text(rentable ? "On the lot · rent now" : "2027 season · not on the lot")
                                 .font(.caption2)
                                 .foregroundStyle(rentable ? Brand.ok : Brand.silver)
@@ -226,6 +232,12 @@ struct ActiveRentalCard: View {
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
             VStack(alignment: .leading, spacing: 10) {
+                UnitPhoto(
+                    assetName: FleetCatalog.photoAssetName(for: rental.scooterID),
+                    unitID: rental.scooterID,
+                    unitName: rental.scooterName,
+                    height: 150
+                )
                 HStack {
                     StatusPill(text: "Active rental")
                     Spacer()

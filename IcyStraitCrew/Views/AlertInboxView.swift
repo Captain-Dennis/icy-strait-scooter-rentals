@@ -42,30 +42,41 @@ struct AlertCopyCard: View {
     var alert: StaffAlertRecord
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                StatusPill(text: alert.channel.rawValue.uppercased(), tint: Brand.orange)
-                StatusPill(
-                    text: alert.liveDelivery ? "Live" : "Mock",
-                    tint: alert.liveDelivery ? Brand.ok : Brand.silver
-                )
-                Spacer()
-                Text(alert.unitLabel)
-                    .font(BrandFont.headline(14))
+        HStack(alignment: .top, spacing: 12) {
+            UnitPhoto(
+                assetName: FleetCatalog.photoAssetName(for: alert.scooterID),
+                unitID: alert.scooterID,
+                unitName: alert.scooterName,
+                height: 84,
+                cornerRadius: 12
+            )
+            .frame(width: 96)
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    StatusPill(text: alert.channel.rawValue.uppercased(), tint: Brand.orange)
+                    StatusPill(
+                        text: alert.liveDelivery ? "Live" : "Mock",
+                        tint: alert.liveDelivery ? Brand.ok : Brand.silver
+                    )
+                    Spacer()
+                    Text(alert.unitLabel)
+                        .font(BrandFont.headline(14))
+                        .foregroundStyle(Brand.orange)
+                }
+                Text(alert.title)
+                    .font(BrandFont.headline(18))
+                    .foregroundStyle(.white)
+                Text(alert.body)
+                    .font(.subheadline)
+                    .foregroundStyle(Brand.silver)
+                Text("\(alert.recipientName) · \(alert.recipientAddress)")
+                    .font(.caption)
+                    .foregroundStyle(.white)
+                Text("\(alert.providerName) · \(CrewAlertCopy.alaskaTime(alert.sentAt))")
+                    .font(.caption2)
                     .foregroundStyle(Brand.orange)
             }
-            Text(alert.title)
-                .font(BrandFont.headline(18))
-                .foregroundStyle(.white)
-            Text(alert.body)
-                .font(.subheadline)
-                .foregroundStyle(Brand.silver)
-            Text("\(alert.recipientName) · \(alert.recipientAddress)")
-                .font(.caption)
-                .foregroundStyle(.white)
-            Text("\(alert.providerName) · \(CrewAlertCopy.alaskaTime(alert.sentAt))")
-                .font(.caption2)
-                .foregroundStyle(Brand.orange)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)

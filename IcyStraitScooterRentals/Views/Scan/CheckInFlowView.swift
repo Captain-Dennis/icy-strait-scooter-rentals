@@ -68,6 +68,12 @@ struct CheckInFlowView: View {
     private func alreadyDone(_ rental: Rental) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             StatusPill(text: "Already back", tint: Brand.ok)
+            UnitPhoto(
+                assetName: FleetCatalog.photoAssetName(for: rental.scooterID),
+                unitID: rental.scooterID,
+                unitName: rental.scooterName,
+                height: 160
+            )
             Text("\(rental.scooterName) · \(rental.scooterID)")
                 .font(BrandFont.title(22))
                 .foregroundStyle(.white)

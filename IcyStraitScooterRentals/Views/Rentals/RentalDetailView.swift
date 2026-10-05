@@ -16,7 +16,12 @@ struct RentalDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                FleetHeroImage(height: 180)
+                UnitPhoto(
+                    assetName: FleetCatalog.photoAssetName(for: rental.scooterID),
+                    unitID: rental.scooterID,
+                    unitName: rental.scooterName,
+                    height: 200
+                )
                 header
                 meter
                 photoSection
@@ -72,6 +77,12 @@ struct RentalDetailView: View {
             Text(rental.scooterID)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Brand.orange)
+            if let unit = FleetCatalog.unit(id: rental.scooterID) {
+                Text(unit.dock)
+                    .foregroundStyle(Brand.silver)
+                Text(unit.availability == .onLotNow ? "On the lot this season" : "2027 season · not on the lot")
+                    .foregroundStyle(unit.availability == .onLotNow ? Brand.ok : Brand.silver)
+            }
             Text("4-wheel offroad e-scooter")
                 .foregroundStyle(Brand.silver)
             Text("Rental \(rental.rentalID.uuidString)")

@@ -34,7 +34,8 @@ enum FleetSeeder {
                     batteryPercent: unit.batteryPercent,
                     estimatedRangeMiles: unit.estimatedRangeMiles,
                     isInService: unit.availability == .onLotNow,
-                    sortIndex: index
+                    sortIndex: index,
+                    photoAssetName: unit.photoAssetName
                 )
             )
         }
@@ -77,6 +78,11 @@ enum FleetSeeder {
             let rentable = FleetCatalog.isRentableNow(scooter.scooterID)
             if scooter.isInService != rentable {
                 scooter.isInService = rentable
+                changed = true
+            }
+            let photo = FleetCatalog.photoAssetName(for: scooter.scooterID)
+            if scooter.photoAssetName != photo {
+                scooter.photoAssetName = photo
                 changed = true
             }
         }
