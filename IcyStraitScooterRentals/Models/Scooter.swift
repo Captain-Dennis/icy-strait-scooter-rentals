@@ -11,6 +11,8 @@ final class Scooter {
     var isInService: Bool
     var vehicleSummary: String
     var sortIndex: Int
+    /// Asset-catalog name (`UnitIS101` …). Empty on older stores until launch backfill.
+    var photoAssetName: String = ""
 
     init(
         scooterID: String,
@@ -20,7 +22,8 @@ final class Scooter {
         estimatedRangeMiles: Int,
         isInService: Bool = true,
         vehicleSummary: String = Scooter.standardVehicleSummary,
-        sortIndex: Int
+        sortIndex: Int,
+        photoAssetName: String = ""
     ) {
         self.scooterID = scooterID
         self.name = name
@@ -30,6 +33,15 @@ final class Scooter {
         self.isInService = isInService
         self.vehicleSummary = vehicleSummary
         self.sortIndex = sortIndex
+        let trimmed = photoAssetName.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.photoAssetName = trimmed.isEmpty ? FleetCatalog.photoAssetName(for: scooterID) : trimmed
+    }
+
+    /// Prefer the stored name, then the catalog, so a photo swap does not require a UI change.
+    var resolvedPhotoAssetName: String {
+        let trimmed = photoAssetName.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmed.isEmpty { return trimmed }
+        return FleetCatalog.photoAssetName(for: scooterID)
     }
 
     static let standardVehicleSummary =

@@ -12,9 +12,9 @@ Crew bundle ID: `com.icystrait.crew`
 
 ## What you rent
 
-The official product photo lives in `Assets.xcassets/FleetHero`. The UI uses that photo on onboarding, scooter cards, empty states, and return-photo coaching. Brand colors are sampled from the vehicle: **safety orange** frame (`#FF5A00`) and **gloss black** fenders/seat/bars.
+The official product photo lives in `Assets.xcassets/FleetHero`. The UI uses that photo on onboarding, empty states, and return-photo coaching. Brand colors are sampled from the vehicle: **safety orange** frame (`#FF5A00`) and **gloss black** fenders/seat/bars.
 
-The catalog is six identical 4-wheel offroad units, distinguished by dock and name. **Only IS-101 Glacier is on the lot and rentable today.** IS-102–106 stay in the catalog for the **2027 season** — not on the lot, not rentable, and not inbound this month.
+Each physical unit also has its own photo so customer and crew can tell identical scooters apart. **Only IS-101 Glacier is on the lot and rentable today.** IS-102–106 stay in the catalog for the **2027 season** — not on the lot, not rentable, and not inbound this month — and still show a photo.
 
 | ID | Name | Dock | Now |
 | --- | --- | --- | --- |
@@ -24,6 +24,17 @@ The catalog is six identical 4-wheel offroad units, distinguished by dock and na
 | IS-104 | Otter | Dock D · Waterfront | 2027 season |
 | IS-105 | Raven | Dock E · Cannery row | 2027 season |
 | IS-106 | Tidepool | Dock F · Point trail | 2027 season |
+
+### Unit photos
+
+`FleetCatalog.Unit.photoAssetName` is the only name the UI loads (`UnitIS101` … `UnitIS106`). The same name is stored on each SwiftData `Scooter` and copied onto crew board rows. Scan chips, checkout confirm, the active-rental card, My rentals rows and detail, the return-email preview, already-returned check-in, Settings fleet QR stickers, crew lot-board cards, unit history, and alert rows all use `UnitPhoto`, which reads that asset with `Image(photoAssetName)`.
+
+To use a real photo of that scooter, replace the image in **both** catalogs and keep the imageset folder name:
+
+- `IcyStraitScooterRentals/Assets.xcassets/UnitIS101.imageset/`
+- `IcyStraitCrew/Assets.xcassets/UnitIS101.imageset/`
+
+Do the same for `UnitIS102` through `UnitIS106`. JPEG or PNG is fine if `Contents.json` names the file. No Swift change is required.
 
 SF Symbol `scooter` is never used (that glyph is a 2-wheel kick scooter). Tabs use `qrcode.viewfinder`, `calendar`, and `list.bullet.rectangle`, plus a custom four-wheel mark.
 

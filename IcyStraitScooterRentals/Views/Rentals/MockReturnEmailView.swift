@@ -22,7 +22,12 @@ struct MockReturnEmailView: View {
                         .font(.caption)
                         .foregroundStyle(Brand.tide)
                 }
-                UnitPhoto(scooterID: rental.scooterID, unitName: rental.scooterName, height: 140)
+                UnitPhoto(
+                    scooterID: rental.scooterID,
+                    unitName: rental.scooterName,
+                    height: 140,
+                    photoAssetName: FleetCatalog.photoAssetName(for: rental.scooterID)
+                )
 
                 Text("Thanks for riding \(rental.scooterName) (\(rental.scooterID)). When you reach the drop-off lot, scan this QR, then photograph the left and right sides of the 4-wheel offroad e-scooter to finish check-in.")
                     .font(.subheadline)

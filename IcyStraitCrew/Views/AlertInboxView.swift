@@ -53,7 +53,8 @@ struct AlertCopyCard: View {
                 scooterID: alert.scooterID,
                 unitName: alert.scooterName,
                 cornerRadius: 8,
-                thumb: 44
+                thumb: 44,
+                photoAssetName: FleetCatalog.photoAssetName(for: alert.scooterID)
             )
             VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: 6) {

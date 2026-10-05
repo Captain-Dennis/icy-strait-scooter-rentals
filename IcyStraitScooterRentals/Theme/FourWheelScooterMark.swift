@@ -80,26 +80,29 @@ struct FleetHeroImage: View {
     }
 }
 
-/// Asset names match the unit-photo imagesets (`UnitIS101` … `UnitIS106`).
-/// Screens ask for a unit id; a later catalog `photoAssetName` can replace this lookup.
+/// Asset names are `FleetCatalog.Unit.photoAssetName` (`UnitIS101` … `UnitIS106`).
 enum FleetPhoto {
     static func assetName(for scooterID: String) -> String {
-        let normalized = QRPayload.normalizeScooterID(scooterID)
-        guard FleetCatalog.unit(id: normalized) != nil else { return "FleetHero" }
-        let compact = normalized.filter { $0.isLetter || $0.isNumber }
-        return "Unit\(compact)"
+        FleetCatalog.photoAssetName(for: scooterID)
     }
 }
 
 /// One physical unit. Full-width hero, or a square thumb when `thumb` is set.
+/// Loads `Image(photoAssetName)` from the catalog imageset.
 struct UnitPhoto: View {
     var scooterID: String
     var unitName: String
     var height: CGFloat = 160
     var cornerRadius: CGFloat = 16
     var thumb: CGFloat? = nil
+    /// Imageset name. When nil, the view uses `FleetCatalog.photoAssetName(for:)`.
+    var photoAssetName: String? = nil
 
-    private var assetName: String { FleetPhoto.assetName(for: scooterID) }
+    private var resolvedPhotoAssetName: String {
+        let trimmed = photoAssetName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if !trimmed.isEmpty { return trimmed }
+        return FleetCatalog.photoAssetName(for: scooterID)
+    }
 
     var body: some View {
         framed
@@ -127,8 +130,8 @@ struct UnitPhoto: View {
 
     @ViewBuilder
     private var photo: some View {
-        if UIImage(named: assetName) != nil {
-            Image(assetName)
+        if UIImage(named: resolvedPhotoAssetName) != nil {
+            Image(resolvedPhotoAssetName)
                 .resizable()
                 .scaledToFill()
         } else if UIImage(named: "FleetHero") != nil {

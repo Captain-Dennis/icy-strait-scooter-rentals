@@ -208,7 +208,8 @@ struct ScooterDetailCard: View {
             UnitPhoto(
                 scooterID: scooter.scooterID,
                 unitName: scooter.name,
-                height: 176
+                height: 176,
+                photoAssetName: scooter.resolvedPhotoAssetName
             )
             VStack(alignment: .leading, spacing: 4) {
                 Text(scooter.scooterID)

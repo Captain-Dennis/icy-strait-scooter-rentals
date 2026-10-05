@@ -121,16 +121,20 @@ struct CrewBoardView: View {
 
 struct UnitBoardCard: View {
     var row: UnitBoardRow
+    var showsPhoto: Bool = true
 
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            UnitPhoto(
-                scooterID: row.scooterID,
-                unitName: row.scooterName,
-                cornerRadius: 8,
-                thumb: 52
-            )
-            .opacity(row.isNextSeason ? 0.55 : 1)
+            if showsPhoto {
+                UnitPhoto(
+                    scooterID: row.scooterID,
+                    unitName: row.scooterName,
+                    cornerRadius: 8,
+                    thumb: 52,
+                    photoAssetName: row.photoAssetName
+                )
+                .opacity(row.isNextSeason ? 0.55 : 1)
+            }
 
             VStack(alignment: .leading, spacing: 2) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
