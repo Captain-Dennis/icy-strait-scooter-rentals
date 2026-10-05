@@ -4,28 +4,40 @@ struct CrewBoardView: View {
     @Environment(CrewLotMonitor.self) private var lot
     @Environment(CrewSession.self) private var session
 
+    private var liveRows: [UnitBoardRow] { lot.rows.filter { !$0.isNextSeason } }
+    private var seasonRows: [UnitBoardRow] { lot.rows.filter(\.isNextSeason) }
+
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
+                VStack(alignment: .leading, spacing: 12) {
                     header
                     if let error = lot.lastError {
                         pipeBanner(error)
                     }
-                    ForEach(lot.rows) { row in
-                        NavigationLink {
-                            UnitHistoryView(row: row)
-                        } label: {
-                            UnitBoardCard(row: row)
+                    if !liveRows.isEmpty {
+                        SectionLabel(title: "On the dock", trailing: "\(lot.outCount) out")
+                        ForEach(liveRows) { row in
+                            unitLink(row)
                         }
-                        .buttonStyle(.plain)
+                    }
+                    if !seasonRows.isEmpty {
+                        SectionLabel(title: "2027 season", trailing: "Not rentable")
+                            .padding(.top, 6)
+                        ForEach(seasonRows) { row in
+                            unitLink(row)
+                        }
                     }
                 }
-                .padding(16)
+                .padding(.horizontal, 16)
+                .padding(.top, 6)
+                .padding(.bottom, 20)
             }
             .icyScreenBackground()
-            .navigationTitle("Lot board")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle("Lot")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Brand.ink, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -34,63 +46,76 @@ struct CrewBoardView: View {
                         Image(systemName: lot.isRefreshing ? "arrow.triangle.2.circlepath" : "arrow.clockwise")
                     }
                     .foregroundStyle(Brand.orange)
+                    .accessibilityLabel("Refresh lot")
                 }
             }
         }
     }
 
+    private func unitLink(_ row: UnitBoardRow) -> some View {
+        NavigationLink {
+            UnitHistoryView(row: row)
+        } label: {
+            UnitBoardCard(row: row)
+        }
+        .buttonStyle(.plain)
+    }
+
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(session.operatorName)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(Brand.orange)
-            HStack(alignment: .firstTextBaseline) {
-                Text("\(lot.outCount) out")
-                    .font(BrandFont.title(34))
-                    .foregroundStyle(lot.outCount == 0 ? Brand.ok : Brand.orange)
-                Text("/ \(lot.onLotCount) on the lot")
-                    .font(BrandFont.headline(18))
-                    .foregroundStyle(Brand.silver)
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("HOONAH LOT")
+                        .font(BrandFont.eyebrow())
+                        .tracking(1.6)
+                        .foregroundStyle(Brand.orange)
+                    Text(session.operatorName)
+                        .font(.caption)
+                        .foregroundStyle(Brand.tide)
+                }
                 Spacer()
-                FourWheelScooterMark()
-                    .frame(width: 72, height: 44)
+                VStack(alignment: .trailing, spacing: 0) {
+                    Text("\(lot.outCount)")
+                        .font(BrandFont.mono(36))
+                        .foregroundStyle(lot.outCount == 0 ? Brand.ok : Brand.orange)
+                    Text("out · \(lot.onLotCount) on dock")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(Brand.silver)
+                }
             }
-            Text("Live unit is IS-101 Glacier. IS-102–106 are 2027 season — not on the lot, not rentable.")
-                .font(.footnote)
-                .foregroundStyle(Brand.silver)
-            Text("Each row is one stem sticker. Never a shared fleet QR.")
-                .font(.footnote)
+            Text("Live unit is IS-101 Glacier. IS-102–106 stay off the lot until 2027.")
+                .font(.caption)
                 .foregroundStyle(Brand.silver)
             if let refreshed = lot.lastRefreshed {
                 Text("Updated \(CrewAlertCopy.alaskaTime(refreshed))")
-                    .font(.caption)
-                    .foregroundStyle(Brand.silver)
+                    .font(.caption2)
+                    .foregroundStyle(Brand.tide)
             }
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Brand.card, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .strokeBorder(Brand.cardStroke)
-        )
+        .padding(.bottom, 2)
     }
 
     private func pipeBanner(_ error: String) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("Live pipe down")
-                .font(BrandFont.headline(16))
+        VStack(alignment: .leading, spacing: 4) {
+            Text("LIVE PIPE DOWN")
+                .font(BrandFont.eyebrow(10))
+                .tracking(1.2)
                 .foregroundStyle(Brand.danger)
             Text(error)
-                .font(.footnote)
+                .font(.caption)
                 .foregroundStyle(Brand.silver)
-            Text("Start tools/rental-events-server on a host both phones can reach, then set that URL in Roster → Pipe.")
-                .font(.footnote)
-                .foregroundStyle(Brand.silver)
+                .lineLimit(3)
+            Text("Start the rental-events server, then set the URL in Roster → Pipe.")
+                .font(.caption2)
+                .foregroundStyle(Brand.tide)
         }
-        .padding(14)
+        .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Brand.danger.opacity(0.12), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(Brand.danger.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .strokeBorder(Brand.danger.opacity(0.35))
+        )
     }
 }
 
@@ -98,65 +123,74 @@ struct UnitBoardCard: View {
     var row: UnitBoardRow
 
     var body: some View {
-        HStack(alignment: .center, spacing: 14) {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(row.isNextSeason ? Brand.slate : (row.isOut ? Brand.orange : Brand.ok))
-                .frame(width: 8)
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
+        HStack(alignment: .center, spacing: 10) {
+            UnitPhoto(
+                scooterID: row.scooterID,
+                unitName: row.scooterName,
+                cornerRadius: 8,
+                thumb: 52
+            )
+            .opacity(row.isNextSeason ? 0.55 : 1)
+
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text(row.scooterID)
-                        .font(BrandFont.title(26))
-                        .foregroundStyle(.white)
-                    Spacer()
-                    StatusPill(
-                        text: row.statusTitle,
-                        tint: row.isNextSeason ? Brand.silver : (row.isOut ? Brand.orange : Brand.ok)
-                    )
-                }
-                Text(row.scooterName)
-                    .font(BrandFont.headline(20))
-                    .foregroundStyle(.white)
-                Text(row.dock)
-                    .font(.caption)
-                    .foregroundStyle(Brand.silver)
-                if row.isNextSeason {
-                    Text("Next season 2027 · not on the lot · not rentable")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.silver)
-                } else if row.isOut {
-                    Text("Renter  \(row.renterLabel)")
+                        .font(BrandFont.mono(12))
+                        .foregroundStyle(row.isNextSeason ? Brand.tide : Brand.orange)
+                    Text(row.scooterName)
                         .font(BrandFont.headline(16))
                         .foregroundStyle(.white)
-                    if let started = row.startedAt {
-                        Text("Out since  \(CrewAlertCopy.alaskaTime(started))")
-                            .font(.subheadline)
-                            .foregroundStyle(Brand.orangeSoft)
-                    }
-                } else if let ended = row.endedAt {
-                    Text("Back  \(CrewAlertCopy.alaskaTime(ended))")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.ok)
-                    Text(row.renterLabel == "—" ? "No live rental" : "Last renter  \(row.renterLabel)")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.silver)
-                } else {
-                    Text("Free on the lot")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.ok)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
+                    Spacer(minLength: 6)
+                    StatusPill(text: row.statusTitle, tint: statusTint)
+                        .fixedSize()
                 }
+                Text(detailLine)
+                    .font(.caption)
+                    .foregroundStyle(detailTint)
+                    .lineLimit(1)
+                Text(row.dock)
+                    .font(.caption2)
+                    .foregroundStyle(Brand.tide)
+                    .lineLimit(1)
             }
+
             Image(systemName: "chevron.right")
-                .foregroundStyle(Brand.silver)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(Brand.silver.opacity(0.7))
         }
-        .padding(16)
-        .frame(minHeight: 118)
-        .background(Brand.card, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .strokeBorder(row.isOut ? Brand.orange.opacity(0.45) : Brand.cardStroke)
-        )
-        .opacity(row.isNextSeason ? 0.72 : 1)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .brandCard(radius: 14, stroke: row.isOut ? Brand.orange.opacity(0.45) : Brand.cardStroke)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(row.unitLabel), \(row.statusTitle)")
+        .accessibilityLabel("\(row.unitLabel), \(row.statusTitle), \(detailLine)")
+    }
+
+    private var statusTint: Color {
+        if row.isNextSeason { return Brand.silver }
+        return row.isOut ? Brand.orange : Brand.ok
+    }
+
+    private var detailTint: Color {
+        if row.isOut { return Brand.orangeSoft }
+        if row.isNextSeason { return Brand.silver }
+        return Brand.ok
+    }
+
+    private var detailLine: String {
+        if row.isNextSeason {
+            return "Next season · not on the lot"
+        }
+        if row.isOut {
+            if let started = row.startedAt {
+                return "\(row.renterLabel) · \(CrewAlertCopy.alaskaTime(started))"
+            }
+            return row.renterLabel
+        }
+        if let ended = row.endedAt {
+            return "Back \(CrewAlertCopy.alaskaTime(ended))"
+        }
+        return "Free on the lot"
     }
 }

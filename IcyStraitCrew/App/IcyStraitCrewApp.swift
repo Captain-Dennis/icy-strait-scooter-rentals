@@ -22,6 +22,7 @@ struct IcyStraitCrewApp: App {
     }()
 
     init() {
+        BrandChrome.apply()
         UNUserNotificationCenter.current().delegate = CrewNotificationCenter.shared
     }
 

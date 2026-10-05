@@ -78,12 +78,30 @@ struct QRScannerPane: View {
             QRScannerView(onPayload: onPayload)
                 .frame(height: 240)
                 .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .strokeBorder(Brand.orange.opacity(0.45), lineWidth: 1)
+                )
         } else {
-            VStack(alignment: .leading, spacing: 10) {
-                FleetHeroImage(height: 150)
-                Text("The Simulator has no QR camera. Enter a unit ID, tap a fleet chip, or use a sample payload below.")
-                    .font(.footnote)
-                    .foregroundStyle(Brand.silver)
+            ZStack(alignment: .bottomLeading) {
+                UnitPhoto(scooterID: "IS-101", unitName: "Glacier", height: 188, cornerRadius: 18)
+                    .overlay(
+                        LinearGradient(
+                            colors: [Color.black.opacity(0.05), Color.black.opacity(0.72)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                    )
+                VStack(alignment: .leading, spacing: 4) {
+                    Label("Camera opens on a phone", systemImage: "qrcode.viewfinder")
+                        .font(BrandFont.headline(15))
+                        .foregroundStyle(.white)
+                    Text("On Simulator, type IS-101 or tap Glacier below.")
+                        .font(.caption)
+                        .foregroundStyle(Brand.mist)
+                }
+                .padding(14)
             }
         }
     }

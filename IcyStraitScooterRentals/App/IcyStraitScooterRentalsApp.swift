@@ -25,6 +25,10 @@ struct IcyStraitScooterRentalsApp: App {
         }
     }()
 
+    init() {
+        BrandChrome.apply()
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()

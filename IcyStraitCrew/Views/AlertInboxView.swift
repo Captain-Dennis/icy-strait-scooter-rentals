@@ -7,13 +7,16 @@ struct AlertInboxView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("SMS, email, and push copy for each unit. Mock dispatches are visible here. Live APNs and Twilio are not claimed.")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.silver)
+                    PlaceLockup(
+                        kicker: "Desk copy",
+                        title: "Alerts",
+                        subtitle: "SMS, email, and push text for a specific unit. Mock dispatches show here. Live APNs and Twilio are not claimed."
+                    )
                     if lot.snapshot.alerts.isEmpty {
                         EmptyHeroState(
-                            title: "No crew alerts yet",
-                            message: "When a renter checks out or returns a specific scooter, the exact-unit alert text lands here."
+                            title: "Inbox is clear",
+                            message: "A checkout or return on a named unit — Glacier today — drops the exact alert text here.",
+                            kicker: "No crew alerts"
                         )
                     }
                     ForEach(lot.alerts(for: nil)) { alert in
@@ -24,6 +27,9 @@ struct AlertInboxView: View {
             }
             .icyScreenBackground()
             .navigationTitle("Alerts")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Brand.ink, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -42,37 +48,43 @@ struct AlertCopyCard: View {
     var alert: StaffAlertRecord
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                StatusPill(text: alert.channel.rawValue.uppercased(), tint: Brand.orange)
-                StatusPill(
-                    text: alert.liveDelivery ? "Live" : "Mock",
-                    tint: alert.liveDelivery ? Brand.ok : Brand.silver
-                )
-                Spacer()
-                Text(alert.unitLabel)
-                    .font(BrandFont.headline(14))
-                    .foregroundStyle(Brand.orange)
+        HStack(alignment: .top, spacing: 10) {
+            UnitPhoto(
+                scooterID: alert.scooterID,
+                unitName: alert.scooterName,
+                cornerRadius: 8,
+                thumb: 44
+            )
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: 6) {
+                    StatusPill(text: alert.channel.rawValue.uppercased(), tint: Brand.orange)
+                    StatusPill(
+                        text: alert.liveDelivery ? "Live" : "Mock",
+                        tint: alert.liveDelivery ? Brand.ok : Brand.silver
+                    )
+                    Spacer(minLength: 4)
+                    Text(alert.scooterID)
+                        .font(BrandFont.mono(11))
+                        .foregroundStyle(Brand.orange)
+                }
+                Text(alert.title)
+                    .font(BrandFont.headline(15))
+                    .foregroundStyle(.white)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(alert.body)
+                    .font(.caption)
+                    .foregroundStyle(Brand.silver)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("\(alert.recipientName) · \(alert.recipientAddress)")
+                    .font(.caption2)
+                    .foregroundStyle(Brand.mist)
+                Text("\(alert.providerName) · \(CrewAlertCopy.alaskaTime(alert.sentAt))")
+                    .font(.caption2)
+                    .foregroundStyle(Brand.tide)
             }
-            Text(alert.title)
-                .font(BrandFont.headline(18))
-                .foregroundStyle(.white)
-            Text(alert.body)
-                .font(.subheadline)
-                .foregroundStyle(Brand.silver)
-            Text("\(alert.recipientName) · \(alert.recipientAddress)")
-                .font(.caption)
-                .foregroundStyle(.white)
-            Text("\(alert.providerName) · \(CrewAlertCopy.alaskaTime(alert.sentAt))")
-                .font(.caption2)
-                .foregroundStyle(Brand.orange)
         }
-        .padding(14)
+        .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Brand.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(Brand.cardStroke)
-        )
+        .brandCard(radius: 14)
     }
 }

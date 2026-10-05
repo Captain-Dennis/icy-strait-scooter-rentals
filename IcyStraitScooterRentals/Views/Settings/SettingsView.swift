@@ -111,6 +111,9 @@ struct SettingsView: View {
             .scrollContentBackground(.hidden)
             .background(Brand.background)
             .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Brand.ink, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") { dismiss() }
@@ -147,8 +150,9 @@ struct FleetQRStickersView: View {
                         HStack(alignment: .top, spacing: 16) {
                             QRCodeView(payload: sticker.httpsPayload, dimension: 140)
                             VStack(alignment: .leading, spacing: 6) {
+                                UnitPhoto(scooterID: sticker.id, unitName: sticker.name, height: 72, cornerRadius: 10)
                                 Text(sticker.name)
-                                    .font(BrandFont.title(22))
+                                    .font(BrandFont.display(22))
                                     .foregroundStyle(.white)
                                 Text(sticker.dock)
                                     .font(.caption)

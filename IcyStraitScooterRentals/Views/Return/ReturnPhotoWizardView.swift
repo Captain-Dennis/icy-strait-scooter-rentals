@@ -24,8 +24,12 @@ struct ReturnPhotoWizardView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
+                Text("CONDITION PHOTOS")
+                    .font(BrandFont.eyebrow())
+                    .tracking(1.4)
+                    .foregroundStyle(Brand.orange)
                 Text(side == .left ? "1 of 2 · Left side" : "2 of 2 · Right side")
-                    .font(BrandFont.title(26))
+                    .font(BrandFont.display(28))
                     .foregroundStyle(.white)
                 Text(side.instruction)
                     .font(.subheadline)

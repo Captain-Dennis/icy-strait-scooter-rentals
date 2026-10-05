@@ -14,9 +14,11 @@ struct CalendarTabView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    Text("May 1–September 30, 2027 · 8am–7pm · 6 units/hour")
-                        .font(.subheadline)
-                        .foregroundStyle(Brand.silver)
+                    PlaceLockup(
+                        kicker: "2027 season",
+                        title: "Capacity",
+                        subtitle: "May 1–September 30 · 8am–7pm Alaska · 6 units an hour once the full fleet is on the lot."
+                    )
                     monthHeader
                     weekdayHeader
                     monthGrid
@@ -26,6 +28,7 @@ struct CalendarTabView: View {
             }
             .icyScreenBackground()
             .navigationTitle("Calendar")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Brand.ink, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
         }
@@ -100,7 +103,7 @@ struct CalendarTabView: View {
     private var daySlots: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(selectedDay, format: Date.FormatStyle().weekday(.wide).month(.wide).day().year())
-                .font(BrandFont.headline(18))
+                .font(BrandFont.display(24))
                 .foregroundStyle(.white)
             ForEach(Season.slotHours, id: \.self) { hour in
                 let start = Season.slotStart(on: selectedDay, hour: hour)
@@ -119,7 +122,7 @@ struct CalendarTabView: View {
                     CapacityMeter(remaining: remaining)
                 }
                 .padding(12)
-                .background(Brand.card, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .brandCard(radius: 14)
             }
         }
     }

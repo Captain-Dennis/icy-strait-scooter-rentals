@@ -16,7 +16,7 @@ struct RentalDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                FleetHeroImage(height: 180)
+                UnitPhoto(scooterID: rental.scooterID, unitName: rental.scooterName, height: 200)
                 header
                 meter
                 photoSection
@@ -40,6 +40,8 @@ struct RentalDetailView: View {
         .icyScreenBackground()
         .navigationTitle(rental.scooterName)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Brand.ink, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
         .sheet(isPresented: $showAgreements) {
             NavigationStack {
                 AgreementWizardView(
@@ -69,14 +71,18 @@ struct RentalDetailView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
             StatusPill(text: rental.isActive ? "Active" : "Checked in", tint: rental.isActive ? Brand.orange : Brand.ok)
+            Text(rental.scooterName)
+                .font(BrandFont.display(32))
+                .foregroundStyle(.white)
             Text(rental.scooterID)
-                .font(.subheadline.weight(.semibold))
+                .font(BrandFont.mono(15))
                 .foregroundStyle(Brand.orange)
             Text("4-wheel offroad e-scooter")
+                .font(.subheadline)
                 .foregroundStyle(Brand.silver)
-            Text("Rental \(rental.rentalID.uuidString)")
-                .font(.caption.monospaced())
-                .foregroundStyle(Brand.silver)
+            Text(rental.rentalID.uuidString)
+                .font(.caption2.monospaced())
+                .foregroundStyle(Brand.tide)
                 .textSelection(.enabled)
         }
     }
@@ -103,7 +109,7 @@ struct RentalDetailView: View {
             }
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Brand.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .brandCard(radius: 16)
         }
     }
 

@@ -49,6 +49,10 @@ struct AgreementWizardView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
+            Text(readOnly ? "ON FILE" : "BEFORE YOU RIDE")
+                .font(BrandFont.eyebrow())
+                .tracking(1.4)
+                .foregroundStyle(Brand.orange)
             HStack(alignment: .firstTextBaseline) {
                 Text(readOnly ? "Your agrees" : selection.progressLabel)
                     .font(BrandFont.title(28))

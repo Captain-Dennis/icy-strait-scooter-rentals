@@ -56,6 +56,9 @@ struct CrewRosterHome: View {
         .scrollContentBackground(.hidden)
         .background(Brand.background)
         .navigationTitle("Roster")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Brand.ink, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
         .onAppear {
             if pipeURL.isEmpty {
                 pipeURL = lot.pipeURL

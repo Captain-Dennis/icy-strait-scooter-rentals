@@ -55,40 +55,56 @@ struct CheckInFlowView: View {
     }
 
     private var missing: some View {
-        VStack(spacing: 12) {
-            Text("That return code didn't match")
-                .font(BrandFont.title(22))
-                .foregroundStyle(.white)
-            Text("Open My rentals and tap the return email, or scan the QR we sent you.")
-                .foregroundStyle(Brand.silver)
-        }
-        .padding(24)
+        EmptyHeroState(
+            title: "That return code didn't match",
+            message: "Open My rentals and tap the return email, or scan the QR from that message.",
+            kicker: "Check-in"
+        )
+        .padding(20)
     }
 
     private func alreadyDone(_ rental: Rental) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 14) {
+            UnitPhoto(scooterID: rental.scooterID, unitName: rental.scooterName, height: 160)
             StatusPill(text: "Already back", tint: Brand.ok)
-            Text("\(rental.scooterName) · \(rental.scooterID)")
-                .font(BrandFont.title(22))
+            Text(rental.scooterName)
+                .font(BrandFont.display(32))
                 .foregroundStyle(.white)
+            Text(rental.scooterID)
+                .font(BrandFont.mono(15))
+                .foregroundStyle(Brand.orange)
             if let amount = rental.capturedAmount {
                 MoneyText(amount: amount)
             }
         }
-        .padding(24)
+        .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
     private func doneView(_ rental: Rental) -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            StatusPill(text: "You're done", tint: Brand.ok)
+            UnitPhoto(scooterID: rental.scooterID, unitName: rental.scooterName, height: 168)
+            Text("CHECKED IN")
+                .font(BrandFont.eyebrow())
+                .tracking(1.5)
+                .foregroundStyle(Brand.ok)
             Text("Meter stopped")
-                .font(BrandFont.title(28))
+                .font(BrandFont.display(34))
                 .foregroundStyle(.white)
             Text("\(rental.scooterName) is back on the lot.")
+                .font(.subheadline)
                 .foregroundStyle(Brand.silver)
             if let amount = rental.capturedAmount {
-                MoneyText(amount: amount)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("FINAL CHARGE")
+                        .font(BrandFont.eyebrow(10))
+                        .tracking(1.2)
+                        .foregroundStyle(Brand.tide)
+                    MoneyText(amount: amount)
+                }
+                .padding(14)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .brandCard(radius: 16)
             }
             Spacer()
             PrimaryButton(title: "Done", systemImage: "checkmark") {

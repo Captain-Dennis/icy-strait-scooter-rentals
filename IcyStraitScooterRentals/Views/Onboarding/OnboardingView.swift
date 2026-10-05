@@ -32,15 +32,12 @@ struct OnboardingView: View {
 
     private var heroPage: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                FleetHeroImage(height: 260)
-                StatusPill(text: "4-wheel offroad e-scooters")
-                Text("Icy Strait Scooter Rentals")
-                    .font(BrandFont.title(30))
-                    .foregroundStyle(.white)
-                Text("Stand-up or sit-down 4-wheel offroad electric scooters — bright orange frame, gloss black fenders, four knobby all-terrain tires. Not a 2-wheel kick scooter.")
-                    .font(.body)
-                    .foregroundStyle(Brand.silver)
+            VStack(alignment: .leading, spacing: 16) {
+                FleetHeroImage(height: 240)
+                PlaceLockup(
+                    title: "Icy Strait Scooter Rentals",
+                    subtitle: "Stand-up or sit-down 4-wheel offroad electric scooters — orange frame, gloss black fenders, four knobby all-terrain tires."
+                )
             }
             .padding(20)
         }
@@ -49,9 +46,10 @@ struct OnboardingView: View {
     private var howPage: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text("How a rental works")
-                    .font(BrandFont.title(28))
-                    .foregroundStyle(.white)
+                PlaceLockup(
+                    kicker: "Walk-up",
+                    title: "How a rental works"
+                )
                 step(1, title: "Scan the stem QR", detail: "Preferred code is https://icystraitscooters.example/s/IS-101 (opens the app or the App Store install page). escooter://scooter/IS-101 still works for Simulator demos.")
                 step(2, title: "Accept every agreement first", detail: "Agreements come before payment. Five required sections, including Damage & Liability. You cannot skip, save for later, or start a rental until all five are accepted.")
                 step(3, title: "Ride, then check in", detail: "A return QR is “emailed” to you (demo inbox in the app). Scan it, then photograph the left and right sides. That stops the meter, captures the mock POS charge, and texts every active staff member.")
@@ -63,9 +61,10 @@ struct OnboardingView: View {
     private var pricePage: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text("Season, hours, price")
-                    .font(BrandFont.title(28))
-                    .foregroundStyle(.white)
+                PlaceLockup(
+                    kicker: "The board",
+                    title: "Season, hours, price"
+                )
                 priceRow("First hour", MoneyFormat.string(BillingCalculator.firstHour))
                 priceRow("Each extra 30 minutes", MoneyFormat.string(BillingCalculator.additionalHalfHour))
                 priceRow("Live lot today", "IS-101 Glacier only")
@@ -94,7 +93,7 @@ struct OnboardingView: View {
             }
         }
         .padding(14)
-        .background(Brand.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .brandCard(radius: 16)
     }
 
     private func priceRow(_ title: String, _ value: String) -> some View {
@@ -104,6 +103,6 @@ struct OnboardingView: View {
             Text(value).foregroundStyle(.white).font(BrandFont.headline(15))
         }
         .padding(14)
-        .background(Brand.card, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .brandCard(radius: 14)
     }
 }

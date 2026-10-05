@@ -98,35 +98,104 @@ struct StatusPill: View {
 
     var body: some View {
         Text(text)
-            .font(.caption.weight(.semibold))
+            .font(.caption2.weight(.bold))
+            .tracking(0.4)
             .foregroundStyle(tint)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background(tint.opacity(0.16), in: Capsule())
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(tint.opacity(0.14), in: Capsule())
+            .overlay(Capsule().strokeBorder(tint.opacity(0.28), lineWidth: 0.5))
+    }
+}
+
+struct SectionLabel: View {
+    var title: String
+    var trailing: String? = nil
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text(title.uppercased())
+                .font(BrandFont.eyebrow())
+                .tracking(1.35)
+                .foregroundStyle(Brand.tide)
+            Spacer(minLength: 8)
+            if let trailing {
+                Text(trailing)
+                    .font(.caption)
+                    .foregroundStyle(Brand.silver)
+            }
+        }
+    }
+}
+
+struct PlaceLockup: View {
+    var kicker: String = "Hoonah · Icy Strait Point"
+    var title: String
+    var subtitle: String? = nil
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(kicker.uppercased())
+                .font(BrandFont.eyebrow())
+                .tracking(1.6)
+                .foregroundStyle(Brand.orange)
+            Rectangle()
+                .fill(Brand.orange)
+                .frame(width: 28, height: 2)
+            Text(title)
+                .font(BrandFont.display(34))
+                .foregroundStyle(.white)
+                .fixedSize(horizontal: false, vertical: true)
+            if let subtitle {
+                Text(subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(Brand.silver)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+}
+
+struct FactChip: View {
+    var text: String
+    var symbol: String
+
+    var body: some View {
+        Label(text, systemImage: symbol)
+            .font(.caption.weight(.medium))
+            .foregroundStyle(Brand.mist)
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .background(Brand.slate, in: Capsule())
     }
 }
 
 struct EmptyHeroState: View {
     var title: String
     var message: String
+    var kicker: String = "Icy Strait Point"
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             FleetHeroImage(height: 168)
-            Text(title)
-                .font(BrandFont.title(22))
-                .foregroundStyle(.white)
-            Text(message)
-                .font(.subheadline)
-                .foregroundStyle(Brand.silver)
-                .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(kicker.uppercased())
+                    .font(BrandFont.eyebrow())
+                    .tracking(1.4)
+                    .foregroundStyle(Brand.orange)
+                Text(title)
+                    .font(BrandFont.display(26))
+                    .foregroundStyle(.white)
+                Text(message)
+                    .font(.subheadline)
+                    .foregroundStyle(Brand.silver)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .padding(16)
-        .background(Brand.card, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .strokeBorder(Brand.cardStroke)
-        )
+        .brandCard(radius: 20)
     }
 }
 
@@ -136,46 +205,34 @@ struct ScooterDetailCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            FleetHeroImage(height: 176)
-            HStack(alignment: .firstTextBaseline) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(scooter.name)
-                        .font(BrandFont.title(24))
-                        .foregroundStyle(.white)
-                    Text(scooter.scooterID)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Brand.orange)
-                }
-                Spacer()
-                FourWheelScooterMark()
-                    .frame(width: 72, height: 44)
+            UnitPhoto(
+                scooterID: scooter.scooterID,
+                unitName: scooter.name,
+                height: 176
+            )
+            VStack(alignment: .leading, spacing: 4) {
+                Text(scooter.scooterID)
+                    .font(BrandFont.mono(13))
+                    .foregroundStyle(Brand.orange)
+                Text(scooter.name)
+                    .font(BrandFont.display(28))
+                    .foregroundStyle(.white)
             }
             Text(scooter.vehicleSummary)
                 .font(.subheadline)
                 .foregroundStyle(Brand.silver)
-            HStack(spacing: 10) {
-                meta(scooter.dockLabel, symbol: "mappin.and.ellipse")
-                meta("\(scooter.batteryPercent)% battery", symbol: "bolt.fill")
-                meta("~\(scooter.estimatedRangeMiles) mi", symbol: "arrow.left.and.right")
+            VStack(alignment: .leading, spacing: 8) {
+                FactChip(text: scooter.dockLabel, symbol: "mappin.and.ellipse")
+                HStack(spacing: 8) {
+                    FactChip(text: "\(scooter.batteryPercent)% battery", symbol: "bolt.fill")
+                    FactChip(text: "~\(scooter.estimatedRangeMiles) mi", symbol: "arrow.left.and.right")
+                }
             }
             if let remainingThisHour {
                 CapacityMeter(remaining: remainingThisHour)
             }
         }
         .padding(16)
-        .background(Brand.card, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .strokeBorder(Brand.cardStroke)
-        )
-    }
-
-    private func meta(_ text: String, symbol: String) -> some View {
-        Label(text, systemImage: symbol)
-            .font(.caption)
-            .foregroundStyle(Brand.mist)
-            .labelStyle(.titleAndIcon)
-            .lineLimit(1)
-            .minimumScaleFactor(0.8)
+        .brandCard(radius: 22)
     }
 }
