@@ -1,0 +1,5 @@
+// Opt-in customer CloudKit build. Not used by Debug or Release today.
+// Same container as the crew app: iCloud.com.icystrait.scooterrentals.
+#include "Customer.xcconfig"
+ICY_ENTITLEMENTS_FILE = IcyStraitScooterRentals/IcyStraitScooterRentals-CloudKit.entitlements
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) CLOUDKIT_ENTITLED

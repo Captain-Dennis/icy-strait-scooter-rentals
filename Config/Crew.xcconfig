@@ -1,0 +1,5 @@
+// Shipping crew Debug and Release (current TestFlight).
+// Empty entitlements. CloudKit stays off.
+// To entitle a later distribution build, point this target at Config/Crew-CloudKit.xcconfig.
+// See docs/cloudkit-ready.md.
+ICY_ENTITLEMENTS_FILE = IcyStraitCrew/IcyStraitCrew.entitlements

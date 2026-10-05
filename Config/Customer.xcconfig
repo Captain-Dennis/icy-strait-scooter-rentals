@@ -1,0 +1,5 @@
+// Shipping customer Debug and Release (current TestFlight).
+// Empty entitlements. CloudKit stays off.
+// To entitle a later build, point this target at Config/Customer-CloudKit.xcconfig.
+// See docs/cloudkit-ready.md.
+ICY_ENTITLEMENTS_FILE = IcyStraitScooterRentals/IcyStraitScooterRentals.entitlements

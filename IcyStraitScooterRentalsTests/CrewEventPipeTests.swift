@@ -139,6 +139,26 @@ final class CrewEventPipeTests: XCTestCase {
         XCTAssertEqual(StaffConfig.parseEmails("maddasstoner@yahoo.com, f.vhappytimes@gmail.com").count, 2)
     }
 
+    func testShippingBuildIgnoresCloudKitPreference() {
+        let key = SharedPipeConfig.preferCloudKitDefaultsKey
+        let previous = UserDefaults.standard.object(forKey: key)
+        defer {
+            if let previous {
+                UserDefaults.standard.set(previous, forKey: key)
+            } else {
+                UserDefaults.standard.removeObject(forKey: key)
+            }
+        }
+        UserDefaults.standard.set(true, forKey: key)
+        SharedPipeConfig.preferCloudKit = true
+        XCTAssertFalse(SharedPipeConfig.cloudKitEntitled)
+        XCTAssertFalse(SharedPipeConfig.customerCloudKitEntitled)
+        XCTAssertFalse(SharedPipeConfig.preferCloudKit)
+        XCTAssertFalse(SharedPipeConfig.usesCloudKit)
+        XCTAssertEqual(SharedPipeConfig.liveStoreName, "HTTPLotStore")
+        XCTAssertEqual(SharedPipeConfig.cloudKitContainer, "iCloud.com.icystrait.scooterrentals")
+    }
+
     func testHTTPStoreRoundTripAgainstTinyServer() async throws {
         guard let server = ProcessInfo.processInfo.environment["ICY_STRAIT_LOT_TEST_URL"],
               let url = URL(string: server)

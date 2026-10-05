@@ -8,6 +8,7 @@ struct SettingsView: View {
     @Query(sort: \StaffSMSLog.sentAt, order: .reverse) private var smsLog: [StaffSMSLog]
     @Query(sort: \StaffMember.displayName) private var staff: [StaffMember]
     @State private var pipeURL = SharedPipeConfig.httpBaseURL.absoluteString
+    @State private var preferCloudKit = SharedPipeConfig.preferCloudKit
 
     var body: some View {
         NavigationStack {
@@ -42,11 +43,17 @@ struct SettingsView: View {
                     labeled("POS", "MockPOSProvider")
                     labeled("Staff SMS/email", "MockStaffNotifier")
                     labeled("Twilio stub", "TwilioSMSNotifier (no keys)")
-                    labeled("Crew pipe", "HTTPLotStore (CloudKit compiled, not entitled here)")
+                    labeled("Crew pipe", preferCloudKit && SharedPipeConfig.cloudKitEntitled ? "CloudKitLotStore (HTTP fallback)" : "HTTPLotStore")
+                    labeled("CloudKit", SharedPipeConfig.cloudKitStatusLabel)
                 }
                 .listRowBackground(Brand.card)
 
                 Section("Crew event pipe") {
+                    Toggle("Prefer CloudKit", isOn: $preferCloudKit)
+                        .disabled(!SharedPipeConfig.cloudKitEntitled)
+                        .onChange(of: preferCloudKit) { _, newValue in
+                            SharedPipeConfig.preferCloudKit = newValue
+                        }
                     TextField("Shared event URL", text: $pipeURL)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
@@ -61,7 +68,7 @@ struct SettingsView: View {
                             .font(.caption)
                             .foregroundStyle(Brand.silver)
                     }
-                    Text("Customer checkout/return POST to this URL so the Crew phone can see the same per-unit list. Default is the in-repo tiny server at \(SharedPipeConfig.defaultHTTPURLString). CloudKit is implemented but not entitled on this TestFlight app.")
+                    Text("Customer checkout and return publish here so the Crew phone sees the same per-unit list. Default is \(SharedPipeConfig.defaultHTTPURLString). Prefer CloudKit stays off until a build is signed with the CloudKit entitlements. HTTP is used until then, and if CloudKit fails. Container \(SharedPipeConfig.cloudKitContainer).")
                         .font(.footnote)
                         .foregroundStyle(Brand.silver)
                 }

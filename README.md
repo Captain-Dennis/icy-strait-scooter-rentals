@@ -92,10 +92,7 @@ Starter crew: **Front desk / Dennis** · `+1 (907) 500-5152` · `maddasstoner@ya
 
 The customer app’s SwiftData store stays on that phone. A rental on a renter device will not appear on a crew phone unless both apps share a live event list.
 
-CloudKit (same Apple team, container `iCloud.com.icystrait.scooterrentals`, query subscriptions / APNs) is compiled in `SharedKit/CloudKitLotStore.swift`. It is **not** entitled on the shipping customer app. Adding iCloud to `com.icystrait.scooterrentals` would require a new App Store profile and can break the current TestFlight upload. Optional entitlement files:
-
-- `IcyStraitScooterRentals/IcyStraitScooterRentals-CloudKit.entitlements`
-- `IcyStraitCrew/IcyStraitCrew-CloudKit.entitlements`
+CloudKit (same Apple team, container `iCloud.com.icystrait.scooterrentals`, query subscriptions / APNs) is compiled in `SharedKit/CloudKitLotStore.swift`. Shipping Debug and Release still sign the empty entitlements files, so current TestFlight stays on HTTP. Prefer CloudKit is off, and an unentitled build ignores that switch. How to turn it on later, without changing architecture: [docs/cloudkit-ready.md](docs/cloudkit-ready.md).
 
 v1 live pipe is a tiny HTTP JSON server both apps POST/GET:
 
@@ -192,7 +189,7 @@ Camera scanning needs a physical device. On Simulator:
 
 ## Persistence
 
-SwiftData on device: scooters, rentals, agreement acceptances, return photos (external storage), POS ledger, staff roster, SMS log. Live lot events for Crew live on the HTTP pipe (and CloudKit when entitled), not in the customer phone’s SwiftData.
+SwiftData on device: scooters, rentals, agreement acceptances, return photos (external storage), POS ledger, staff roster, SMS log. Live lot events for Crew live on the HTTP pipe (CloudKit only when an entitled build has Prefer CloudKit on), not in the customer phone’s SwiftData.
 
 ## Tests
 
@@ -242,5 +239,5 @@ Do not commit `.p8`, `.p12`, provisioning profiles, or API tokens.
 - Return photos are **left and right only** (not front/back).
 - SMS / event-pipe failure never rolls back a successful checkout or check-in.
 - Agreement and area-of-operation text is draft placeholder for counsel.
-- Customer TestFlight stays on empty entitlements. The live crew board uses the tiny HTTP event pipe; CloudKit is compiled and optional.
+- Customer and crew TestFlight stay on empty entitlements. The live crew board uses the tiny HTTP event pipe until Prefer CloudKit is turned on in a CloudKit-entitled build. See `docs/cloudkit-ready.md`.
 - Live APNs and live Twilio SMS are not claimed in v1. Mock copies and local crew notifications are.

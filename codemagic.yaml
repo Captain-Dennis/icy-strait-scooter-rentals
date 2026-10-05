@@ -62,6 +62,8 @@ workflows:
           agvtool new-version -all "$NEXT_BUILD_NUMBER"
       - name: Build ipa for distribution
         script: |
+          # Empty entitlements stay the default. Do not add ICY_ENTITLEMENTS_FILE
+          # or CLOUDKIT_ENTITLED here until docs/cloudkit-ready.md.
           xcode-project build-ipa \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
@@ -134,6 +136,8 @@ workflows:
           agvtool new-version -all "$NEXT_BUILD_NUMBER"
       - name: Build ipa for distribution
         script: |
+          # Empty entitlements stay the default. Do not add ICY_ENTITLEMENTS_FILE
+          # or CLOUDKIT_ENTITLED here until docs/cloudkit-ready.md.
           xcode-project build-ipa \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \

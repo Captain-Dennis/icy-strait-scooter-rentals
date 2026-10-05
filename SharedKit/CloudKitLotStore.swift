@@ -1,10 +1,9 @@
 import CloudKit
 import Foundation
 
-/// Production-shaped CloudKit public-database pipe.
-/// Not the v1 live path for the shipping customer app: adding iCloud entitlements
-/// there would force a new App Store profile and can break the current TestFlight upload.
-/// Crew can entitle this container when the App ID is created.
+/// CloudKit public-database pipe for container `SharedPipeConfig.cloudKitContainer`.
+/// Selected only when `SharedPipeConfig.usesCloudKit` is true (entitled build and Prefer CloudKit).
+/// Shipping TestFlight keeps the empty entitlements files, so this store is not opened.
 actor CloudKitLotStore: SharedLotStore {
     nonisolated var providerName: String { "CloudKitLotStore" }
 

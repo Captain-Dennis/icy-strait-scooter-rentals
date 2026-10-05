@@ -6,6 +6,7 @@ struct CrewRosterHome: View {
     @Environment(CrewLotMonitor.self) private var lot
     @Environment(StaffServices.self) private var staff
     @State private var pipeURL: String = ""
+    @State private var preferCloudKit = SharedPipeConfig.preferCloudKit
 
     var body: some View {
         List {
@@ -27,11 +28,19 @@ struct CrewRosterHome: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                 Button("Save and refresh") {
-                    Task { await lot.setPipeURL(pipeURL) }
+                    Task {
+                        await lot.setPipeURL(pipeURL)
+                        await staff.httpStore.setBaseURL(SharedPipeConfig.httpBaseURL)
+                    }
                 }
                 .foregroundStyle(Brand.orange)
-                labeled("Store", "HTTPLotStore")
-                labeled("CloudKit", "Compiled · not live APNs")
+                Toggle("Prefer CloudKit", isOn: $preferCloudKit)
+                    .disabled(!SharedPipeConfig.cloudKitEntitled)
+                    .onChange(of: preferCloudKit) { _, newValue in
+                        SharedPipeConfig.preferCloudKit = newValue
+                    }
+                labeled("Store", preferCloudKit && SharedPipeConfig.cloudKitEntitled ? "CloudKitLotStore" : lot.storeName)
+                labeled("CloudKit", SharedPipeConfig.cloudKitStatusLabel)
                 labeled("Twilio", "Stub · no keys")
                 if let error = lot.lastError {
                     Text(error)
