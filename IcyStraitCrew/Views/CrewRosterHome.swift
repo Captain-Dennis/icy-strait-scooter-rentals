@@ -22,7 +22,7 @@ struct CrewRosterHome: View {
             }
             .listRowBackground(Brand.card)
 
-            Section("Event pipe") {
+            Section {
                 TextField("Shared event URL", text: $pipeURL)
                     .keyboardType(.URL)
                     .textInputAutocapitalization(.never)
@@ -47,6 +47,8 @@ struct CrewRosterHome: View {
                         .font(.footnote)
                         .foregroundStyle(Brand.danger)
                 }
+            } header: {
+                Text("Event pipe")
             } footer: {
                 Text("Entitled builds start with Prefer CloudKit on. HTTP is used when this is off and when CloudKit fails. Container \(SharedPipeConfig.cloudKitContainer).")
                     .foregroundStyle(Brand.silver)
