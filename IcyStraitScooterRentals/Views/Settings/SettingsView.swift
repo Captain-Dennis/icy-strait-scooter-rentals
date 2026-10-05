@@ -157,7 +157,13 @@ struct FleetQRStickersView: View {
                         HStack(alignment: .top, spacing: 16) {
                             QRCodeView(payload: sticker.httpsPayload, dimension: 140)
                             VStack(alignment: .leading, spacing: 6) {
-                                UnitPhoto(scooterID: sticker.id, unitName: sticker.name, height: 72, cornerRadius: 10)
+                                UnitPhoto(
+                                    scooterID: sticker.id,
+                                    unitName: sticker.name,
+                                    height: 72,
+                                    cornerRadius: 10,
+                                    photoAssetName: FleetCatalog.photoAssetName(for: sticker.id)
+                                )
                                 Text(sticker.name)
                                     .font(BrandFont.display(22))
                                     .foregroundStyle(.white)

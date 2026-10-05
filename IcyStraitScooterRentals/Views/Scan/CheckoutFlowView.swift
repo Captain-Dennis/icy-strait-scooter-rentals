@@ -90,7 +90,12 @@ struct CheckoutFlowView: View {
                             .font(BrandFont.display(40))
                             .foregroundStyle(.white)
                     }
-                    UnitPhoto(scooterID: scooter.scooterID, unitName: scooter.name, height: 188)
+                    UnitPhoto(
+                        scooterID: scooter.scooterID,
+                        unitName: scooter.name,
+                        height: 188,
+                        photoAssetName: scooter.resolvedPhotoAssetName
+                    )
                     VStack(alignment: .leading, spacing: 8) {
                         FactChip(text: scooter.dockLabel, symbol: "mappin.and.ellipse")
                         HStack(spacing: 8) {

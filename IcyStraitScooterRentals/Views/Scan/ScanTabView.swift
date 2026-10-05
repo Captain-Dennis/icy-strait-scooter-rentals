@@ -191,7 +191,13 @@ struct ScanTabView: View {
             checkoutID = scooter.scooterID
         } label: {
             VStack(alignment: .leading, spacing: 12) {
-                UnitPhoto(scooterID: scooter.scooterID, unitName: scooter.name, height: 168, cornerRadius: 14)
+                UnitPhoto(
+                    scooterID: scooter.scooterID,
+                    unitName: scooter.name,
+                    height: 168,
+                    cornerRadius: 14,
+                    photoAssetName: scooter.resolvedPhotoAssetName
+                )
                 HStack(alignment: .center, spacing: 12) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(scooter.scooterID)
@@ -224,7 +230,13 @@ struct ScanTabView: View {
             errorMessage = CheckoutError.nextSeasonNotOnLot.localizedDescription
         } label: {
             VStack(alignment: .leading, spacing: 8) {
-                UnitPhoto(scooterID: scooter.scooterID, unitName: scooter.name, height: 92, cornerRadius: 10)
+                UnitPhoto(
+                    scooterID: scooter.scooterID,
+                    unitName: scooter.name,
+                    height: 92,
+                    cornerRadius: 10,
+                    photoAssetName: scooter.resolvedPhotoAssetName
+                )
                     .opacity(0.88)
                 Text(scooter.scooterID)
                     .font(BrandFont.mono(11))
@@ -289,7 +301,8 @@ struct ActiveRentalCard: View {
                         scooterID: rental.scooterID,
                         unitName: rental.scooterName,
                         cornerRadius: 10,
-                        thumb: 64
+                        thumb: 64,
+                        photoAssetName: FleetCatalog.photoAssetName(for: rental.scooterID)
                     )
                     VStack(alignment: .leading, spacing: 2) {
                         HStack {

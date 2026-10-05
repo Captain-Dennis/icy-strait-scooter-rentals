@@ -15,6 +15,7 @@ struct UnitBoardRow: Equatable, Identifiable, Sendable {
     var startedAt: Date?
     var endedAt: Date?
     var lastEvent: RentalLifecycleEvent?
+    var photoAssetName: String
 
     var id: String { scooterID }
     var unitLabel: String { "\(scooterID) \(scooterName)" }
@@ -41,7 +42,7 @@ enum CrewBoard {
     /// One row per catalog unit. Next-season units stay off the live lot.
     static func rows(
         events: [RentalLifecycleEvent],
-        units: [(id: String, name: String, dock: String, availability: FleetCatalog.Availability)]
+        units: [(id: String, name: String, dock: String, availability: FleetCatalog.Availability, photoAssetName: String)]
     ) -> [UnitBoardRow] {
         units.map { unit in
             if unit.availability == .nextSeason {
@@ -53,7 +54,8 @@ enum CrewBoard {
                     renterDisplayName: nil,
                     startedAt: nil,
                     endedAt: nil,
-                    lastEvent: nil
+                    lastEvent: nil,
+                    photoAssetName: unit.photoAssetName
                 )
             }
             let history = events
@@ -69,7 +71,8 @@ enum CrewBoard {
                 renterDisplayName: last?.renterDisplayName,
                 startedAt: last?.startedAt,
                 endedAt: isOut ? nil : last?.endedAt,
-                lastEvent: last
+                lastEvent: last,
+                photoAssetName: unit.photoAssetName
             )
         }
     }

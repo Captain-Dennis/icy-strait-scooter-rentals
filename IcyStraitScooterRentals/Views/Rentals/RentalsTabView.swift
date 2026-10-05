@@ -98,7 +98,8 @@ struct RentalsTabView: View {
                 scooterID: rental.scooterID,
                 unitName: rental.scooterName,
                 cornerRadius: 10,
-                thumb: 56
+                thumb: 56,
+                photoAssetName: FleetCatalog.photoAssetName(for: rental.scooterID)
             )
             VStack(alignment: .leading, spacing: 3) {
                 Text(rental.scooterName)

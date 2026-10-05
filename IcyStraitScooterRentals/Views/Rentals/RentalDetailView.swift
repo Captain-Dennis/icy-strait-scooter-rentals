@@ -16,7 +16,12 @@ struct RentalDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                UnitPhoto(scooterID: rental.scooterID, unitName: rental.scooterName, height: 200)
+                UnitPhoto(
+                    scooterID: rental.scooterID,
+                    unitName: rental.scooterName,
+                    height: 200,
+                    photoAssetName: FleetCatalog.photoAssetName(for: rental.scooterID)
+                )
                 header
                 meter
                 photoSection

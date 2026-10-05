@@ -65,7 +65,12 @@ struct CheckInFlowView: View {
 
     private func alreadyDone(_ rental: Rental) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            UnitPhoto(scooterID: rental.scooterID, unitName: rental.scooterName, height: 160)
+            UnitPhoto(
+                scooterID: rental.scooterID,
+                unitName: rental.scooterName,
+                height: 160,
+                photoAssetName: FleetCatalog.photoAssetName(for: rental.scooterID)
+            )
             StatusPill(text: "Already back", tint: Brand.ok)
             Text(rental.scooterName)
                 .font(BrandFont.display(32))
@@ -83,7 +88,12 @@ struct CheckInFlowView: View {
 
     private func doneView(_ rental: Rental) -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            UnitPhoto(scooterID: rental.scooterID, unitName: rental.scooterName, height: 168)
+            UnitPhoto(
+                scooterID: rental.scooterID,
+                unitName: rental.scooterName,
+                height: 168,
+                photoAssetName: FleetCatalog.photoAssetName(for: rental.scooterID)
+            )
             Text("CHECKED IN")
                 .font(BrandFont.eyebrow())
                 .tracking(1.5)
