@@ -11,6 +11,7 @@ final class StaffServices {
     var lastPipeStatus: String?
 
     let httpStore: HTTPLotStore
+    let pipe: SelectingLotStore
     let memoryStore: InMemoryLotStore
     let publisher: LotEventPublisher
 
@@ -21,7 +22,9 @@ final class StaffServices {
         self.memoryStore = memory
         let http = HTTPLotStore(baseURL: SharedPipeConfig.httpBaseURL)
         self.httpStore = http
-        self.publisher = LotEventPublisher(store: CompositeLotStore(primary: http, mirror: memory), notifier: mock)
+        let pipe = SelectingLotStore(http: http, makeCloudKit: { CloudKitLotStore() })
+        self.pipe = pipe
+        self.publisher = LotEventPublisher(store: CompositeLotStore(primary: pipe, mirror: memory), notifier: mock)
     }
 
     func notifyCheckout(rental: Rental, context: ModelContext) async {
@@ -60,7 +63,7 @@ final class StaffServices {
         let people = (try? context.fetch(descriptor)) ?? []
         let shared = people.map(\.shared)
         do {
-            try await httpStore.replaceStaff(shared)
+            try await pipe.replaceStaff(shared)
             try await memoryStore.replaceStaff(shared)
         } catch {
             lastPipeStatus = error.localizedDescription

@@ -1,10 +1,9 @@
 import CloudKit
 import Foundation
 
-/// Production-shaped CloudKit public-database pipe.
-/// Not the v1 live path for the shipping customer app: adding iCloud entitlements
-/// there would force a new App Store profile and can break the current TestFlight upload.
-/// Crew can entitle this container when the App ID is created.
+/// CloudKit public-database pipe for container `SharedPipeConfig.cloudKitContainer`.
+/// Selected when `SharedPipeConfig.usesCloudKit` is true (entitled Release build, Prefer CloudKit on).
+/// HTTP remains the store when the switch is off and when a CloudKit call fails.
 actor CloudKitLotStore: SharedLotStore {
     nonisolated var providerName: String { "CloudKitLotStore" }
 
@@ -47,8 +46,8 @@ actor CloudKitLotStore: SharedLotStore {
         }
     }
 
-    /// Query subscription for new rental events. Requires Push + CloudKit on the Crew App ID.
-    /// Live APNs is not claimed until that portal wiring exists.
+    /// Query subscription for new rental events. Requires the Production schema and Push + CloudKit on the crew profile.
+    /// A failed save does not block the board; Crew still refreshes over the pipe.
     func registerEventSubscription() async throws -> CKSubscription.ID {
         let predicate = NSPredicate(value: true)
         let subscription = CKQuerySubscription(

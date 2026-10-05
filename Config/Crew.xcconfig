@@ -1,0 +1,3 @@
+// Debug crew build. Empty entitlements so Simulator stays on HTTP.
+// Release uses Config/Crew-CloudKit.xcconfig (production APNs). See docs/cloudkit-ready.md.
+ICY_ENTITLEMENTS_FILE = IcyStraitCrew/IcyStraitCrew.entitlements

@@ -11,9 +11,19 @@ final class CrewLotMonitor {
     var pipeURL: String = SharedPipeConfig.httpBaseURL.absoluteString
     var isRefreshing = false
 
-    private let http = HTTPLotStore(baseURL: SharedPipeConfig.httpBaseURL)
+    private let http: HTTPLotStore
+    private let pipe: SelectingLotStore
     private var seenEventIDs: Set<UUID> = []
     private var didPrimeSeen = false
+    private var didRegisterSubscription = false
+
+    var storeName: String { SharedPipeConfig.liveStoreName }
+
+    init() {
+        let http = HTTPLotStore(baseURL: SharedPipeConfig.httpBaseURL)
+        self.http = http
+        self.pipe = SelectingLotStore(http: http, makeCloudKit: { CloudKitLotStore() })
+    }
 
     var rows: [UnitBoardRow] {
         CrewBoard.rows(events: snapshot.events, units: FleetCatalog.boardUnits)
@@ -34,7 +44,7 @@ final class CrewLotMonitor {
         isRefreshing = true
         defer { isRefreshing = false }
         do {
-            let next = try await http.snapshot()
+            let next = try await pipe.snapshot()
             if announceNew {
                 await announceNewEvents(in: next.events)
             } else {
@@ -44,8 +54,20 @@ final class CrewLotMonitor {
             snapshot = next
             lastRefreshed = .now
             lastError = nil
+            await registerSubscriptionIfNeeded()
         } catch {
             lastError = error.localizedDescription
+        }
+    }
+
+    /// Query subscription for new rental events. Runs when Prefer CloudKit is on in an entitled build.
+    private func registerSubscriptionIfNeeded() async {
+        guard SharedPipeConfig.usesCloudKit, !didRegisterSubscription else { return }
+        do {
+            _ = try await CloudKitLotStore().registerEventSubscription()
+            didRegisterSubscription = true
+        } catch {
+            // Dashboard schema or the push profile may still be catching up. The board already loaded.
         }
     }
 
@@ -78,7 +100,7 @@ final class CrewLotMonitor {
         }
     }
 
-    /// Local notification only. Remote APNs / CloudKit subscriptions are compiled, not live.
+    /// Local notification for the polling path. CloudKit push is registered only when `usesCloudKit` is true.
     private func postLocalNotification(for event: RentalLifecycleEvent) async {
         let payload = CrewAlertCopy.payload(for: event)
         let content = UNMutableNotificationContent()

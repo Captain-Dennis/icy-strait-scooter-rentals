@@ -71,6 +71,8 @@
 		C0DE01000000000000000018 /* CloudKitLotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000016 /* CloudKitLotStore.swift */; };
 		C0DE0100000000000000001A /* StaffSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000019 /* StaffSeeder.swift */; };
 		C0DE0100000000000000001B /* StaffSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE01000000000000000019 /* StaffSeeder.swift */; };
+		C0DE06000000000000000013 /* SelectingLotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE06000000000000000012 /* SelectingLotStore.swift */; };
+		C0DE06000000000000000014 /* SelectingLotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE06000000000000000012 /* SelectingLotStore.swift */; };
 		C0DE0100000000000000001D /* CrewEventPipeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0100000000000000001C /* CrewEventPipeTests.swift */; };
 		C0DE02000000000000000002 /* IcyStraitCrewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE02000000000000000001 /* IcyStraitCrewApp.swift */; };
 		C0DE02000000000000000004 /* CrewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE02000000000000000003 /* CrewRootView.swift */; };
@@ -192,6 +194,13 @@
 		C0DE02000000000000000013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0DE02000000000000000014 /* IcyStraitCrew.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IcyStraitCrew.entitlements; sourceTree = "<group>"; };
 		C0DE02000000000000000017 /* IcyStraitCrew-CloudKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "IcyStraitCrew-CloudKit.entitlements"; sourceTree = "<group>"; };
+		C0DE06000000000000000001 /* Customer.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Customer.xcconfig; sourceTree = "<group>"; };
+		C0DE06000000000000000002 /* Customer-CloudKit.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Customer-CloudKit.xcconfig"; sourceTree = "<group>"; };
+		C0DE06000000000000000003 /* Crew.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Crew.xcconfig; sourceTree = "<group>"; };
+		C0DE06000000000000000004 /* Crew-CloudKit.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Crew-CloudKit.xcconfig"; sourceTree = "<group>"; };
+		C0DE06000000000000000005 /* Crew-CloudKit-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Crew-CloudKit-Development.xcconfig"; sourceTree = "<group>"; };
+		C0DE06000000000000000006 /* IcyStraitCrew-CloudKit-Development.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "IcyStraitCrew-CloudKit-Development.entitlements"; sourceTree = "<group>"; };
+		C0DE06000000000000000012 /* SelectingLotStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectingLotStore.swift; sourceTree = "<group>"; };
 		C0DE02000000000000000015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0DE03000000000000000002 /* IcyStraitCrew.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IcyStraitCrew.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -229,6 +238,7 @@
 				8C35799A97AD3FA99FA2EDFE /* IcyStraitScooterRentalsTests */,
 				C0DE04000000000000000001 /* Shared */,
 				C0DE04000000000000000002 /* SharedKit */,
+				C0DE06000000000000000007 /* Config */,
 				C0DE04000000000000000003 /* IcyStraitCrew */,
 				692092DE1C1C8624E142B71D /* Products */,
 			);
@@ -455,6 +465,7 @@
 				C0DE01000000000000000007 /* CrewAlertCopy.swift */,
 				C0DE0100000000000000000A /* SharedLotStore.swift */,
 				C0DE0100000000000000000D /* HTTPLotStore.swift */,
+				C0DE06000000000000000012 /* SelectingLotStore.swift */,
 				C0DE01000000000000000010 /* SharedPipeConfig.swift */,
 			);
 			path = Shared;
@@ -475,6 +486,7 @@
 				C0DE02000000000000000013 /* Info.plist */,
 				C0DE02000000000000000014 /* IcyStraitCrew.entitlements */,
 				C0DE02000000000000000017 /* IcyStraitCrew-CloudKit.entitlements */,
+				C0DE06000000000000000006 /* IcyStraitCrew-CloudKit-Development.entitlements */,
 				C0DE04000000000000000004 /* App */,
 				C0DE04000000000000000005 /* Services */,
 				C0DE04000000000000000006 /* Views */,
@@ -510,6 +522,18 @@
 				C0DE02000000000000000011 /* CrewRosterHome.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		C0DE06000000000000000007 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				C0DE06000000000000000001 /* Customer.xcconfig */,
+				C0DE06000000000000000002 /* Customer-CloudKit.xcconfig */,
+				C0DE06000000000000000003 /* Crew.xcconfig */,
+				C0DE06000000000000000004 /* Crew-CloudKit.xcconfig */,
+				C0DE06000000000000000005 /* Crew-CloudKit-Development.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -689,6 +713,7 @@
 				C0DE01000000000000000008 /* CrewAlertCopy.swift in Sources */,
 				C0DE0100000000000000000B /* SharedLotStore.swift in Sources */,
 				C0DE0100000000000000000E /* HTTPLotStore.swift in Sources */,
+				C0DE06000000000000000013 /* SelectingLotStore.swift in Sources */,
 				C0DE01000000000000000011 /* SharedPipeConfig.swift in Sources */,
 				C0DE01000000000000000014 /* LotEventPublisher.swift in Sources */,
 				C0DE01000000000000000017 /* CloudKitLotStore.swift in Sources */,
@@ -717,6 +742,7 @@
 				C0DE01000000000000000009 /* CrewAlertCopy.swift in Sources */,
 				C0DE0100000000000000000C /* SharedLotStore.swift in Sources */,
 				C0DE0100000000000000000F /* HTTPLotStore.swift in Sources */,
+				C0DE06000000000000000014 /* SelectingLotStore.swift in Sources */,
 				C0DE01000000000000000012 /* SharedPipeConfig.swift in Sources */,
 				C0DE01000000000000000015 /* LotEventPublisher.swift in Sources */,
 				C0DE01000000000000000018 /* CloudKitLotStore.swift in Sources */,
@@ -891,11 +917,12 @@
 		};
 		1D5C2FB762F375771A3A3372 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C0DE06000000000000000001 /* Customer.xcconfig */;
 			buildSettings = {
 
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = IcyStraitScooterRentals/IcyStraitScooterRentals.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(ICY_ENTITLEMENTS_FILE)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"IcyStraitScooterRentals/Preview Content\"";
@@ -928,11 +955,12 @@
 		};
 		88F166B571FDB93AFB5831EE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C0DE06000000000000000002 /* Customer-CloudKit.xcconfig */;
 			buildSettings = {
 
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = IcyStraitScooterRentals/IcyStraitScooterRentals.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(ICY_ENTITLEMENTS_FILE)";
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 3;
@@ -1006,10 +1034,11 @@
 
 		C0DE03000000000000000007 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C0DE06000000000000000003 /* Crew.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = IcyStraitCrew/IcyStraitCrew.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(ICY_ENTITLEMENTS_FILE)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"IcyStraitCrew/Preview Content\"";
@@ -1042,10 +1071,11 @@
 		};
 		C0DE03000000000000000008 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C0DE06000000000000000004 /* Crew-CloudKit.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = IcyStraitCrew/IcyStraitCrew.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(ICY_ENTITLEMENTS_FILE)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"IcyStraitCrew/Preview Content\"";

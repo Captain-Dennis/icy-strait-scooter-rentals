@@ -6,6 +6,7 @@ struct CrewRosterHome: View {
     @Environment(CrewLotMonitor.self) private var lot
     @Environment(StaffServices.self) private var staff
     @State private var pipeURL: String = ""
+    @State private var preferCloudKit = SharedPipeConfig.preferCloudKit
 
     var body: some View {
         List {
@@ -27,17 +28,28 @@ struct CrewRosterHome: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                 Button("Save and refresh") {
-                    Task { await lot.setPipeURL(pipeURL) }
+                    Task {
+                        await lot.setPipeURL(pipeURL)
+                        await staff.httpStore.setBaseURL(SharedPipeConfig.httpBaseURL)
+                    }
                 }
                 .foregroundStyle(Brand.orange)
-                labeled("Store", "HTTPLotStore")
-                labeled("CloudKit", "Compiled · not live APNs")
+                Toggle("Prefer CloudKit", isOn: $preferCloudKit)
+                    .disabled(!SharedPipeConfig.cloudKitEntitled)
+                    .onChange(of: preferCloudKit) { _, newValue in
+                        SharedPipeConfig.preferCloudKit = newValue
+                    }
+                labeled("Store", preferCloudKit && SharedPipeConfig.cloudKitEntitled ? "CloudKitLotStore" : lot.storeName)
+                labeled("CloudKit", SharedPipeConfig.cloudKitStatusLabel)
                 labeled("Twilio", "Stub · no keys")
                 if let error = lot.lastError {
                     Text(error)
                         .font(.footnote)
                         .foregroundStyle(Brand.danger)
                 }
+            } footer: {
+                Text("Entitled builds start with Prefer CloudKit on. HTTP is used when this is off and when CloudKit fails. Container \(SharedPipeConfig.cloudKitContainer).")
+                    .foregroundStyle(Brand.silver)
             }
             .listRowBackground(Brand.card)
 

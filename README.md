@@ -92,12 +92,9 @@ Starter crew: **Front desk / Dennis** · `+1 (907) 500-5152` · `maddasstoner@ya
 
 The customer app’s SwiftData store stays on that phone. A rental on a renter device will not appear on a crew phone unless both apps share a live event list.
 
-CloudKit (same Apple team, container `iCloud.com.icystrait.scooterrentals`, query subscriptions / APNs) is compiled in `SharedKit/CloudKitLotStore.swift`. It is **not** entitled on the shipping customer app. Adding iCloud to `com.icystrait.scooterrentals` would require a new App Store profile and can break the current TestFlight upload. Optional entitlement files:
+CloudKit (same Apple team, container `iCloud.com.icystrait.scooterrentals`, query subscriptions / APNs) is the season-one sync path. Release and both Codemagic TestFlight workflows sign the CloudKit entitlements and compile with `CLOUDKIT_ENTITLED`. Prefer CloudKit defaults **on** for those builds. Debug stays on the empty entitlements so Simulator and unit tests keep using HTTP. If CloudKit throws, the same call is retried on HTTP. Checklist, including the Dashboard schema that is still portal work: [docs/cloudkit-ready.md](docs/cloudkit-ready.md).
 
-- `IcyStraitScooterRentals/IcyStraitScooterRentals-CloudKit.entitlements`
-- `IcyStraitCrew/IcyStraitCrew-CloudKit.entitlements`
-
-v1 live pipe is a tiny HTTP JSON server both apps POST/GET:
+The HTTP pipe is the fallback, and the store used when Prefer CloudKit is off:
 
 ```text
 python3 tools/rental-events-server/server.py --port 8787
@@ -192,7 +189,7 @@ Camera scanning needs a physical device. On Simulator:
 
 ## Persistence
 
-SwiftData on device: scooters, rentals, agreement acceptances, return photos (external storage), POS ledger, staff roster, SMS log. Live lot events for Crew live on the HTTP pipe (and CloudKit when entitled), not in the customer phone’s SwiftData.
+SwiftData on device: scooters, rentals, agreement acceptances, return photos (external storage), POS ledger, staff roster, SMS log. Live lot events for Crew use CloudKit on an entitled Release build (Prefer CloudKit defaults on) and the HTTP pipe otherwise, including when CloudKit fails. They are not stored in the customer phone’s SwiftData.
 
 ## Tests
 
@@ -219,8 +216,10 @@ Root `codemagic.yaml` has two TestFlight workflows. There are no CocoaPods and n
 | Scheme | `IcyStraitScooterRentals` | `IcyStraitCrew` |
 | Bundle ID | `com.icystrait.scooterrentals` | `com.icystrait.crew` |
 | Apple ID | `6810469934` | `6811694954` |
-| Profile ref | `app_store` | `crew_app_store` (generate in Codemagic; do not reuse `app_store`) |
+| Profile ref | `app_store` (regenerated with CloudKit) | `crew_app_store` (regenerated with CloudKit + Push; do not reuse `app_store`) |
 | Certificate | `ios-distribution` | `ios-distribution` (same team cert) |
+| Release xcconfig | `Config/Customer-CloudKit.xcconfig` | `Config/Crew-CloudKit.xcconfig` (production APNs) |
+| Archive flag | `-xcconfig` that file, plus `CLOUDKIT_ENTITLED` | `-xcconfig` that file, plus `CLOUDKIT_ENTITLED` |
 | `submit_to_testflight` | `true` | `true` |
 | App Store Connect integration | **Escooter rental** | **Escooter rental** |
 
@@ -230,7 +229,7 @@ Replace the integration name in `codemagic.yaml` with the **exact** name of the 
 2. Add the `.p8` key from App Store Connect (Users and Access → Integrations → App Store Connect API).  
 3. Copy that Codemagic key name into `integrations.app_store_connect`.  
 4. Codemagic → Team settings → codemagic.yaml settings → Code signing identities: Apple Distribution certificate + App Store profile for `com.icystrait.scooterrentals`.  
-5. Customer Apple ID `6810469934` (`com.icystrait.scooterrentals`) and Crew Apple ID `6811694954` (Icy Strait Crew, `com.icystrait.crew`) are already set. Generate the `crew_app_store` profile for `com.icystrait.crew`. Do not start a Crew Codemagic build until that profile exists.
+5. Customer Apple ID `6810469934` (`com.icystrait.scooterrentals`) and Crew Apple ID `6811694954` (Icy Strait Crew, `com.icystrait.crew`) are already set. Refresh `app_store` and `crew_app_store` in Codemagic with the profiles regenerated after the CloudKit container was attached, then start both workflows. See [docs/cloudkit-ready.md](docs/cloudkit-ready.md).
 
 Do not commit `.p8`, `.p12`, provisioning profiles, or API tokens.
 
@@ -242,5 +241,5 @@ Do not commit `.p8`, `.p12`, provisioning profiles, or API tokens.
 - Return photos are **left and right only** (not front/back).
 - SMS / event-pipe failure never rolls back a successful checkout or check-in.
 - Agreement and area-of-operation text is draft placeholder for counsel.
-- Customer TestFlight stays on empty entitlements. The live crew board uses the tiny HTTP event pipe; CloudKit is compiled and optional.
+- Customer and crew TestFlight Release builds are CloudKit-entitled. Prefer CloudKit defaults on. HTTP is the fallback when CloudKit fails or the switch is off. Debug stays unentitled. Dashboard schema is still portal work. See `docs/cloudkit-ready.md`.
 - Live APNs and live Twilio SMS are not claimed in v1. Mock copies and local crew notifications are.

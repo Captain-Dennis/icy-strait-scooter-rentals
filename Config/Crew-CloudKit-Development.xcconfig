@@ -1,0 +1,5 @@
+// Opt-in crew CloudKit build for a development-signed local run only.
+// TestFlight and the App Store must use Config/Crew-CloudKit.xcconfig (production APNs).
+#include "Crew.xcconfig"
+ICY_ENTITLEMENTS_FILE = IcyStraitCrew/IcyStraitCrew-CloudKit-Development.entitlements
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) CLOUDKIT_ENTITLED

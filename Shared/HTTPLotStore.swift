@@ -1,7 +1,7 @@
 import Foundation
 
-/// Tiny HTTP pipe both apps share. This is the v1 live event list.
-/// CloudKit is compiled separately and is not entitled on the shipping customer app.
+/// Tiny HTTP pipe both apps share.
+/// Live store when Prefer CloudKit is off, and the fallback when a CloudKit call fails.
 actor HTTPLotStore: SharedLotStore {
     nonisolated var providerName: String { "HTTPLotStore" }
 
